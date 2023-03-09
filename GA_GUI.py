@@ -6,7 +6,7 @@ from time import sleep
 from TESTING import run
 
 current_value = 0
-#gfd
+#new code
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
