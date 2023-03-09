@@ -4,7 +4,7 @@ import tkinter.messagebox
 from PIL import Image, ImageTk
 from time import sleep
 from TESTING import run
-#get this change
+
 current_value = 0
 
 class GA(tk.Tk):
