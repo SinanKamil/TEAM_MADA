@@ -4,8 +4,11 @@ import tkinter.messagebox
 from PIL import Image, ImageTk
 from time import sleep
 from TESTING import run
-
+from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
+from steering_code import motors, MAX_SPEED
+from centering_steering import center
 current_value = 0
+
 
 class GA(tk.Tk):
     def __init__(self):
@@ -16,11 +19,11 @@ class GA(tk.Tk):
         self.geometry("1920x1080")
         self.title('General Atomics')
         self.config(bg="white")
-        self.attributes("-fullscreen",True)
+        #self.attributes("-fullscreen",True)
         ico = Image.open('images/GA.png')
         photo = ImageTk.PhotoImage(ico)
         self.wm_iconphoto(False, photo)
-
+        self.button_clicked = 0
 
 # page for landing gear
         self.landing_gear_page = tk.Frame(self)
@@ -30,15 +33,19 @@ class GA(tk.Tk):
 
 
         self.left = ImageTk.PhotoImage(Image.open("btn_images/LEFT.png"))
-        self.next_button = tk.Button(self.landing_gear_page, image=self.left, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.reverse_steering,
+        self.steering = tk.Button(self.landing_gear_page, image=self.left, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=342, y=400)
+        self.steering.bind("<ButtonPress>", lambda event: self.reverse_steering())
+        self.steering.bind("<ButtonRelease>", lambda event: self.disable())
+        self.steering.place(x=342, y=400)
 
         self.right = ImageTk.PhotoImage(Image.open("btn_images/RIGHT.png"))
         self.next_button = tk.Button(self.landing_gear_page, image=self.right, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.forward_steering,
+                                     activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
+        self.next_button.bind("<ButtonPress>", lambda event: self.forward_steering())
+        self.next_button.bind("<ButtonRelease>", lambda event: self.disable())
         self.next_button.place(x=1250, y=400)
 
 
@@ -74,15 +81,23 @@ class GA(tk.Tk):
 
     def reverse_steering(self):
         print("reverse_steering")
+        reverse_accelerate(-80)
 
     def reverse_retract(self):
         print("reverse_retract")
-
+        
+    
     def forward_steering(self):
         print("forward_steering")
-
+        forward_accelerate(80)
+        
+    def disable(self):
+        disable_steering()
     def forward_retract(self):
         print("forward_retract")
 if __name__ == "__main__":
     app = GA()
     app.mainloop()
+    
+motors.setSpeeds(0, 0)
+motors.forceStop()
