@@ -1,5 +1,5 @@
 import time
-from Steering_code import Motors, MAX_SPEED
+from steering_code import motors, MAX_SPEED
 
 # Define a custom exception to raise if a fault is detected.
 class DriverFault(Exception):
@@ -11,26 +11,21 @@ def raiseIfFault():
         raise DriverFault(1)
 
 # Set up sequences of motor speeds.
-forward = list(range(0, MAX_SPEED, 1)) + \
-          [MAX_SPEED] * 200 + list(range(MAX_SPEED, 0, -1)) + [0]
-
-reverse = list(range(0, -MAX_SPEED, -1)) + \
-          [-MAX_SPEED] * 200 + list(range(-MAX_SPEED, 0, 1)) + [0]
+test_forward_speeds = list(range(0, MAX_SPEED, 1)) + \
+  [MAX_SPEED] * 200 + list(range(MAX_SPEED, 0, -1)) + [0]
+print(test_forward_speeds)
+test_reverse_speeds = list(range(0, -MAX_SPEED, -1)) + \
+  [-MAX_SPEED] * 200 + list(range(-MAX_SPEED, 0, 1)) + [0]
 
 try:
     motors.setSpeeds(0, 0)
 
     print("Motor 1 forward")
-    for s in forward:
+    for s in test_forward_speeds:
         motors.motor1.setSpeed(s)
         raiseIfFault()
         time.sleep(0.002)
 
-    print("Motor 1 reverse")
-    for s in reverse:
-        motors.motor1.setSpeed(s)
-        raiseIfFault()
-        time.sleep(0.002)
 
     # Disable the drivers for half a second.
     motors.disable()
@@ -38,13 +33,13 @@ try:
     motors.enable()
 
     print("Motor 2 forward")
-    for s in forward:
+    for s in test_forward_speeds:
         motors.motor2.setSpeed(s)
         raiseIfFault()
         time.sleep(0.002)
 
     print("Motor 2 reverse")
-    for s in reverse:
+    for s in test_reverse_speeds:
         motors.motor2.setSpeed(s)
         raiseIfFault()
         time.sleep(0.002)
