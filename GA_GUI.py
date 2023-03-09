@@ -16,7 +16,7 @@ class GA(tk.Tk):
         self.geometry("1920x1080")
         self.title('General Atomics')
         self.config(bg="white")
-        #self.attributes("-fullscreen",True)
+        self.attributes("-fullscreen",True)
         ico = Image.open('images/GA.png')
         photo = ImageTk.PhotoImage(ico)
         self.wm_iconphoto(False, photo)
@@ -25,7 +25,7 @@ class GA(tk.Tk):
         # Create the first page
         self.page1 = tk.Frame(self)
         self.page1.pack(side="top", fill="both", expand=True)
-        self.add_background_image(self.page1, "images/user_page.png")
+        self.add_background_image(self.page1, "images/home_page.png")
 
         # Create the button to go to page 2
         self.next_button_img = ImageTk.PhotoImage(Image.open("images/adminlogin_btn.png"))
@@ -82,7 +82,7 @@ class GA(tk.Tk):
         self.add_background_image(self.page2, "images/admin_access.png")
 
         # Create the button to go back to page 1
-        self.next_button_img2 = ImageTk.PhotoImage(Image.open("images/mainmenu_btn.png"))
+        self.next_button_img2 = ImageTk.PhotoImage(Image.open("images/homemenu_btn.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img2, highlightthickness = 0, activebackground ='white', background ='white', command=self.show_page1, borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=222, y=882)
 
@@ -175,12 +175,17 @@ class GA(tk.Tk):
         self.page3.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.page3, "images/admin_page.png")
 
-        self.next_button_img17 = ImageTk.PhotoImage(Image.open("images/adminlogin_btn.png"))
+        self.next_button_img17 = ImageTk.PhotoImage(Image.open("images/homemenu_btn.png"))
         self.next_button = tk.Button(self.page3, image=self.next_button_img17, highlightthickness=0,
-                                     activebackground='white', background='white', command=self.show_page2,
+                                     activebackground='white', background='white', command=self.show_page1,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=230, y=882)
+        self.next_button.place(x=222, y=882)
 
+        self.exit_btn = ImageTk.PhotoImage(Image.open("btn_images/exit_btn.png"))
+        self.next_button = tk.Button(self.page3, image=self.exit_btn, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.exit,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=1700, y=50)
 
 #page for fuel pump
         self.fuel_pump_page = tk.Frame(self)
@@ -235,7 +240,7 @@ class GA(tk.Tk):
         self.landing_gear_page = tk.Frame(self)
         self.landing_gear_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.landing_gear_page, "images/landing_gear_page.png")
-        self.show_page(self.page1)
+
 
         self.landing_gear_btn = ImageTk.PhotoImage(Image.open("btn_images/landing_gear.png"))
         self.next_button = tk.Button(self.page3, image=self.landing_gear_btn, highlightthickness=0,
@@ -260,8 +265,12 @@ class GA(tk.Tk):
                                      activebackground='#092a81', background='#092a81', command=self.forward_steering,
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=1250, y=400)
-
-
+        #center
+        self.center = ImageTk.PhotoImage(Image.open("btn_images/center.png"))
+        self.next_button = tk.Button(self.landing_gear_page, image=self.center, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.center_landing_gear,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=825, y=555)
 
         self.left1 = ImageTk.PhotoImage(Image.open("btn_images/LEFT.png"))
         self.next_button = tk.Button(self.landing_gear_page, image=self.left1, highlightthickness=0,
@@ -274,8 +283,39 @@ class GA(tk.Tk):
                                      activebackground='#092a81', background='#092a81', command=self.forward_retract,
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=1250, y=650)
+#page for Aileron Smart Servo
+        self.aileron_servo_page = tk.Frame(self)
+        self.aileron_servo_page.pack(side="top", fill="both", expand=True)
+        self.add_background_image(self.aileron_servo_page, "images/aileron_page.png")
 
+        self.aileron_btn = ImageTk.PhotoImage(Image.open("btn_images/aileron.png"))
+        self.next_button = tk.Button(self.page3, image=self.aileron_btn, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.show_aileron_servo_page,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=1188, y=450)
 
+        self.back2 = ImageTk.PhotoImage(Image.open("images/adminmenu_btn.png"))
+        self.next_button = tk.Button(self.aileron_servo_page, image=self.back2, highlightthickness=0,
+                                     activebackground='white', background='white', command=self.show_page3,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=230, y=884)
+# page for Directional Antenna
+        self.directional_antenna_page = tk.Frame(self)
+        self.directional_antenna_page.pack(side="top", fill="both", expand=True)
+        self.add_background_image(self.directional_antenna_page, "images/directional_antenna_page.png")
+        self.show_page(self.page1)
+        self.directional_antenna_btn = ImageTk.PhotoImage(Image.open("btn_images/directional_antenna.png"))
+        self.next_button = tk.Button(self.page3, image=self.directional_antenna_btn, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81',
+                                     command=self.show_directional_antenna_page,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=765, y=450)
+
+        self.back3 = ImageTk.PhotoImage(Image.open("images/adminmenu_btn.png"))
+        self.next_button = tk.Button(self.directional_antenna_page, image=self.back3, highlightthickness=0,
+                                     activebackground='white', background='white', command=self.show_page3,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=230, y=884)
 
     def add_background_image(self, frame, file):
         img = Image.open(file)
@@ -290,20 +330,22 @@ class GA(tk.Tk):
         self.page2.pack_forget()
         self.page3.pack_forget()
         self.fuel_pump_page.pack_forget()
-        #self.Dir_antenna.pack_forget()
-        #self.Aileron_page.pack_forget()
+        self.directional_antenna_page.pack_forget()
+        self.aileron_servo_page.pack_forget()
         self.landing_gear_page.pack_forget()
         self.alternator_page.pack_forget()
         page.pack(side="top", fill="both", expand=True)
 
     def show_fuel_pump_page(self):
         self.show_page(self.fuel_pump_page)
-
+    def show_aileron_servo_page(self):
+        self.show_page(self.aileron_servo_page)
     def show_alternator_page(self):
          self.show_page(self.alternator_page)
     def show_landing_gear_page(self):
          self.show_page(self.landing_gear_page)
-
+    def show_directional_antenna_page(self):
+        self.show_page(self.directional_antenna_page)
     def show_page2(self):
         self.show_page(self.page2)
     def show_page3(self):
@@ -396,7 +438,8 @@ class GA(tk.Tk):
         self.fuel_pump_page.pack_forget()
         self.alternator_page.pack_forget()
         self.landing_gear_page.pack_forget()
-        ##put the rest of pageessssssssssssssssss
+        self.aileron_servo_page.pack_forget()
+        self.directional_antenna_page.pack_forget()
         self.page3.pack(side="top", fill="both", expand=True)
 
 # Define the toggle switch function
@@ -433,12 +476,15 @@ class GA(tk.Tk):
 
     def reverse_retract(self):
         print("reverse_retract")
-
+    def center_landing_gear(self):
+        print("center")
     def forward_steering(self):
         print("forward_steering")
 
     def forward_retract(self):
         print("forward_retract")
+    def exit(self):
+        self.destroy()
 if __name__ == "__main__":
     app = GA()
     app.mainloop()
