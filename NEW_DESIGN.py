@@ -3,7 +3,7 @@ from tkinter import *
 import tkinter.messagebox
 from PIL import Image, ImageTk
 from time import sleep
-
+#hello lotanna
 current_value = 0
 class GA(tk.Tk):
     def __init__(self):
