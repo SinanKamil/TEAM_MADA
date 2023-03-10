@@ -82,7 +82,7 @@ class GA(tk.Tk):
         self.add_background_image(self.page2, "images/admin_access.png")
 
         # Create the button to go back to page 1
-        self.next_button_img2 = ImageTk.PhotoImage(Image.open("images/mainmenu_btn.png"))
+        self.next_button_img2 = ImageTk.PhotoImage(Image.open("images/homemenu_btn.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img2, highlightthickness = 0, activebackground ='white', background ='white', command=self.show_page1, borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=222, y=882)
 
