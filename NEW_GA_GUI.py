@@ -253,38 +253,39 @@ class GA(tk.Tk):
         self.next_button = tk.Button(self.landing_gear_page, image=self.back1, highlightthickness=0,
                                      activebackground='white', background='white', command=self.show_page3,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=230, y=884)
+        self.next_button.place(x=234, y=884)
 
-        self.left = ImageTk.PhotoImage(Image.open("btn_images/LEFT.png"))
+        self.left = ImageTk.PhotoImage(Image.open("btn_images/steer_left.png"))
         self.next_button = tk.Button(self.landing_gear_page, image=self.left, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.reverse_steering,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=342, y=400)
+        self.next_button.place(x=400, y=500)
 
-        self.right = ImageTk.PhotoImage(Image.open("btn_images/RIGHT.png"))
+        self.right = ImageTk.PhotoImage(Image.open("btn_images/steer_right.png"))
         self.next_button = tk.Button(self.landing_gear_page, image=self.right, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.forward_steering,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=1250, y=400)
+        self.next_button.place(x=1192, y=500)
         #center
         self.center = ImageTk.PhotoImage(Image.open("btn_images/center.png"))
         self.next_button = tk.Button(self.landing_gear_page, image=self.center, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.center_landing_gear,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=825, y=555)
+        self.next_button.place(x=800, y=500)
 
-        self.left1 = ImageTk.PhotoImage(Image.open("btn_images/LEFT.png"))
+        self.left1 = ImageTk.PhotoImage(Image.open("btn_images/retract_down.png"))
         self.next_button = tk.Button(self.landing_gear_page, image=self.left1, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.reverse_retract,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=342, y=650)
+        self.next_button.place(x=800, y=725)
 
-        self.right1 = ImageTk.PhotoImage(Image.open("btn_images/RIGHT.png"))
+        self.right1 = ImageTk.PhotoImage(Image.open("btn_images/retract_up.png"))
         self.next_button = tk.Button(self.landing_gear_page, image=self.right1, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.forward_retract,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=1250, y=650)
+        self.next_button.place(x=800, y=275)
 #page for Aileron Smart Servo
+        # 10 slide show and five for inactive
         self.aileron_servo_page = tk.Frame(self)
         self.aileron_servo_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.aileron_servo_page, "images/aileron_page.png")
@@ -486,7 +487,7 @@ class GA(tk.Tk):
     def forward_retract(self):
         print("forward_retract")
     def exit(self):
-        res = mb.askquestion('Exit Application', 'Do you really want to exit')
+        res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
         if res == 'yes':
             self.destroy()
 
