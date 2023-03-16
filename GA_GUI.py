@@ -434,7 +434,7 @@ class GA(tk.Tk):
         # Enable the button after a delay
         self.switch_button5.after(3000, lambda: self.switch_button1.config(state=tk.NORMAL))
 
-    
+    #Lotanna
     
     def set_duty_cycle(self, new_value):
         self.duty_cycle = float(new_value)
