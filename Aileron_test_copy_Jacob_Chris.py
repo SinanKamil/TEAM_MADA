@@ -15,7 +15,6 @@ GPIO.setup(Speed, GPIO.OUT)
 GPIO.setup(Break, GPIO.OUT)
 
 GPIO.output(Enable, 1)
-GPIO.output(F_R, 1)
 GPIO.output(Speed, 1)
 GPIO.output(Break, 1)
 p = GPIO.PWM(Speed,2000)   # Initialize PWM on pin 12 with a frequency of 50Hz
@@ -24,7 +23,13 @@ p.start(0)
 #for duty in range(0,100,5):
 #    p.ChangeDutyCycle(duty)
 while True:
+    GPIO.output(F_R, 1)
     p.ChangeDutyCycle(5)
+    sleep(1)
+    GPIO.output(F_R, 0)
+    p.ChangeDutyCycle(5)
+    sleep(3)
+    GPIO.output(Enable, 0)
 
 
 GPIO.cleanup()

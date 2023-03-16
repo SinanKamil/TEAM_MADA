@@ -210,7 +210,7 @@ class GA(tk.Tk):
         self.alternator_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.alternator_page, "images/alternator_page.png")
 
-        self.alternator_btn = ImageTk.PhotoImage(Image.open("btn_images/Alternator.png"))
+        self.alternator_btn = ImageTk.PhotoImage(Image.open("btn_images/alternator.png"))
         self.next_button = tk.Button(self.page3, image=self.alternator_btn, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.show_alternator_page,
                                      borderwidth=0, relief="flat", bd=0)
