@@ -3,6 +3,7 @@ from tkinter import *
 import tkinter.messagebox
 from PIL import Image, ImageTk
 from time import sleep
+from tkinter import messagebox as mb
 from TESTING import run
 
 current_value = 0
@@ -485,7 +486,11 @@ class GA(tk.Tk):
     def forward_retract(self):
         print("forward_retract")
     def exit(self):
-        self.destroy()
+        res = mb.askquestion('Exit Application', 'Do you really want to exit')
+        if res == 'yes':
+            self.destroy()
+
+
 if __name__ == "__main__":
     app = GA()
     app.mainloop()
