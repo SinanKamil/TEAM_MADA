@@ -24,11 +24,11 @@ p.start(0)
 #    p.ChangeDutyCycle(duty)
 while True:
     GPIO.output(F_R, 1)
-    p.ChangeDutyCycle(5)
-    sleep(3)
+    p.ChangeDutyCycle(50)
+    sleep(1)
     GPIO.output(F_R, 0)
-    p.ChangeDutyCycle(5)
-    sleep(3)
+    p.ChangeDutyCycle(50)
+    sleep(1)
     break
 
 
