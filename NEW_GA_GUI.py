@@ -463,6 +463,7 @@ class GA(tk.Tk):
         print("Landing Gear ON")
     def Alternator_toggle_switch(self):
         print("Alternator ON")
+        
 
     def show_values(self, event):
         new_value = self.w1.get()

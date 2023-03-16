@@ -4,6 +4,12 @@ import tkinter.messagebox
 from PIL import Image, ImageTk
 from time import sleep
 from TESTING import run
+import RPi.GPIO as GPIO
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(18, GPIO.OUT)
+pwm = GPIO.PWM(18, 100)
+pwm.start(0)
 
 current_value = 0
 #new code
@@ -213,7 +219,7 @@ class GA(tk.Tk):
 
 
 
-        self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL,
+        self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL, command=self.set_duty_cycle,
                         troughcolor='#0e3999', width=67, sliderrelief='groove', highlightbackground='#0e3999',
                         sliderlength=40, font= ("Tactic Sans Extra Extended", 15), showvalue=0)
         self.w1.set(current_value)
@@ -420,6 +426,19 @@ class GA(tk.Tk):
         print("Landing Gear ON")
     def Alternator_toggle_switch(self):
         print("Alternator ON")
+        self.switch_button5.config(state=tk.DISABLED)
+        self.update()
+        # Run the function
+        run()
+
+        # Enable the button after a delay
+        self.switch_button5.after(3000, lambda: self.switch_button1.config(state=tk.NORMAL))
+
+
+    
+    def set_duty_cycle(self, new_value):
+        self.duty_cycle = float(new_value)
+        pwm.ChangeDutyCycle(self.duty_cycle)
 
     def show_values(self, event):
         new_value = self.w1.get()
