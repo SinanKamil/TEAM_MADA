@@ -7,6 +7,7 @@ from tkinter import messagebox as mb
 import time
 from Alternator_LED_DCMotor import DC_LED_function
 from Directional_antenna import antenna
+import threading
 #from TESTING import run
 
 current_value = 0
@@ -487,8 +488,10 @@ class GA(tk.Tk):
         print("Directional Antenna ON")
         self.switch_button1.config(state=tk.DISABLED)
         self.update()
-        # Run the function
-        antenna()
+
+        # Create a new thread to run the antenna function
+        antenna_thread = threading.Thread(target=antenna)
+        antenna_thread.start()
 
         # Enable the button after a delay
         self.switch_button1.after(3000, lambda: self.switch_button1.config(state=tk.NORMAL))
@@ -498,15 +501,17 @@ class GA(tk.Tk):
     def landing_gear_toggle_switch(self):
         print("Landing Gear ON")
     def Alternator_toggle_switch(self):
-        print("Alternator ON")
-        self.switch_button5.config(state=tk.DISABLED)
-        self.update()
-        # Run the function
-        
-        DC_LED_function()
+        def Alternator_toggle_switch(self):
+            print("Alternator ON")
+            self.switch_button5.config(state=tk.DISABLED)
+            self.update()
 
-        # Enable the button after a delay
-        self.switch_button5.after(3000, lambda: self.switch_button5.config(state=tk.NORMAL))
+            # Create a new thread to run the DC LED function
+            led_thread = threading.Thread(target=DC_LED_function)
+            led_thread.start()
+
+            # Enable the button after a delay
+            self.switch_button5.after(3000, lambda: self.switch_button5.config(state=tk.NORMAL))
         
 
     def show_values(self, event):
