@@ -5,6 +5,8 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
+from Alternator_LED_DCMotor import DC_LED_function
+from Directional_antenna import antenna
 #from TESTING import run
 
 current_value = 0
@@ -486,7 +488,7 @@ class GA(tk.Tk):
         self.switch_button1.config(state=tk.DISABLED)
         self.update()
         # Run the function
-        #run()
+        antenna()
 
         # Enable the button after a delay
         self.switch_button1.after(3000, lambda: self.switch_button1.config(state=tk.NORMAL))
@@ -497,6 +499,14 @@ class GA(tk.Tk):
         print("Landing Gear ON")
     def Alternator_toggle_switch(self):
         print("Alternator ON")
+        self.switch_button5.config(state=tk.DISABLED)
+        self.update()
+        # Run the function
+        
+        DC_LED_function()
+
+        # Enable the button after a delay
+        self.switch_button5.after(3000, lambda: self.switch_button5.config(state=tk.NORMAL))
         
 
     def show_values(self, event):

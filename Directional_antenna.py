@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
+
 def antenna():
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
@@ -88,8 +89,6 @@ def antenna():
 
     # Turn off the motor by setting the enable pin to low
     GPIO.output(21, GPIO.LOW)
-
-antenna()
     
 # Clean up the GPIO pins
 GPIO.cleanup()
