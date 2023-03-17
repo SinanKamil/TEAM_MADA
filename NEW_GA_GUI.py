@@ -4,7 +4,8 @@ import tkinter.messagebox
 from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
-from TESTING import run
+import time
+#from TESTING import run
 
 current_value = 0
 
@@ -21,6 +22,11 @@ class GA(tk.Tk):
         ico = Image.open('images/GA.png')
         photo = ImageTk.PhotoImage(ico)
         self.wm_iconphoto(False, photo)
+
+        self.minutes = 0.5
+        self.inactive_time = 10
+        self.total_seconds = self.minutes * 60
+        self.last_active_time = time.time()
 
 #page 1 here:
         # Create the first page
@@ -86,6 +92,16 @@ class GA(tk.Tk):
         self.next_button_img2 = ImageTk.PhotoImage(Image.open("images/homemenu_btn.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img2, highlightthickness = 0, activebackground ='white', background ='white', command=self.show_page1, borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=222, y=882)
+
+        self.label = tk.Label(self.page2, font=("Arial", 20))
+        self.label.pack(expand=True)
+
+        self.label.place(x=222, y=200)
+        self.bind('<Any-KeyPress>', self.reset_timer)
+        self.bind('<Any-Button>', self.reset_timer)
+        self.bind('<Motion>', self.reset_timer)
+        self.update_label()
+
 
         #create a text box
         self.password_entry = tk.Entry(self.page2, font=('Rubik Medium', 38), background= "#092a81",fg="white", width=3,show='*', bd=0, borderwidth=0)
@@ -181,6 +197,7 @@ class GA(tk.Tk):
                                      activebackground='white', background='white', command=self.show_page1,
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=222, y=882)
+
 
         self.exit_btn = ImageTk.PhotoImage(Image.open("btn_images/exit_btn.png"))
         self.next_button = tk.Button(self.page3, image=self.exit_btn, highlightthickness=0,
@@ -340,18 +357,32 @@ class GA(tk.Tk):
 
     def show_fuel_pump_page(self):
         self.show_page(self.fuel_pump_page)
+        self.reset_timer()
+        self.update_label()
     def show_aileron_servo_page(self):
         self.show_page(self.aileron_servo_page)
+        self.reset_timer()
+        self.update_label()
     def show_alternator_page(self):
-         self.show_page(self.alternator_page)
+        self.show_page(self.alternator_page)
+        self.reset_timer()
+        self.update_label()
     def show_landing_gear_page(self):
          self.show_page(self.landing_gear_page)
+         self.reset_timer()
+         self.update_label()
     def show_directional_antenna_page(self):
         self.show_page(self.directional_antenna_page)
+        self.reset_timer()
+        self.update_label()
     def show_page2(self):
         self.show_page(self.page2)
+        self.reset_timer()
+        self.update_label()
     def show_page3(self):
         self.show_page(self.page3)
+        self.reset_timer()
+        self.update_label()
 
     def clear_text(self):
         self.password_entry.delete(0, END)
@@ -361,6 +392,7 @@ class GA(tk.Tk):
         self.numbers_clicked = []
         self.show_page(self.page1)
         self.clear_text()
+
 
     def store1(self):
         print("Number 1 is Clicked")
@@ -490,6 +522,25 @@ class GA(tk.Tk):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
         if res == 'yes':
             self.destroy()
+
+    def reset_timer(self, event=None):
+        self.last_active_time = time.time()
+
+    def update_label(self):
+        current_time = time.time()
+        elapsed_time = current_time - self.last_active_time
+        remaining_time = self.total_seconds - elapsed_time
+        if remaining_time <= 0:
+            self.show_page1()
+        else:
+            minutes, seconds = divmod(int(remaining_time), 60)
+            self.label.configure(text="Time remaining: {:02d}:{:02d}".format(minutes, seconds))
+            if elapsed_time > self.inactive_time:
+                self.label.configure(foreground='red')
+            else:
+                self.label.configure(foreground='black')
+            self.label.after(250, self.update_label)
+
 
 
 if __name__ == "__main__":
