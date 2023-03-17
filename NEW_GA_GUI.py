@@ -18,12 +18,12 @@ class GA(tk.Tk):
         self.geometry("1920x1080")
         self.title('General Atomics')
         self.config(bg="white")
-        self.attributes("-fullscreen",True)
+        #self.attributes("-fullscreen",True)
         ico = Image.open('images/GA.png')
         photo = ImageTk.PhotoImage(ico)
         self.wm_iconphoto(False, photo)
 
-        self.minutes = 0.5
+        self.minutes = 0.20
         self.inactive_time = 10
         self.total_seconds = self.minutes * 60
         self.last_active_time = time.time()
@@ -486,7 +486,7 @@ class GA(tk.Tk):
         self.switch_button1.config(state=tk.DISABLED)
         self.update()
         # Run the function
-        run()
+        #run()
 
         # Enable the button after a delay
         self.switch_button1.after(3000, lambda: self.switch_button1.config(state=tk.NORMAL))
@@ -524,16 +524,17 @@ class GA(tk.Tk):
             self.destroy()
 
     def reset_timer(self, event=None):
-        self.last_active_time = time.time()
+        self.last_active_time = time.time() #time goes back to normal
 
     def update_label(self):
-        current_time = time.time()
-        elapsed_time = current_time - self.last_active_time
-        remaining_time = self.total_seconds - elapsed_time
-        if remaining_time <= 0:
+        current_time = time.time()#most current time
+        elapsed_time = current_time - self.last_active_time #start decrementating
+        remaining_time = self.total_seconds - elapsed_time #how much time left
+        if remaining_time <= 0:#if zero go to page 1
             self.show_page1()
         else:
             minutes, seconds = divmod(int(remaining_time), 60)
+            # DELETE LATER
             self.label.configure(text="Time remaining: {:02d}:{:02d}".format(minutes, seconds))
             if elapsed_time > self.inactive_time:
                 self.label.configure(foreground='red')
