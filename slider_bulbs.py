@@ -3,8 +3,8 @@ import RPi.GPIO as GPIO
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
-pwm = GPIO.PWM(18, 100)
+GPIO.setup(10, GPIO.OUT)
+pwm = GPIO.PWM(10, 100)
 pwm.start(0)
 
 def set_duty_cycle(new_value):
