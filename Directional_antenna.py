@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
+    
 
 def antenna():
     GPIO.setmode(GPIO.BCM)
@@ -91,6 +92,6 @@ def antenna():
     GPIO.output(21, GPIO.LOW)
     
 # Clean up the GPIO pins
-GPIO.cleanup()
+#GPIO.cleanup()
 
 

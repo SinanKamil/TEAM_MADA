@@ -28,6 +28,7 @@ def DC_LED_function():
 
             sleep(.02)
         sleep(.01)
+    GPIO.cleanup()
 
 
 

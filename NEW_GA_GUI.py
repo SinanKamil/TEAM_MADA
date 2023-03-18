@@ -8,10 +8,10 @@ import time
 from Alternator_LED_DCMotor import DC_LED_function
 from Directional_antenna import antenna
 import threading
-#from TESTING import run
+
+
 
 current_value = 0
-
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -239,7 +239,7 @@ class GA(tk.Tk):
 
 
 
-        self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL,
+        self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL,  
                         troughcolor='#0e3999', width=67, sliderrelief='groove', highlightbackground='#0e3999',
                         sliderlength=40, font= ("Tactic Sans Extra Extended", 15), showvalue=0)
         self.w1.set(current_value)
@@ -500,19 +500,20 @@ class GA(tk.Tk):
         print("Aileron ON")
     def landing_gear_toggle_switch(self):
         print("Landing Gear ON")
+
     def Alternator_toggle_switch(self):
-        def Alternator_toggle_switch(self):
-            print("Alternator ON")
-            self.switch_button5.config(state=tk.DISABLED)
-            self.update()
+        print("Alternator ON")
+        self.switch_button5.config(state=tk.DISABLED)
+        self.update()
 
-            # Create a new thread to run the DC LED function
-            led_thread = threading.Thread(target=DC_LED_function)
-            led_thread.start()
+        # Create a new thread to run the DC LED function
+        led_thread = threading.Thread(target=DC_LED_function)
+        led_thread.start()
 
-            # Enable the button after a delay
-            self.switch_button5.after(3000, lambda: self.switch_button5.config(state=tk.NORMAL))
+        # Enable the button after a delay
+        self.switch_button5.after(3000, lambda: self.switch_button5.config(state=tk.NORMAL))
         
+
 
     def show_values(self, event):
         new_value = self.w1.get()
@@ -520,7 +521,9 @@ class GA(tk.Tk):
             self.current_value = new_value
             self.value_label.config(text=self.current_value)
             print(self.current_value)
-
+            LightPWMController(self.current_value)
+    
+       
     def reverse_steering(self):
         print("reverse_steering")
 

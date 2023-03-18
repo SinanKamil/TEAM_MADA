@@ -3,12 +3,11 @@ from tkinter import *
 import tkinter.messagebox
 from PIL import Image, ImageTk
 from time import sleep
-from TESTING import run
 import RPi.GPIO as GPIO
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
-pwm = GPIO.PWM(18, 100)
+GPIO.setup(10, GPIO.OUT)
+pwm = GPIO.PWM(10, 100)
 pwm.start(0)
 
 current_value = 0
