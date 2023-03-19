@@ -5,16 +5,18 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-from Alternator_LED_DCMotor import DC_LED_function
-from Directional_antenna import antenna
+#from Alternator_LED_DCMotor import DC_LED_function
+#from Directional_antenna import antenna
 import threading
 
 
 
 current_value = 0
+aileron_speed_value = 0
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
+        self.aileron_speed_value = 0
         self.numbers_clicked = []
         self.current_value = 0
         self.w1 = 0
@@ -239,7 +241,7 @@ class GA(tk.Tk):
 
 
 
-        self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL,  
+        self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL,
                         troughcolor='#0e3999', width=67, sliderrelief='groove', highlightbackground='#0e3999',
                         sliderlength=40, font= ("Tactic Sans Extra Extended", 15), showvalue=0)
         self.w1.set(current_value)
@@ -293,14 +295,14 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=800, y=500)
 
-        self.left1 = ImageTk.PhotoImage(Image.open("btn_images/retract_down.png"))
-        self.next_button = tk.Button(self.landing_gear_page, image=self.left1, highlightthickness=0,
+        self.retract_down = ImageTk.PhotoImage(Image.open("btn_images/retract_down.png"))
+        self.next_button = tk.Button(self.landing_gear_page, image=self.retract_down, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.reverse_retract,
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=800, y=725)
 
-        self.right1 = ImageTk.PhotoImage(Image.open("btn_images/retract_up.png"))
-        self.next_button = tk.Button(self.landing_gear_page, image=self.right1, highlightthickness=0,
+        self.retract_up = ImageTk.PhotoImage(Image.open("btn_images/retract_up.png"))
+        self.next_button = tk.Button(self.landing_gear_page, image=self.retract_up, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.forward_retract,
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=800, y=275)
@@ -315,6 +317,39 @@ class GA(tk.Tk):
                                      activebackground='#092a81', background='#092a81', command=self.show_aileron_servo_page,
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=1188, y=450)
+
+        self.aileron_speed = Scale(self.aileron_servo_page, from_=100, to=0, length=360, orient=VERTICAL,
+                        troughcolor='#0e3999', width=76, sliderrelief='groove', highlightbackground='#0e3999',
+                        sliderlength=40, font=("Tactic Sans Extra Extended", 15), showvalue=0)
+        self.aileron_speed.set(aileron_speed_value)
+        self.aileron_speed.pack()
+
+        self.aileron_speed.bind("<B1-Motion>", self.aileron_show_values)
+        self.aileron_speed.place(x=1259, y=385)
+        self.aileron_value_label = Label(self.aileron_servo_page, text=self.aileron_speed_value, font=("Tactic Sans Extra Extended", 25),
+                                 fg='white', bg="#092a81")
+        self.aileron_value_label.pack()
+        self.aileron_value_label.place(x=1280, y=840)
+
+        # center
+        self.center_aileron_img = ImageTk.PhotoImage(Image.open("btn_images/center.png"))
+        self.next_button = tk.Button(self.aileron_servo_page, image=self.center_aileron_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.center_aileron,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=800, y=500)
+
+        self.down_aileron_img = ImageTk.PhotoImage(Image.open("btn_images/aileron_down.png"))
+        self.next_button = tk.Button(self.aileron_servo_page, image=self.down_aileron_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.down_aileron,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=800, y=725)
+
+        self.up_aileron_img = ImageTk.PhotoImage(Image.open("btn_images/aileron_up.png"))
+        self.next_button = tk.Button(self.aileron_servo_page, image=self.up_aileron_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.up_aileron,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=800, y=275)
+
 
         self.back2 = ImageTk.PhotoImage(Image.open("images/adminmenu_btn.png"))
         self.next_button = tk.Button(self.aileron_servo_page, image=self.back2, highlightthickness=0,
@@ -332,6 +367,18 @@ class GA(tk.Tk):
                                      command=self.show_directional_antenna_page,
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=765, y=450)
+
+        self.left_antenna_img = ImageTk.PhotoImage(Image.open("btn_images/antenna_left.png"))
+        self.next_button = tk.Button(self.directional_antenna_page, image=self.left_antenna_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.left_antenna,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=350, y=480)
+
+        self.right_antenna_img = ImageTk.PhotoImage(Image.open("btn_images/antenna_right.png"))
+        self.next_button = tk.Button(self.directional_antenna_page, image=self.right_antenna_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.right_antenna,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=1250, y=480)
 
         self.back3 = ImageTk.PhotoImage(Image.open("images/adminmenu_btn.png"))
         self.next_button = tk.Button(self.directional_antenna_page, image=self.back3, highlightthickness=0,
@@ -522,8 +569,13 @@ class GA(tk.Tk):
             self.value_label.config(text=self.current_value)
             print(self.current_value)
             LightPWMController(self.current_value)
-    
-       
+    def aileron_show_values(self, event):
+        new_value = self.aileron_speed.get()
+        if new_value != self.aileron_speed_value:
+            self.aileron_speed_value = new_value
+            self.aileron_value_label.config(text=self.aileron_speed_value)
+            print(self.aileron_speed_value)
+
     def reverse_steering(self):
         print("reverse_steering")
 
@@ -540,7 +592,17 @@ class GA(tk.Tk):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
         if res == 'yes':
             self.destroy()
+    def up_aileron(self):
+        print("UP_Aileron")
+    def down_aileron(self):
+        print("DOWM_Aileron")
 
+    def left_antenna(self):
+        print("left_antenna")
+    def right_antenna(self):
+        print("right_antenna")
+    def center_aileron(self):
+        print("Center_Aileron")
     def reset_timer(self, event=None):
         self.last_active_time = time.time() #time goes back to normal
 
