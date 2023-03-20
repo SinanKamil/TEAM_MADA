@@ -16,6 +16,7 @@ aileron_speed_value = 0
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
+        self.Fuel_pump_en = False
         self.aileron_speed_value = 0
         self.numbers_clicked = []
         self.current_value = 0
@@ -221,6 +222,14 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=342, y=450)
 
+        # Create the switch button for fuel pump
+        self.switch_button_fuel_on = ImageTk.PhotoImage(Image.open("btn_images/Fuel_pump_on.png"))
+        self.switch_button_fuel_off = ImageTk.PhotoImage(Image.open("btn_images/Fuel_pump_off.png"))
+        self.switch_button_fuel = tk.Button(self.fuel_pump_page, image=self.switch_button_fuel_off, command=self.fuelpump_on_off,
+                                       highlightthickness=0,
+                                       activebackground='#092a81', background='#092a81', borderwidth=0,
+                                       relief="flat", bd=0)
+        self.switch_button_fuel.place(x=800, y=500)
 
         self.next_button_img19 = ImageTk.PhotoImage(Image.open("images/adminmenu_btn.png"))
         self.next_button = tk.Button(self.fuel_pump_page, image=self.next_button_img19, highlightthickness=0,
@@ -622,6 +631,14 @@ class GA(tk.Tk):
                 self.label.configure(foreground='black')
             self.label.after(250, self.update_label)
 
+    # Define the toggle switch function
+    def fuelpump_on_off(self):
+        if not self.Fuel_pump_en:
+            self.Fuel_pump_en = True
+            self.switch_button_fuel.config(image=self.switch_button_fuel_on)
+        else:
+            self.Fuel_pump_en = False
+            self.switch_button_fuel.config(image=self.switch_button_fuel_off)
 
 
 if __name__ == "__main__":
