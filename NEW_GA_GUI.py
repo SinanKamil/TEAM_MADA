@@ -11,7 +11,15 @@ import threading
 from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
 from steering_code import motors, MAX_SPEED
 from centering_steering import center
+from admin_antenna import left_antenna, right_antenna, disable_antenna
 
+import RPi.GPIO as GPIO
+
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(10, GPIO.OUT)
+pwm = GPIO.PWM(10, 100)
+pwm.start(0)
 
 
 
@@ -246,11 +254,11 @@ class GA(tk.Tk):
         self.alternator_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.alternator_page, "images/alternator_page.png")
 
-        self.alternator_btn = ImageTk.PhotoImage(Image.open("btn_images/alternator.png"))
-        self.next_button = tk.Button(self.page3, image=self.alternator_btn, highlightthickness=0,
+        self.alternator_img_btn = ImageTk.PhotoImage(Image.open("btn_images/alternator.png"))
+        self.alternator_btn = tk.Button(self.page3, image=self.alternator_img_btn, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.show_alternator_page,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=973, y=650)
+        self.alternator_btn.place(x=973, y=650)
 
 
 
@@ -386,16 +394,20 @@ class GA(tk.Tk):
         self.next_button.place(x=765, y=450)
 
         self.left_antenna_img = ImageTk.PhotoImage(Image.open("btn_images/antenna_left.png"))
-        self.next_button = tk.Button(self.directional_antenna_page, image=self.left_antenna_img, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.left_antenna,
+        self.left_antenna_btn = tk.Button(self.directional_antenna_page, image=self.left_antenna_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=350, y=480)
+        self.left_antenna_btn.bind("<ButtonPress>", lambda event: self.left_antenna())
+        self.left_antenna_btn.bind("<ButtonRelease>", lambda event: self.disable_dir_antenna())
+        self.left_antenna_btn.place(x=350, y=480)
 
         self.right_antenna_img = ImageTk.PhotoImage(Image.open("btn_images/antenna_right.png"))
-        self.next_button = tk.Button(self.directional_antenna_page, image=self.right_antenna_img, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.right_antenna,
+        self.right_antenna_btn = tk.Button(self.directional_antenna_page, image=self.right_antenna_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=1250, y=480)
+        self.right_antenna_btn.bind("<ButtonPress>", lambda event: self.right_antenna())
+        self.right_antenna_btn.bind("<ButtonRelease>", lambda event: self.disable_dir_antenna())
+        self.right_antenna_btn.place(x=1250, y=480)
 
         self.back3 = ImageTk.PhotoImage(Image.open("images/adminmenu_btn.png"))
         self.next_button = tk.Button(self.directional_antenna_page, image=self.back3, highlightthickness=0,
@@ -577,15 +589,14 @@ class GA(tk.Tk):
         # Enable the button after a delay
         self.switch_button5.after(3000, lambda: self.switch_button5.config(state=tk.NORMAL))
         
-
-
+        
     def show_values(self, event):
         new_value = self.w1.get()
         if new_value != self.current_value:
             self.current_value = new_value
             self.value_label.config(text=self.current_value)
             print(self.current_value)
-            LightPWMController(self.current_value)
+            
     def aileron_show_values(self, event):
         new_value = self.aileron_speed.get()
         if new_value != self.aileron_speed_value:
@@ -631,9 +642,11 @@ class GA(tk.Tk):
         print("DOWM_Aileron")
 
     def left_antenna(self):
-        print("left_antenna")
+        left_antenna()
     def right_antenna(self):
-        print("right_antenna")
+        right_antenna()
+    def disable_dir_antenna(self):
+        disable_antenna()
     def center_aileron(self):
         print("Center_Aileron")
     def reset_timer(self, event=None):

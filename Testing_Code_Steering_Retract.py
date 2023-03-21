@@ -3,10 +3,7 @@ from tkinter import *
 import tkinter.messagebox
 from PIL import Image, ImageTk
 from time import sleep
-from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
-from steering_code import motors, MAX_SPEED
-from centering_steering import center
-current_value = 0
+from admin_antenna import left_antenna, right_antenna, disable_antenna
 
 
 class GA(tk.Tk):
@@ -35,7 +32,7 @@ class GA(tk.Tk):
         self.steering = tk.Button(self.landing_gear_page, image=self.left, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.steering.bind("<ButtonPress>", lambda event: self.reverse_steering())
+        self.steering.bind("<ButtonPress>", lambda event: self.left_fun())
         self.steering.bind("<ButtonRelease>", lambda event: self.disable())
         self.steering.place(x=342, y=400)
 
@@ -43,30 +40,30 @@ class GA(tk.Tk):
         self.next_button = tk.Button(self.landing_gear_page, image=self.right, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.bind("<ButtonPress>", lambda event: self.forward_steering())
+        self.next_button.bind("<ButtonPress>", lambda event: self.right_fun())
         self.next_button.bind("<ButtonRelease>", lambda event: self.disable())
         self.next_button.place(x=1250, y=400)
 
-#center
-        self.center = ImageTk.PhotoImage(Image.open("btn_images/center.png"))
-        self.center_landing = tk.Button(self.landing_gear_page, image=self.center, highlightthickness=0,command=self.center_landing_gear,
-                                     activebackground='#092a81', background='#092a81',
-                                     borderwidth=0, relief="flat", bd=0)
-        self.center_landing.place(x=800, y=500)
+# #center
+#         self.center = ImageTk.PhotoImage(Image.open("btn_images/center.png"))
+#         self.center_landing = tk.Button(self.landing_gear_page, image=self.center, highlightthickness=0,command=self.center_landing_gear,
+#                                      activebackground='#092a81', background='#092a81',
+#                                      borderwidth=0, relief="flat", bd=0)
+#         self.center_landing.place(x=800, y=500)
 
 
-        self.left1 = ImageTk.PhotoImage(Image.open("btn_images/LEFT.png"))
-        self.next_button = tk.Button(self.landing_gear_page, image=self.left1, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.reverse_retract,
-                                     borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=342, y=650)
-
-        self.right1 = ImageTk.PhotoImage(Image.open("btn_images/RIGHT.png"))
-        self.next_button = tk.Button(self.landing_gear_page, image=self.right1, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.forward_retract,
-                                     borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=1250, y=650)
-
+#         self.left1 = ImageTk.PhotoImage(Image.open("btn_images/LEFT.png"))
+#         self.next_button = tk.Button(self.landing_gear_page, image=self.left1, highlightthickness=0,
+#                                      activebackground='#092a81', background='#092a81', command=self.reverse_retract,
+#                                      borderwidth=0, relief="flat", bd=0)
+#         self.next_button.place(x=342, y=650)
+# 
+#         self.right1 = ImageTk.PhotoImage(Image.open("btn_images/RIGHT.png"))
+#         self.next_button = tk.Button(self.landing_gear_page, image=self.right1, highlightthickness=0,
+#                                      activebackground='#092a81', background='#092a81', command=self.forward_retract,
+#                                      borderwidth=0, relief="flat", bd=0)
+#         self.next_button.place(x=1250, y=650)
+# 
 
 
     def add_background_image(self, frame, file):
@@ -84,28 +81,14 @@ class GA(tk.Tk):
     def show_landing_gear_page(self):
         self.show_page(self.landing_gear_page)
 
-    def reverse_steering(self):
-        print("reverse_steering")
-        reverse_accelerate(-80)
-
-    def reverse_retract(self):
-        print("reverse_retract")
-
-    def center_landing_gear(self):
-        center()
-        print("Center")
-
-    def forward_steering(self):
-        print("forward_steering")
-        forward_accelerate(80)
-
     def disable(self):
-        disable_steering()
-    def forward_retract(self):
-        print("forward_retract")
+        disable_antenna()
+        
+    def right_fun(self):
+        right_antenna()
+    def left_fun(self):
+        left_antenna()
+        
 if __name__ == "__main__":
     app = GA()
     app.mainloop()
-
-motors.setSpeeds(0, 0)
-motors.forceStop()

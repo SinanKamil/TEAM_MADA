@@ -90,6 +90,7 @@ def antenna():
     GPIO.output(21, GPIO.LOW)
     
 # Clean up the GPIO pins
-#GPIO.cleanup()
+    GPIO.cleanup()
 
+#antenna()
 
