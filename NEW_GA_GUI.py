@@ -5,9 +5,13 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-#from Alternator_LED_DCMotor import DC_LED_function
-#from Directional_antenna import antenna
+from Alternator_LED_DCMotor import DC_LED_function
+from Directional_antenna import antenna
 import threading
+from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
+from steering_code import motors, MAX_SPEED
+from centering_steering import center
+
 
 
 
@@ -287,22 +291,26 @@ class GA(tk.Tk):
         self.next_button.place(x=234, y=884)
 
         self.left = ImageTk.PhotoImage(Image.open("btn_images/steer_left.png"))
-        self.next_button = tk.Button(self.landing_gear_page, image=self.left, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.reverse_steering,
+        self.left_steering = tk.Button(self.landing_gear_page, image=self.left, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=400, y=500)
+        self.left_steering.bind("<ButtonPress>", lambda event: self.reverse_steering())
+        self.left_steering.bind("<ButtonRelease>", lambda event: self.disable())
+        self.left_steering.place(x=400, y=500)
 
         self.right = ImageTk.PhotoImage(Image.open("btn_images/steer_right.png"))
-        self.next_button = tk.Button(self.landing_gear_page, image=self.right, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.forward_steering,
+        self.right_steering = tk.Button(self.landing_gear_page, image=self.right, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=1192, y=500)
+        self.right_steering.bind("<ButtonPress>", lambda event: self.forward_steering())
+        self.right_steering.bind("<ButtonRelease>", lambda event: self.disable())
+        self.right_steering.place(x=1192, y=500)
         #center
         self.center = ImageTk.PhotoImage(Image.open("btn_images/center.png"))
-        self.next_button = tk.Button(self.landing_gear_page, image=self.center, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.center_landing_gear,
+        self.center_landing = tk.Button(self.landing_gear_page, image=self.center, highlightthickness=0,command=self.center_landing_gear,
+                                     activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=800, y=500)
+        self.center_landing.place(x=800, y=500)
 
         self.retract_down = ImageTk.PhotoImage(Image.open("btn_images/retract_down.png"))
         self.next_button = tk.Button(self.landing_gear_page, image=self.retract_down, highlightthickness=0,
@@ -585,18 +593,34 @@ class GA(tk.Tk):
             self.aileron_value_label.config(text=self.aileron_speed_value)
             print(self.aileron_speed_value)
 
-    def reverse_steering(self):
-        print("reverse_steering")
 
-    def reverse_retract(self):
-        print("reverse_retract")
     def center_landing_gear(self):
-        print("center")
+        center()
+        print("Center")
+        
     def forward_steering(self):
         print("forward_steering")
 
+
+    def reverse_steering(self):
+        print("reverse_steering")
+        reverse_accelerate(-80)
+
+    def forward_steering(self):
+        print("forward_steering")
+        forward_accelerate(80)
+
+    def disable(self):
+        disable_steering()
+        
+        
     def forward_retract(self):
         print("forward_retract")
+    
+    def reverse_retract(self):
+        print("forward_retract")
+        
+        
     def exit(self):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
         if res == 'yes':

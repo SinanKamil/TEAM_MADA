@@ -3,7 +3,6 @@ from tkinter import *
 import tkinter.messagebox
 from PIL import Image, ImageTk
 from time import sleep
-from TESTING import run
 from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
 from steering_code import motors, MAX_SPEED
 from centering_steering import center
@@ -48,6 +47,12 @@ class GA(tk.Tk):
         self.next_button.bind("<ButtonRelease>", lambda event: self.disable())
         self.next_button.place(x=1250, y=400)
 
+#center
+        self.center = ImageTk.PhotoImage(Image.open("btn_images/center.png"))
+        self.center_landing = tk.Button(self.landing_gear_page, image=self.center, highlightthickness=0,command=self.center_landing_gear,
+                                     activebackground='#092a81', background='#092a81',
+                                     borderwidth=0, relief="flat", bd=0)
+        self.center_landing.place(x=800, y=500)
 
 
         self.left1 = ImageTk.PhotoImage(Image.open("btn_images/LEFT.png"))
@@ -85,12 +90,15 @@ class GA(tk.Tk):
 
     def reverse_retract(self):
         print("reverse_retract")
-        
-    
+
+    def center_landing_gear(self):
+        center()
+        print("Center")
+
     def forward_steering(self):
         print("forward_steering")
         forward_accelerate(80)
-        
+
     def disable(self):
         disable_steering()
     def forward_retract(self):
@@ -98,6 +106,6 @@ class GA(tk.Tk):
 if __name__ == "__main__":
     app = GA()
     app.mainloop()
-    
+
 motors.setSpeeds(0, 0)
 motors.forceStop()

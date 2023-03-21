@@ -1,8 +1,6 @@
 import RPi.GPIO as GPIO
 import time
 
-    
-
 def antenna():
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)

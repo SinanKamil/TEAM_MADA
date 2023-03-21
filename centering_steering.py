@@ -25,6 +25,10 @@ def validate_data(serial_obj):
             pass
 
 def center():
+    for_daccelerate = list(range(int(MAX_SPEED), 0, -40))
+    rev_accelerate = list(range(0, -int(MAX_SPEED), -40))
+    
+    motors.setSpeeds(0, 0)
     ser = serial.Serial("/dev/ttyS0", 115200)
     print(ser)
     data_float = validate_data(ser)
@@ -59,22 +63,17 @@ def center():
                 raiseIfFault()
                 data_float = validate_data(ser)
                 print(data_float)
+        motors.forceStop()
+
 # Set up sequences of motor speeds.
 
-for_daccelerate = list(range(int(MAX_SPEED), 0, -40))
-rev_accelerate = list(range(0, -int(MAX_SPEED), -40))
 
 
-ser = serial.Serial("/dev/ttyS0", 115200)
-print(ser)
+#center()
 
-motors.setSpeeds(0, 0)
-
-
-center()
 
 motors.forceStop()
-ser.close()
+
 
 
 
