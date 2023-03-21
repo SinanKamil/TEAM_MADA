@@ -34,6 +34,4 @@ def disable_antenna():
     # Clean up the GPIO pins
     GPIO.cleanup()
 
-right_antenna()
-disable_antenna()
 
