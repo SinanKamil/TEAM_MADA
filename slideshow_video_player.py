@@ -4,10 +4,9 @@ from PIL import Image, ImageTk
 
 class VideoPlayer(tk.Frame):
 
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.video_file = "slideshow_video.mp4"
+    def __init__(self):
+        super().__init__()
+        self.video_file = "C:/Users/16193/Downloads/slideshow_video.mp4"
         self.playing = False
         self.create_widgets()
         self.bind_events()
@@ -57,7 +56,7 @@ class VideoPlayer(tk.Frame):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = VideoPlayer(root)
+    app = VideoPlayer()
     app.pack()
     app.play_video()
     root.mainloop()

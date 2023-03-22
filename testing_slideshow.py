@@ -3,9 +3,8 @@ from slideshow_video_player import VideoPlayer
 
 
 class GUI(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
+    def __init__(self):
+        super().__init__()
         self.create_widgets()
 
     def create_widgets(self):
@@ -14,12 +13,12 @@ class GUI(tk.Frame):
         self.button.pack()
 
     def start_video_player(self):
-        self.player = VideoPlayer(self.master)
+        self.player = VideoPlayer()
         self.player.play_video()
 
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = GUI(root)
+    app = GUI()
     app.pack()
     root.mainloop()

@@ -5,21 +5,23 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-from Alternator_LED_DCMotor import DC_LED_function
-from Directional_antenna import antenna
+from slideshow_video_player import VideoPlayer
+
+#from Alternator_LED_DCMotor import DC_LED_function
+#from Directional_antenna import antenna
 import threading
-from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
-from steering_code import motors, MAX_SPEED
-from centering_steering import center
-from admin_antenna import left_antenna, right_antenna, disable_antenna
+#from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
+#from steering_code import motors, MAX_SPEED
+#from centering_steering import center
+#from admin_antenna import left_antenna, right_antenna, disable_antenna
 
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(10, GPIO.OUT)
-pwm = GPIO.PWM(10, 100)
-pwm.start(0)
+#GPIO.setwarnings(False)
+#GPIO.setmode(GPIO.BCM)
+#GPIO.setup(10, GPIO.OUT)
+#pwm = GPIO.PWM(10, 100)
+#pwm.start(0)
 
 
 
@@ -36,7 +38,7 @@ class GA(tk.Tk):
         self.geometry("1920x1080")
         self.title('General Atomics')
         self.config(bg="white")
-        self.attributes("-fullscreen",True)
+        #self.attributes("-fullscreen",True)
         ico = Image.open('images/GA.png')
         photo = ImageTk.PhotoImage(ico)
         self.wm_iconphoto(False, photo)
@@ -543,7 +545,8 @@ class GA(tk.Tk):
             self.clear_text()
 
     def slideshow(self):
-        print("slideShow HERE")
+        self.player = VideoPlayer()
+        self.player.play_video()
 
     def show_page3(self):
         self.page1.pack_forget()
