@@ -27,14 +27,14 @@ def validate_data(serial_obj):
 def center():
     for_daccelerate = list(range(int(MAX_SPEED), 0, -40))
     rev_accelerate = list(range(0, -int(MAX_SPEED), -40))
-    
+
     motors.setSpeeds(0, 0)
     ser = serial.Serial("/dev/ttyS0", 115200)
     print(ser)
     data_float = validate_data(ser)
     for_accelerate = list(range(0, int(MAX_SPEED), 40))
     for_constant = MAX_SPEED
-    
+
     rev_constant = -MAX_SPEED
     rev_daccelerate = list(range(-int(MAX_SPEED), 0, 40))
     if data_float < 1.15 or data_float > 1.23:
@@ -57,7 +57,7 @@ def center():
                 raiseIfFault()
                 data_float = validate_data(ser)
                 print(data_float)
-    
+
             while data_float < 1.19:
                 motors.motor1.setSpeed(int(rev_constant))
                 raiseIfFault()
@@ -69,11 +69,10 @@ def center():
 
 
 
-#center()
+center()
 
 
 motors.forceStop()
-
 
 
 

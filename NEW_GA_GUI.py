@@ -5,23 +5,23 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-from slideshow_video_player import VideoPlayer
+#from slideshow_video_player import VideoPlayer
 
-#from Alternator_LED_DCMotor import DC_LED_function
-#from Directional_antenna import antenna
+from Alternator_LED_DCMotor import DC_LED_function
+from Directional_antenna import antenna
 import threading
-#from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
-#from steering_code import motors, MAX_SPEED
-#from centering_steering import center
-#from admin_antenna import left_antenna, right_antenna, disable_antenna
+from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
+from steering_code import motors, MAX_SPEED
+from centering_steering import center
+from admin_antenna import left_antenna, right_antenna, disable_antenna
 
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
-#GPIO.setwarnings(False)
-#GPIO.setmode(GPIO.BCM)
-#GPIO.setup(10, GPIO.OUT)
-#pwm = GPIO.PWM(10, 100)
-#pwm.start(0)
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(10, GPIO.OUT)
+pwm = GPIO.PWM(10, 100)
+pwm.start(0)
 
 
 
