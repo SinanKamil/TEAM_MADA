@@ -56,8 +56,8 @@ class GA(tk.Tk):
 
         # Create the button to go to page 2
         self.next_button_img = ImageTk.PhotoImage(Image.open("images/adminlogin_btn.png"))
-        self.next_button = tk.Button(self.page1, image=self.next_button_img, activebackground ='white', background ='white', highlightthickness = 0, command=self.show_page2, bd=0)
-        self.next_button.place(x=1432, y=882)
+        self.adminlogin_btn = tk.Button(self.page1, image=self.next_button_img, activebackground ='white', background ='white', highlightthickness = 0, command=self.show_page2, bd=0)
+        self.adminlogin_btn.place(x=1432, y=882)
 
         # Create the button to go to slideshow
         self.next_button_img1 = ImageTk.PhotoImage(Image.open("images/slideshow_btn.png"))
@@ -305,7 +305,7 @@ class GA(tk.Tk):
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
         self.left_steering.bind("<ButtonPress>", lambda event: self.reverse_steering())
-        self.left_steering.bind("<ButtonRelease>", lambda event: self.disable())
+        self.left_steering.bind("<ButtonRelease>", lambda event: self.disable_steering())
         self.left_steering.place(x=400, y=500)
 
         self.right = ImageTk.PhotoImage(Image.open("btn_images/steer_right.png"))
@@ -313,7 +313,7 @@ class GA(tk.Tk):
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
         self.right_steering.bind("<ButtonPress>", lambda event: self.forward_steering())
-        self.right_steering.bind("<ButtonRelease>", lambda event: self.disable())
+        self.right_steering.bind("<ButtonRelease>", lambda event: self.disable_steering())
         self.right_steering.place(x=1192, y=500)
         #center
         self.center = ImageTk.PhotoImage(Image.open("btn_images/center.png"))
@@ -568,12 +568,11 @@ class GA(tk.Tk):
         self.switch_button1.config(state=tk.DISABLED)
         self.update()
 
-        # Create a new thread to run the antenna function
-        antenna_thread = threading.Thread(target=antenna)
-        antenna_thread.start()
+        def callback_directional():  # this to enable button
+            self.switch_button1.config(state=tk.NORMAL)
 
-        # Enable the button after a delay
-        self.switch_button1.after(3000, lambda: self.switch_button1.config(state=tk.NORMAL))
+        antenna_thread = threading.Thread(target=antenna, args=(callback_directional,))
+        antenna_thread.start()
 
     def aileron_toggle_switch(self):
         print("Aileron ON")
@@ -624,7 +623,7 @@ class GA(tk.Tk):
         print("forward_steering")
         forward_accelerate(80)
 
-    def disable(self):
+    def disable_steering(self):
         disable_steering()
         
         

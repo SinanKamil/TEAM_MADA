@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-def antenna():
+def antenna(callback):
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
@@ -91,6 +91,6 @@ def antenna():
     
 # Clean up the GPIO pins
     GPIO.cleanup()
-
+    callback()
 #antenna()
 
