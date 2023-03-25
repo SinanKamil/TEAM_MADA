@@ -28,7 +28,7 @@ def forward_accelerate(val):
         motors.motor1.setSpeed(s)
         data_float = validate_data(ser)
         #motors.motor1.setSpeed(int(for_constant))
-        print(data_float)
+        #print(data_float)
         
 def reverse_accelerate(val):
     ser = serial.Serial("/dev/ttyS0", 115200)
@@ -43,7 +43,7 @@ def disable_steering():
     
     motors.forceStop()
 
-    
+
 
 # Set up sequences of motor speeds.
 #for_accelerate = list(range(0, int(MAX_SPEED), val))
@@ -56,5 +56,8 @@ rev_daccelerate = list(range(-int(MAX_SPEED), 0, 40))
 
 ser = serial.Serial("/dev/ttyS0", 115200)
 print(ser)
+
+
+
 
 ser.close()

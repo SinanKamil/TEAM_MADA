@@ -8,12 +8,13 @@ import time
 #from slideshow_video_player import VideoPlayer
 
 #from Alternator_LED_DCMotor import DC_LED_function
-#from Directional_antenna import antenna
+from Directional_antenna import antenna
 import threading
-#from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
-#from steering_code import motors, MAX_SPEED
-#from centering_steering import center
-#from admin_antenna import left_antenna, right_antenna, disable_antenna
+from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
+from steering_code import motors, MAX_SPEED
+from centering_steering import center
+from admin_antenna import left_antenna, right_antenna, disable_antenna
+from user_steering import user_steering_run
 
 #import RPi.GPIO as GPIO
 
@@ -289,10 +290,10 @@ class GA(tk.Tk):
 
 
         self.landing_gear_btn = ImageTk.PhotoImage(Image.open("btn_images/landing_gear.png"))
-        self.next_button = tk.Button(self.page3, image=self.landing_gear_btn, highlightthickness=0,
+        self.landing_gear_btn_fun = tk.Button(self.page3, image=self.landing_gear_btn, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.show_landing_gear_page,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=550, y=650)
+        self.landing_gear_btn_fun.place(x=550, y=650)
 
         self.back1 = ImageTk.PhotoImage(Image.open("images/adminmenu_btn.png"))
         self.next_button = tk.Button(self.landing_gear_page, image=self.back1, highlightthickness=0,
@@ -577,8 +578,15 @@ class GA(tk.Tk):
     def aileron_toggle_switch(self):
         print("Aileron ON")
     def landing_gear_toggle_switch(self):
-        print("Landing Gear ON")
+        print("Landing Gear ON") 
+        self.landing_gear_btn_fun.config(state=tk.DISABLED)
+        self.update()
 
+        def callback_landing_gear():  # this to enable button
+            self.landing_gear_btn_fun.config(state=tk.NORMAL)
+
+        steering_thread = threading.Thread(target=user_steering_run, args=(callback_landing_gear,))
+        steering_thread.start()
     def Alternator_toggle_switch(self):
         print("Alternator ON")
         self.switch_button5.config(state=tk.DISABLED)

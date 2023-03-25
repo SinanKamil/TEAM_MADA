@@ -5,8 +5,8 @@ def antenna(callback):
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
-    GPIO.setup(16, GPIO.OUT)
-    GPIO.setup(20, GPIO.OUT)
+    GPIO.setup(16, GPIO.OUT)#LEFT 
+    GPIO.setup(20, GPIO.OUT)#RIGHT
     GPIO.setup(21, GPIO.OUT) #enable pin
 
     # Rotate the motor clockwise
