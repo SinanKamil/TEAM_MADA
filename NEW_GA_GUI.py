@@ -8,13 +8,13 @@ import time
 #from slideshow_video_player import VideoPlayer
 
 #from Alternator_LED_DCMotor import DC_LED_function
-from Directional_antenna import antenna
+#from Directional_antenna import antenna
 import threading
-from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
-from steering_code import motors, MAX_SPEED
-from centering_steering import center
-from admin_antenna import left_antenna, right_antenna, disable_antenna
-from user_steering import user_steering_run
+#from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
+#from steering_code import motors, MAX_SPEED
+#from centering_steering import center
+#from admin_antenna import left_antenna, right_antenna, disable_antenna
+#from user_steering import user_steering_run
 
 #import RPi.GPIO as GPIO
 
@@ -579,11 +579,11 @@ class GA(tk.Tk):
         print("Aileron ON")
     def landing_gear_toggle_switch(self):
         print("Landing Gear ON") 
-        self.landing_gear_btn_fun.config(state=tk.DISABLED)
+        self.switch_button4.config(state=tk.DISABLED)
         self.update()
 
         def callback_landing_gear():  # this to enable button
-            self.landing_gear_btn_fun.config(state=tk.NORMAL)
+            self.switch_button4.config(state=tk.NORMAL)
 
         steering_thread = threading.Thread(target=user_steering_run, args=(callback_landing_gear,))
         steering_thread.start()
