@@ -1,24 +1,42 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QStackedWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QStackedWidget, QStyleFactory, QDesktopWidget
 from PyQt5.QtGui import QFont, QPainter, QColor, QPixmap
 from PyQt5.QtCore import Qt, QRect, QPropertyAnimation
 from PyQt5.QtCore import QEasingCurve
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QSize
+
+
 
 
 class Page1(QWidget):
-    def __init__(self):
+    def __init__(self, window):
         super().__init__()
-        pixmap = QPixmap("images/home_page.png").scaled(1900, 1000, Qt.KeepAspectRatio)
+        pixmap = QPixmap("images/home_page.png").scaled(window.width(), window.height(), Qt.KeepAspectRatio)
         self.label = QLabel(self)
         self.label.setPixmap(pixmap)
         layout = QVBoxLayout(self)
         layout.addWidget(self.label)
 
+        self.window = window
+
+        # Create the button to go to admin login page
+        self.adminlogin_btn = QPushButton(self)
+        self.adminlogin_btn.setIcon(QIcon("images/adminlogin_btn.png"))
+        self.adminlogin_btn.setIconSize(QSize(150, 50))
+        self.adminlogin_btn.setFixedSize(QSize(150, 50))
+        self.adminlogin_btn.clicked.connect(self.show_page2)
+        self.adminlogin_btn.setStyleSheet("background-color: white; border: none;")
+
+    def show_page2(self):
+        self.window.stacked_widget.setCurrentWidget(self.window.page2)
+
 
 class Page2(QWidget):
     def __init__(self):
         super().__init__()
-        pixmap = QPixmap("images/admin_page.png").scaled(1900, 1000, Qt.KeepAspectRatio)
+        pixmap = QPixmap("images/admin_page.png").scaled(1920, 1080, Qt.KeepAspectRatio)
         self.label = QLabel(self)
         self.label.setPixmap(pixmap)
         layout = QVBoxLayout(self)
@@ -28,20 +46,25 @@ class Page2(QWidget):
 class Page3(QWidget):
     def __init__(self):
         super().__init__()
-        pixmap = QPixmap("images/admin_access.png").scaled(1900, 1000, Qt.KeepAspectRatio)
+        pixmap = QPixmap("images/admin_access.png").scaled(1920, 1080, Qt.KeepAspectRatio)
         self.label = QLabel(self)
         self.label.setPixmap(pixmap)
         layout = QVBoxLayout(self)
         layout.addWidget(self.label)
 
+
 class Window(QWidget):
     def __init__(self):
         super().__init__()
-        self.setGeometry(200, 200, 1920, 1080)
-        self.setWindowTitle("3-Page GUI with Smooth Transitions")
+
+        self.setGeometry(0, 0, 1920, 1080)
+        self.setWindowTitle("GA")
+        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.showFullScreen()
 
         self.stacked_widget = QStackedWidget(self)
-        self.page1 = Page1()
+        self.page1 = Page1(self)
         self.page2 = Page2()
         self.page3 = Page3()
 
@@ -51,19 +74,6 @@ class Window(QWidget):
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.stacked_widget)
-
-        button_layout = QHBoxLayout()
-        self.button1 = QPushButton("Page 1")
-        self.button2 = QPushButton("Page 2")
-        self.button3 = QPushButton("Page 3")
-        button_layout.addWidget(self.button1)
-        button_layout.addWidget(self.button2)
-        button_layout.addWidget(self.button3)
-        layout.addLayout(button_layout)
-
-        self.button1.clicked.connect(lambda: self.stacked_widget.setCurrentWidget(self.page1))
-        self.button2.clicked.connect(lambda: self.stacked_widget.setCurrentWidget(self.page2))
-        self.button3.clicked.connect(lambda: self.stacked_widget.setCurrentWidget(self.page3))
 
         self.show()
 
@@ -82,5 +92,6 @@ class Window(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setStyle(QStyleFactory.create("Fusion"))
     window = Window()
     sys.exit(app.exec_())
