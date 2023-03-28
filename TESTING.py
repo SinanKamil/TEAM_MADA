@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import tkinter as tk
 from tkinter import *
 import tkinter.messagebox
@@ -372,366 +373,91 @@ class GA(tk.Tk):
                                      command=self.show_directional_antenna_page,
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=765, y=450)
+=======
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QStackedWidget
+from PyQt5.QtGui import QFont, QPainter, QColor, QPixmap
+from PyQt5.QtCore import Qt, QRect, QPropertyAnimation
+from PyQt5.QtCore import QEasingCurve
 
-        self.left_antenna_img = ImageTk.PhotoImage(Image.open("btn_images/antenna_left.png"))
-        self.left_antenna_btn = tk.Button(self.directional_antenna_page, image=self.images["btn_images/antenna_left.png"],
-                                          highlightthickness=0,
-                                          activebackground='#092a81', background='#092a81',
-                                          borderwidth=0, relief="flat", bd=0)
-        self.left_antenna_btn.bind("<ButtonPress>", lambda event: self.left_antenna())
-        self.left_antenna_btn.bind("<ButtonRelease>", lambda event: self.disable_dir_antenna())
-        self.left_antenna_btn.place(x=350, y=480)
 
-        self.right_antenna_btn = tk.Button(self.directional_antenna_page, image=self.images["btn_images/antenna_right.png"],
-                                           highlightthickness=0,
-                                           activebackground='#092a81', background='#092a81',
-                                           borderwidth=0, relief="flat", bd=0)
-        self.right_antenna_btn.bind("<ButtonPress>", lambda event: self.right_antenna())
-        self.right_antenna_btn.bind("<ButtonRelease>", lambda event: self.disable_dir_antenna())
-        self.right_antenna_btn.place(x=1250, y=480)
+class Page1(QWidget):
+    def __init__(self):
+        super().__init__()
+        pixmap = QPixmap("images/home_page.png").scaled(1920, 1080, Qt.KeepAspectRatio)
+        self.label = QLabel(self)
+        self.label.setPixmap(pixmap)
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.label)
+>>>>>>> 5cf5d871d94f81f033a11ba6b3dbd696f3b7a504
 
-        self.back3 = ImageTk.PhotoImage(Image.open("images/adminmenu_btn.png"))
-        self.next_button = tk.Button(self.directional_antenna_page, image=self.images["images/adminmenu_btn.png"], highlightthickness=0,
-                                     activebackground='white', background='white', command=self.show_page3,
-                                     borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=230, y=884)
 
-    def add_background_image(self, frame, file):
-        img = Image.open(file)
-        img = img.resize((1920, 1080), Image.LANCZOS)
-        img = ImageTk.PhotoImage(img)
-        label = tk.Label(frame, image=img)
-        label.image = img
-        label.place(x=0, y=0, relwidth=1, relheight=1)
+class Page2(QWidget):
+    def __init__(self):
+        super().__init__()
+        pixmap = QPixmap("images/admin_page.png").scaled(1920, 1080, Qt.KeepAspectRatio)
+        self.label = QLabel(self)
+        self.label.setPixmap(pixmap)
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.label)
 
-    def show_page(self, page):
-        self.page1.pack_forget()
-        self.page2.pack_forget()
-        self.page3.pack_forget()
-        self.fuel_pump_page.pack_forget()
-        self.directional_antenna_page.pack_forget()
-        self.aileron_servo_page.pack_forget()
-        self.landing_gear_page.pack_forget()
-        self.alternator_page.pack_forget()
-        page.pack(side="top", fill="both", expand=True)
 
-    def show_fuel_pump_page(self):
-        self.show_page(self.fuel_pump_page)
-        self.reset_timer()
-        self.update_label()
+class Page3(QWidget):
+    def __init__(self):
+        super().__init__()
+        pixmap = QPixmap("images/admin_access.png").scaled(1920, 1080, Qt.KeepAspectRatio)
+        self.label = QLabel(self)
+        self.label.setPixmap(pixmap)
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.label)
 
-    def show_aileron_servo_page(self):
-        self.show_page(self.aileron_servo_page)
-        self.reset_timer()
-        self.update_label()
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setGeometry(200, 200, 1920, 1080)
+        self.setWindowTitle("3-Page GUI with Smooth Transitions")
 
-    def show_alternator_page(self):
-        self.show_page(self.alternator_page)
-        self.reset_timer()
-        self.update_label()
+        self.stacked_widget = QStackedWidget(self)
+        self.page1 = Page1()
+        self.page2 = Page2()
+        self.page3 = Page3()
 
-    def show_landing_gear_page(self):
-        self.show_page(self.landing_gear_page)
-        self.reset_timer()
-        self.update_label()
+        self.stacked_widget.addWidget(self.page1)
+        self.stacked_widget.addWidget(self.page2)
+        self.stacked_widget.addWidget(self.page3)
 
-    def show_directional_antenna_page(self):
-        self.show_page(self.directional_antenna_page)
-        self.reset_timer()
-        self.update_label()
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.stacked_widget)
 
-    def show_page2(self):
-        self.show_page(self.page2)
-        self.reset_timer()
-        self.update_label()
+        button_layout = QHBoxLayout()
+        self.button1 = QPushButton("Page 1")
+        self.button2 = QPushButton("Page 2")
+        self.button3 = QPushButton("Page 3")
+        button_layout.addWidget(self.button1)
+        button_layout.addWidget(self.button2)
+        button_layout.addWidget(self.button3)
+        layout.addLayout(button_layout)
 
-    def show_page3(self):
-        self.show_page(self.page3)
-        self.reset_timer()
-        self.update_label()
+        self.button1.clicked.connect(lambda: self.stacked_widget.setCurrentWidget(self.page1))
+        self.button2.clicked.connect(lambda: self.stacked_widget.setCurrentWidget(self.page2))
+        self.button3.clicked.connect(lambda: self.stacked_widget.setCurrentWidget(self.page3))
 
-    def clear_text(self):
-        self.password_entry.delete(0, END)
-        self.numbers_clicked = []
+        self.show()
 
-    def show_page1(self):
-        self.numbers_clicked = []
-        self.show_page(self.page1)
-        self.clear_text()
+        self.animation = QPropertyAnimation(self.stacked_widget, b"geometry")
+        self.animation.setDuration(500)
+        easing_curve = QEasingCurve.InOutQuad
 
-    def store1(self):
-        print("Number 1 is Clicked")
-        self.numbers_clicked.append(1)
-        self.password_entry.insert(END, '1')
+        # Set the easing curve of the animation
+        self.animation.setEasingCurve(easing_curve)
 
-    def store2(self):
-        print("Number 2 is Clicked")
-        self.numbers_clicked.append(2)
-        self.password_entry.insert(END, '2')
+    def animate(self, start, end):
+        self.animation.setStartValue(start)
+        self.animation.setEndValue(end)
+        self.animation.start()
 
-    def store3(self):
-        print("Number 3 is Clicked")
-        self.numbers_clicked.append(3)
-        self.password_entry.insert(END, '3')
-
-    def store4(self):
-        print("Number 4 is Clicked")
-        self.numbers_clicked.append(4)
-        self.password_entry.insert(END, '4')
-
-    def store5(self):
-        print("Number 5 is Clicked")
-        self.numbers_clicked.append(5)
-        self.password_entry.insert(END, '5')
-
-    def store6(self):
-        print("Number 6 is Clicked")
-        self.numbers_clicked.append(6)
-        self.password_entry.insert(END, '6')
-
-    def store7(self):
-        print("Number 7 is Clicked")
-        self.numbers_clicked.append(7)
-        self.password_entry.insert(END, '7')
-
-    def store8(self):
-        print("Number 8 is Clicked")
-        self.numbers_clicked.append(8)
-        self.password_entry.insert(END, '8')
-
-    def store9(self):
-        print("Number 9 is Clicked")
-        self.numbers_clicked.append(9)
-        self.password_entry.insert(END, '9')
-
-    def store0(self):
-        print("Number 0 is Clicked")
-        self.numbers_clicked.append(0)
-        self.password_entry.insert(END, '0')
-
-    def checkpasscode(self):
-        # Check if all the numbers have been clicked
-        if len(self.numbers_clicked) == 4:
-            if self.numbers_clicked == [0, 7, 8, 9]:
-                # Grant access
-                self.show_page3()
-                print("Access Granted!")
-
-                self.numbers_clicked = []
-                self.clear_text()
-            else:
-                # Access denied
-                tk.messagebox.showerror(message="Access Denied!")
-                print("Access denied. Incorrect passcode.")
-                self.numbers_clicked = []
-                self.clear_text()
-        else:
-            tk.messagebox.showerror(message="Access Denied!")
-            print("Access denied. Incorrect passcode.")
-            self.numbers_clicked = []
-            self.clear_text()
-
-    def slideshow(self):
-        self.player = VideoPlayer()
-        self.player.play_video()
-
-    def show_page3(self):
-        self.page1.pack_forget()
-        self.page2.pack_forget()
-        self.fuel_pump_page.pack_forget()
-        self.alternator_page.pack_forget()
-        self.landing_gear_page.pack_forget()
-        self.aileron_servo_page.pack_forget()
-        self.directional_antenna_page.pack_forget()
-        self.page3.pack(side="top", fill="both", expand=True)
-
-    # Define the toggle switch function
-    def fuel_toggle_switch(self):
-        print("Fuel Pump ON")
-
-    def dir_toggle_switch(self):
-        # Disable the button
-        print("Directional Antenna ON")
-        self.switch_button1.config(state=tk.DISABLED)
-        self.update()
-
-        def callback_directional():  # this to enable button
-            self.switch_button1.config(state=tk.NORMAL)
-
-        antenna_thread = threading.Thread(target=antenna, args=(callback_directional,))
-        antenna_thread.start()
-
-    def aileron_toggle_switch(self):
-        print("Aileron ON")
-
-    def landing_gear_toggle_switch(self):
-        print("Landing Gear ON")
-        self.switch_button4.config(state=tk.DISABLED)
-        self.update()
-
-        def callback_landing_gear():  # this to enable button
-            self.switch_button4.config(state=tk.NORMAL)
-
-        steering_thread = threading.Thread(target=user_steering_run, args=(callback_landing_gear,))
-        steering_thread.start()
-
-    def Alternator_toggle_switch(self):
-        print("Alternator ON")
-        self.switch_button5.config(state=tk.DISABLED)
-        self.update()
-
-        # Create a new thread to run the DC LED function
-        led_thread = threading.Thread(target=DC_LED_function)
-        led_thread.start()
-
-        # Enable the button after a delay
-        self.switch_button5.after(3000, lambda: self.switch_button5.config(state=tk.NORMAL))
-
-    def show_values(self, event):
-        new_value = self.w1.get()
-        if new_value != self.current_value:
-            self.current_value = new_value
-            self.value_label.config(text=self.current_value)
-            print(self.current_value)
-
-    def aileron_show_values(self, event):
-        new_value = self.aileron_speed.get()
-        if new_value != self.aileron_speed_value:
-            self.aileron_speed_value = new_value
-            self.aileron_value_label.config(text=self.aileron_speed_value)
-            print(self.aileron_speed_value)
-
-    def center_landing_gear(self):
-        center()
-        print("Center")
-
-    def forward_steering(self):
-        print("forward_steering")
-
-    def reverse_steering(self):
-        print("reverse_steering")
-        reverse_accelerate(-80)
-
-    def forward_steering(self):
-        print("forward_steering")
-        forward_accelerate(80)
-
-    def disable_steering(self):
-        disable_steering()
-
-    def forward_retract(self):
-        print("forward_retract")
-
-    def reverse_retract(self):
-        print("forward_retract")
-
-    def exit(self):
-        res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
-        if res == 'yes':
-            self.destroy()
-
-    def up_aileron(self):
-        print("UP_Aileron")
-
-    def down_aileron(self):
-        print("DOWM_Aileron")
-
-    def left_antenna(self):
-        left_antenna()
-
-    def right_antenna(self):
-        right_antenna()
-
-    def disable_dir_antenna(self):
-        disable_antenna()
-
-    def center_aileron(self):
-        print("Center_Aileron")
-
-    def reset_timer(self, event=None):
-        self.last_active_time = time.time()  # time goes back to normal
-
-    def update_label(self):
-        current_time = time.time()  # most current time
-        elapsed_time = current_time - self.last_active_time  # start decrementating
-        remaining_time = self.total_seconds - elapsed_time  # how much time left
-        if remaining_time <= 0:  # if zero go to page 1
-            self.show_page1()
-        else:
-            minutes, seconds = divmod(int(remaining_time), 60)
-            # DELETE LATER
-            self.label.configure(text="Time remaining: {:02d}:{:02d}".format(minutes, seconds))
-            if elapsed_time > self.inactive_time:
-                self.label.configure(foreground='red')
-            else:
-                self.label.configure(foreground='black')
-            self.label.after(250, self.update_label)
-
-    # Define the toggle switch function
-    def fuelpump_on_off(self):
-        if not self.Fuel_pump_en:
-            self.Fuel_pump_en = True
-            self.switch_button_fuel.config(image=self.switch_button_fuel_on)
-        else:
-            self.Fuel_pump_en = False
-            self.switch_button_fuel.config(image=self.switch_button_fuel_off)
-
-    def preload_images(self):
-        # Create a dictionary of all image file paths
-        self.images = {}
-        image_paths = ["images/home_page.png",
-                       "images/adminlogin_btn.png",
-                       "images/slideshow_btn.png",
-                       "btn_images/fuel_pump.png",
-                       "btn_images/directional_antenna.png",
-                       "btn_images/aileron.png",
-                       "btn_images/landing_gear.png",
-                       "btn_images/alternator.png",
-                       "btn_images/landing_gear.png",
-                       "btn_images/alternator.png",
-                       "images/homemenu_btn.png",
-                       "keypad_num_images/1.png",
-                       "keypad_num_images/2.png",
-                       "keypad_num_images/3.png",
-                       "keypad_num_images/4.png",
-                       "keypad_num_images/5.png",
-                       "keypad_num_images/6.png",
-                       "keypad_num_images/7.png",
-                       "keypad_num_images/8.png",
-                       "keypad_num_images/9.png",
-                       "keypad_num_images/0.png",
-                       "keypad_num_images/clear.png",
-                       "images/Enter_btn.png",
-                       "images/homemenu_btn.png",
-                       "btn_images/exit_btn.png",
-                       "btn_images/fuel_pump.png",
-                       "btn_images/Fuel_pump_on.png",
-                       "btn_images/Fuel_pump_off.png",
-                       "images/adminmenu_btn.png",
-                       "btn_images/alternator.png",
-                       "images/adminmenu_btn.png",
-                       "btn_images/landing_gear.png",
-                       "btn_images/steer_left.png",
-                       "btn_images/steer_right.png",
-                       "btn_images/center.png",
-                       "btn_images/retract_down.png",
-                       "btn_images/retract_up.png",
-                       "btn_images/aileron.png",
-                       "btn_images/center.png",
-                       "btn_images/aileron_down.png",
-                       "btn_images/aileron_up.png",
-                       "images/adminmenu_btn.png",
-                       "btn_images/directional_antenna.png",
-                       "btn_images/antenna_left.png",
-                       "btn_images/antenna_right.png",
-                       "images/adminmenu_btn.png"
-                       ]
-
-        # Load each image and store it as an attribute of the class
-        for path in image_paths:
-            img = Image.open(path)
-            self.images[path] = ImageTk.PhotoImage(img)
 
 if __name__ == "__main__":
-    app = GA()
-    app.mainloop()
+    app = QApplication(sys.argv)
+    window = Window()
+    sys.exit(app.exec_())
