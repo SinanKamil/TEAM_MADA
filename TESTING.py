@@ -63,7 +63,7 @@ class Window(QWidget):
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         cp.setX(cp.x() - round(self.width()/95))
-        cp.setY(cp.y() - 40)
+        #cp.setY(cp.y() - 40)
         
         qr.moveCenter(cp)
         self.move(qr.topLeft())

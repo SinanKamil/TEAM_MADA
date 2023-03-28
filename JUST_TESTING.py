@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 from time import sleep
-#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
+#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
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
