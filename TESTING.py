@@ -9,7 +9,6 @@ from PyQt5.QtCore import QSize
 
 
 
-
 class Page1(QWidget):
     def __init__(self, window):
         super().__init__()
@@ -57,11 +56,20 @@ class Window(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setGeometry(0, 0, 1920, 1080)
+        # Set the size of the window
+        self.resize(1920, 1080)
+
+        # Center the window on the screen
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        cp.setX(cp.x() - round(self.width()/95))
+
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
         self.setWindowTitle("GA")
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
-        self.showFullScreen()
 
         self.stacked_widget = QStackedWidget(self)
         self.page1 = Page1(self)
@@ -92,6 +100,5 @@ class Window(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    app.setStyle(QStyleFactory.create("Fusion"))
     window = Window()
     sys.exit(app.exec_())
