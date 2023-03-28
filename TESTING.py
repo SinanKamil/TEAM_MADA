@@ -8,7 +8,7 @@ from PyQt5.QtCore import QEasingCurve
 class Page1(QWidget):
     def __init__(self):
         super().__init__()
-        pixmap = QPixmap("images/home_page.png").scaled(1920, 1080, Qt.KeepAspectRatio)
+        pixmap = QPixmap("images/home_page.png").scaled(1900, 1000, Qt.KeepAspectRatio)
         self.label = QLabel(self)
         self.label.setPixmap(pixmap)
         layout = QVBoxLayout(self)
@@ -18,7 +18,7 @@ class Page1(QWidget):
 class Page2(QWidget):
     def __init__(self):
         super().__init__()
-        pixmap = QPixmap("images/admin_page.png").scaled(1920, 1080, Qt.KeepAspectRatio)
+        pixmap = QPixmap("images/admin_page.png").scaled(1900, 1000, Qt.KeepAspectRatio)
         self.label = QLabel(self)
         self.label.setPixmap(pixmap)
         layout = QVBoxLayout(self)
@@ -28,7 +28,7 @@ class Page2(QWidget):
 class Page3(QWidget):
     def __init__(self):
         super().__init__()
-        pixmap = QPixmap("images/admin_access.png").scaled(1920, 1080, Qt.KeepAspectRatio)
+        pixmap = QPixmap("images/admin_access.png").scaled(1900, 1000, Qt.KeepAspectRatio)
         self.label = QLabel(self)
         self.label.setPixmap(pixmap)
         layout = QVBoxLayout(self)
