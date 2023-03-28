@@ -123,7 +123,7 @@ class GA(tk.Tk):
         self.bind('<Any-KeyPress>', self.reset_timer)
         self.bind('<Any-Button>', self.reset_timer)
         self.bind('<Motion>', self.reset_timer)
-        self.update_label()
+        #self.update_label()
 
         # create a text box
         self.password_entry = tk.Entry(self.page2, font=('Rubik Medium', 38), background="#092a81", fg="white", width=3,
