@@ -24,6 +24,8 @@ aileron_speed_value = 0
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
+        # Create instances of each page class with hidden attribute set to True
+
         self.Fuel_pump_en = False
         self.aileron_speed_value = 0
         self.current_value = 0
@@ -43,6 +45,7 @@ class GA(tk.Tk):
         self.inactive_time = 10
         self.total_seconds = self.minutes * 60
         self.last_active_time = time.time()
+
 
 #page 1 here:
         # Create the first page
@@ -420,6 +423,7 @@ class GA(tk.Tk):
                                      activebackground='white', background='white', command=self.show_page3,
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=230, y=884)
+
 
     def add_background_image(self, frame, file):
         img = Image.open(file)
