@@ -16,7 +16,7 @@ import threading
 #from admin_antenna import left_antenna, right_antenna, disable_antenna
 #from user_steering import user_steering_run
 
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 #GPIO.setwarnings(False)
 #GPIO.setmode(GPIO.BCM)
@@ -26,13 +26,15 @@ import threading
 
 
 
-current_value = 0
+
 aileron_speed_value = 0
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
         self.Fuel_pump_en = False
         self.aileron_speed_value = 0
+        self.current_value = 0
+        self.init_Alternator()
         self.numbers_clicked = []
         self.current_value = 0
         self.w1 = 0
@@ -265,17 +267,18 @@ class GA(tk.Tk):
 
 
 
-        self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL,
+        self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL, command=self.slider_function,
                         troughcolor='#0e3999', width=67, sliderrelief='groove', highlightbackground='#0e3999',
                         sliderlength=40, font= ("Tactic Sans Extra Extended", 15), showvalue=0)
-        self.w1.set(current_value)
+        self.w1.set(self.current_value)
         self.w1.pack()
-
-        self.w1.bind("<B1-Motion>", self.show_values)
         self.w1.place(x=450, y=503)
-        self.value_label = Label(self.alternator_page, text=self.current_value, font= ("Tactic Sans Extra Extended", 25), fg='white',bg="#092a81")
+        
+        self.value_label = Label(self.alternator_page, text=self.current_value, font=("Tactic Sans Extra Extended", 25), fg='white', bg="#092a81")
         self.value_label.pack()
         self.value_label.place(x=935, y=450)
+    
+
 
 
         self.back = ImageTk.PhotoImage(Image.open("images/adminmenu_btn.png"))
@@ -592,20 +595,56 @@ class GA(tk.Tk):
         self.switch_button5.config(state=tk.DISABLED)
         self.update()
 
-        # Create a new thread to run the DC LED function
-        led_thread = threading.Thread(target=DC_LED_function)
-        led_thread.start()
+        
 
-        # Enable the button after a delay
-        self.switch_button5.after(3000, lambda: self.switch_button5.config(state=tk.NORMAL))
+
+        def callback_alternator():  # this to enable button
+            self.switch_button5.config(state=tk.NORMAL)
+
+        # Create a new thread to run the DC LED function
+        led_thread = threading.Thread(target=self.DC_LED_function, args=(callback_alternator,))
+        led_thread.start()        
         
-        
-    def show_values(self, event):
-        new_value = self.w1.get()
-        if new_value != self.current_value:
-            self.current_value = new_value
+    def init_Alternator(self):
+
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(9, GPIO.OUT)  # for DC motor
+        GPIO.setup(10, GPIO.OUT)  # for LED
+        self.p = GPIO.PWM(10, 100)  # Initialize PWM on pin 12 with a frequency of 50Hz
+        self.pwmDC = GPIO.PWM(9, 100)
+        self.p.start(0)  # Start the PWM with a duty cycle of 0
+        self.pwmDC.start(0)
+
+    def slider_function(self, slider_value):
+        slider_value = int(slider_value)
+        if slider_value != self.current_value:
+            self.current_value = slider_value
+            self.p.ChangeDutyCycle(slider_value)
+            self.pwmDC.ChangeDutyCycle(slider_value)
             self.value_label.config(text=self.current_value)
-            print(self.current_value)
+    def DC_LED_function(self, callback):
+        times = 3
+        for i in range(times):
+            for duty in range(0,100,1):
+                self.p.ChangeDutyCycle(duty)
+                self.pwmDC.ChangeDutyCycle(duty)
+
+                sleep(.02)
+            sleep(.01)
+        
+            for duty in range(100,-1,-1):
+                self.p.ChangeDutyCycle(duty)
+                self.pwmDC.ChangeDutyCycle(duty)
+
+                sleep(.02)
+            sleep(.01)
+        callback()
+
+    def __del__(self):
+        self.p.stop()
+        self.pwmDC.stop()
+        GPIO.cleanup()
             
     def aileron_show_values(self, event):
         new_value = self.aileron_speed.get()
