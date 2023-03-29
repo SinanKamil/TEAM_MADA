@@ -15,7 +15,15 @@ import threading
 #from centering_steering import center
 #from admin_antenna import left_antenna, right_antenna, disable_antenna
 #from user_steering import user_steering_run
-from user_LEDlights_DC import slider_function
+
+#import RPi.GPIO as GPIO
+
+#GPIO.setwarnings(False)
+#GPIO.setmode(GPIO.BCM)
+#GPIO.setup(10, GPIO.OUT)
+#pwm = GPIO.PWM(10, 100)
+#pwm.start(0)
+
 
 
 current_value = 0
@@ -257,7 +265,7 @@ class GA(tk.Tk):
 
 
 
-        self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL, command=slider_function(current_value),
+        self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL,
                         troughcolor='#0e3999', width=67, sliderrelief='groove', highlightbackground='#0e3999',
                         sliderlength=40, font= ("Tactic Sans Extra Extended", 15), showvalue=0)
         self.w1.set(current_value)
