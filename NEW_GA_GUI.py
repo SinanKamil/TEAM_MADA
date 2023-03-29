@@ -423,7 +423,6 @@ class GA(tk.Tk):
 
     def add_background_image(self, frame, file):
         img = Image.open(file)
-        img = img.resize((1920, 1080), Image.LANCZOS)
         img = ImageTk.PhotoImage(img)
         label = tk.Label(frame, image=img)
         label.image = img
