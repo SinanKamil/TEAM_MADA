@@ -426,7 +426,7 @@ class GA(tk.Tk):
 
     def add_background_image(self, frame, file):
         img = Image.open(file)
-        img = img.resize((1920, 1080), Image.LANCZOS)
+        #img = img.resize((1920, 1080), Image.LANCZOS)
         img = ImageTk.PhotoImage(img)
         label = tk.Label(frame, image=img)
         label.image = img
@@ -563,15 +563,6 @@ class GA(tk.Tk):
         self.player = VideoPlayer()
         self.player.play_video()
 
-    def show_page3(self):
-        self.page1.pack_forget()
-        self.page2.pack_forget()
-        self.fuel_pump_page.pack_forget()
-        self.alternator_page.pack_forget()
-        self.landing_gear_page.pack_forget()
-        self.aileron_servo_page.pack_forget()
-        self.directional_antenna_page.pack_forget()
-        self.page3.pack(side="top", fill="both", expand=True)
 
     # Define the toggle switch function
     def fuel_toggle_switch(self):
