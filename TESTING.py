@@ -133,65 +133,65 @@ class GA(tk.Tk):
         # one
         self.next_button_img3 = ImageTk.PhotoImage(Image.open("keypad_num_images/1.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img3, highlightthickness=0,
-                                     activebackground='white', background='white', command=self.store1, borderwidth=0,
+                                     activebackground='white', background='white', command=lambda: self.store(1), borderwidth=0,
                                      relief="flat", bd=0)
         self.next_button.place(x=735, y=365)
         # two
         self.next_button_img4 = ImageTk.PhotoImage(Image.open("keypad_num_images/2.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img4, highlightthickness=0,
-                                     activebackground='white', background='white', command=self.store2, borderwidth=0,
+                                     activebackground='white', background='white', command=lambda: self.store(2), borderwidth=0,
                                      relief="flat", bd=0)
         self.next_button.place(x=880, y=365)
 
         # three
         self.next_button_img5 = ImageTk.PhotoImage(Image.open("keypad_num_images/3.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img5, highlightthickness=0,
-                                     activebackground='white', background='white', command=self.store3, borderwidth=0,
+                                     activebackground='white', background='white', command=lambda: self.store(3), borderwidth=0,
                                      relief="flat", bd=0)
         self.next_button.place(x=1025, y=365)
         # four
         self.next_button_img7 = ImageTk.PhotoImage(Image.open("keypad_num_images/4.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img7, highlightthickness=0,
-                                     activebackground='white', background='white', command=self.store4, borderwidth=0,
+                                     activebackground='white', background='white', command=lambda: self.store(4), borderwidth=0,
                                      relief="flat", bd=0)
         self.next_button.place(x=720, y=500)
         # five
         self.next_button_img8 = ImageTk.PhotoImage(Image.open("keypad_num_images/5.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img8, highlightthickness=0,
-                                     activebackground='white', background='white', command=self.store5, borderwidth=0,
+                                     activebackground='white', background='white',command=lambda : self.store(5), borderwidth=0,
                                      relief="flat", bd=0)
         self.next_button.place(x=878, y=500)
 
         # six
         self.next_button_img9 = ImageTk.PhotoImage(Image.open("keypad_num_images/6.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img9, highlightthickness=0,
-                                     activebackground='white', background='white', command=self.store6, borderwidth=0,
+                                     activebackground='white', background='white', command=lambda : self.store(6), borderwidth=0,
                                      relief="flat", bd=0)
         self.next_button.place(x=1040, y=500)
         # seven
         self.next_button_img10 = ImageTk.PhotoImage(Image.open("keypad_num_images/7.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img10, highlightthickness=0,
-                                     activebackground='white', background='white', command=self.store7, borderwidth=0,
+                                     activebackground='white', background='white', command=lambda : self.store(7), borderwidth=0,
                                      relief="flat", bd=0)
         self.next_button.place(x=720, y=640)
         # eight
         self.next_button_img11 = ImageTk.PhotoImage(Image.open("keypad_num_images/8.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img11, highlightthickness=0,
-                                     activebackground='white', background='white', command=self.store8, borderwidth=0,
+                                     activebackground='white', background='white', command=lambda : self.store(8), borderwidth=0,
                                      relief="flat", bd=0)
         self.next_button.place(x=880, y=640)
 
         # nine
         self.next_button_img12 = ImageTk.PhotoImage(Image.open("keypad_num_images/9.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img12, highlightthickness=0,
-                                     activebackground='white', background='white', command=self.store9, borderwidth=0,
+                                     activebackground='white', background='white', command=lambda : self.store(9), borderwidth=0,
                                      relief="flat", bd=0)
         self.next_button.place(x=1040, y=640)
 
         # zero
         self.next_button_img13 = ImageTk.PhotoImage(Image.open("keypad_num_images/0.png"))
         self.next_button = tk.Button(self.page2, image=self.next_button_img13, highlightthickness=0,
-                                     activebackground='white', background='white', command=self.store0, borderwidth=0,
+                                     activebackground='white', background='white', command=lambda : self.store(0), borderwidth=0,
                                      relief="flat", bd=0)
         self.next_button.place(x=732, y=780)
 
@@ -487,55 +487,10 @@ class GA(tk.Tk):
         self.show_page(self.page1)
         self.clear_text()
 
-    def store1(self):
+    def store(self, number):
         print("Number 1 is Clicked")
-        self.numbers_clicked.append(1)
-        self.password_entry.insert(END, '1')
-
-    def store2(self):
-        print("Number 2 is Clicked")
-        self.numbers_clicked.append(2)
-        self.password_entry.insert(END, '2')
-
-    def store3(self):
-        print("Number 3 is Clicked")
-        self.numbers_clicked.append(3)
-        self.password_entry.insert(END, '3')
-
-    def store4(self):
-        print("Number 4 is Clicked")
-        self.numbers_clicked.append(4)
-        self.password_entry.insert(END, '4')
-
-    def store5(self):
-        print("Number 5 is Clicked")
-        self.numbers_clicked.append(5)
-        self.password_entry.insert(END, '5')
-
-    def store6(self):
-        print("Number 6 is Clicked")
-        self.numbers_clicked.append(6)
-        self.password_entry.insert(END, '6')
-
-    def store7(self):
-        print("Number 7 is Clicked")
-        self.numbers_clicked.append(7)
-        self.password_entry.insert(END, '7')
-
-    def store8(self):
-        print("Number 8 is Clicked")
-        self.numbers_clicked.append(8)
-        self.password_entry.insert(END, '8')
-
-    def store9(self):
-        print("Number 9 is Clicked")
-        self.numbers_clicked.append(9)
-        self.password_entry.insert(END, '9')
-
-    def store0(self):
-        print("Number 0 is Clicked")
-        self.numbers_clicked.append(0)
-        self.password_entry.insert(END, '0')
+        self.numbers_clicked.append(number)
+        self.password_entry.insert(END, 'x')
 
     def checkpasscode(self):
         # Check if all the numbers have been clicked
@@ -623,8 +578,7 @@ class GA(tk.Tk):
         center()
         print("Center")
 
-    def forward_steering(self):
-        print("forward_steering")
+
 
     def reverse_steering(self):
         print("reverse_steering")
