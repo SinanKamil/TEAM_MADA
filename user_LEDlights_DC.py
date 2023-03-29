@@ -49,7 +49,7 @@ class MyApplication:
     def __del__(self):
         self.p.stop()
         self.pwmDC.stop()
-           def init_Alternator(self):
+    def init_Alternator(self):
 
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)

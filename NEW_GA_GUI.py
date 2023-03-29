@@ -18,13 +18,6 @@ import threading
 
 import RPi.GPIO as GPIO
 
-#GPIO.setwarnings(False)
-#GPIO.setmode(GPIO.BCM)
-#GPIO.setup(10, GPIO.OUT)
-#pwm = GPIO.PWM(10, 100)
-#pwm.start(0)
-
-
 
 
 aileron_speed_value = 0
@@ -594,9 +587,6 @@ class GA(tk.Tk):
         print("Alternator ON")
         self.switch_button5.config(state=tk.DISABLED)
         self.update()
-
-        
-
 
         def callback_alternator():  # this to enable button
             self.switch_button5.config(state=tk.NORMAL)
