@@ -119,7 +119,6 @@ class GA(tk.Tk):
         self.bind('<Any-KeyPress>', self.reset_timer)
         self.bind('<Any-Button>', self.reset_timer)
         self.bind('<Motion>', self.reset_timer)
-        self.update_label()
 
 
         #create a text box
