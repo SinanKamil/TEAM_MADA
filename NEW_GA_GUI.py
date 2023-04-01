@@ -464,14 +464,14 @@ class GA(tk.Tk):
         self.reset_timer()
         self.update_label()
     def show_page2(self):
-        self.after(500, self.show_page(self.page2))
+        self.show_page(self.page2)
         self.reset_timer()
         self.update_label()
     def show_page3(self):
-        self.after(500, self.show_page(self.page3))
+        self.show_page(self.page3)
         self.reset_timer()
         self.update_label()
-#clear function
+
     def clear_text(self):
         self.password_entry.delete(0, END)
         self.numbers_clicked = []
