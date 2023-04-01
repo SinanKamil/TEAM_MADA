@@ -53,11 +53,6 @@ class GA(tk.Tk):
         self.page1.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.page1, "images/home_page.png")
 
-        # Create the button to go to page 2
-        self.next_button_img = self.images["images/adminlogin_btn.png"]
-        self.adminlogin_btn = tk.Button(self.page1, image=self.next_button_img, activebackground ='white', background ='white', highlightthickness = 0, command=self.show_page2, bd=0)
-        self.adminlogin_btn.place(x=1432, y=882)
-
         # Create the button to go to slideshow
         self.next_button_img1 = self.images["images/slideshow_btn.png"]
         self.next_button = tk.Button(self.page1, image=self.next_button_img1, activebackground ='white', background ='white', command=self.slideshow, highlightthickness = 0, highlightbackground = '#ffffff', borderwidth=None, relief="flat", bd=0)
@@ -106,6 +101,12 @@ class GA(tk.Tk):
         self.page2 = tk.Frame(self)
         self.page2.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.page2, "images/admin_access.png")
+
+        # Create the button to go to page 2
+        self.next_button_img = self.images["images/adminlogin_btn.png"]
+        self.adminlogin_btn = tk.Button(self.page1, image=self.next_button_img, activebackground='white',
+                                        background='white', highlightthickness=0, command=self.show_page2, bd=0)
+        self.adminlogin_btn.place(x=1432, y=882)
 
         # Create the button to go back to page 1
         self.next_button_img2 = self.images["images/homemenu_btn.png"]
@@ -463,11 +464,11 @@ class GA(tk.Tk):
         self.reset_timer()
         self.update_label()
     def show_page2(self):
-        self.show_page(self.page2)
+        self.after(500, self.show_page(self.page2))
         self.reset_timer()
         self.update_label()
     def show_page3(self):
-        self.show_page(self.page3)
+        self.after(500, self.show_page(self.page3))
         self.reset_timer()
         self.update_label()
 
