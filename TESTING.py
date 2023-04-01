@@ -1,12 +1,38 @@
 import tkinter as tk
 from tkinter import *
-import tkinter.messagebox
 from PIL import Image, ImageTk
 from tkinter import messagebox as mb
 import time
 import threading
 
 aileron_speed_value = 0
+
+class DoubleBufferedCanvas(Canvas):
+    def __init__(self, master, cnf={}, **kw):
+        Canvas.__init__(self, master, cnf={}, **kw)
+        self._buffer = None
+        self._drawn_objects = []
+
+    def draw(self):
+        if self._buffer is None:
+            self._buffer = Image.new("RGBA", (self.winfo_width(), self.winfo_height()), (0, 0, 0, 0))
+        self._drawn_objects = self.find_all()
+        self._buffer.paste((0, 0, 0, 0), (0, 0, self.winfo_width(), self.winfo_height()))
+        for obj in self._drawn_objects:
+            bbox = self.bbox(obj)
+            self._buffer.alpha_composite(self._get_image(bbox), (bbox[0], bbox[1]))
+
+    def _get_image(self, bbox):
+        return ImageTk.PhotoImage(self._snapshot(bbox))
+
+    def _snapshot(self, bbox):
+        return self.postscript(file="-", colormode="color", width=bbox[2]-bbox[0], height=bbox[3]-bbox[1],
+                               x=bbox[0], y=bbox[1])
+
+    def display(self):
+        self.tk.call(self._w, "delete", "all")
+        if self._buffer is not None:
+            self.tk.call(self._w, "create_image", (0, 0), image=ImageTk.PhotoImage(self._buffer), anchor="nw")
 
 class GA(tk.Tk):
     def __init__(self):
@@ -25,11 +51,11 @@ class GA(tk.Tk):
         self.preload_images()
 
         # Create instances of each page class with hidden attribute set to True
-        self.page3 = tk.Frame(self)
-        self.fuel_pump_page = tk.Frame(self)
-        self.alternator_page = tk.Frame(self)
-        self.landing_gear_page = tk.Frame(self)
-        self.antenna_page = tk.Frame(self)
+        self.page3 = DoubleBufferedCanvas(self)
+        self.fuel_pump_page = DoubleBufferedCanvas(self)
+        self.alternator_page = DoubleBufferedCanvas(self)
+        self.landing_gear_page = DoubleBufferedCanvas(self)
+        self.antenna_page = DoubleBufferedCanvas(self)
 
 
         self.page3.pack(side="top", fill="both", expand=True)
@@ -149,13 +175,12 @@ class GA(tk.Tk):
         self.next_button.place(x=800, y=275)
         self.show_page(self.page3)
 
-    def add_background_image(self, parent, image_path):
-        canvas = tk.Canvas(parent, width=1920, height=1080)
-        canvas.pack(fill="both", expand=True)
-        img = Image.open(image_path)
-        img = ImageTk.PhotoImage(img)
-        canvas.create_image(0, 0, image=img, anchor="nw")
-        canvas.image = img
+    def add_background_image(self, frame, file):
+        with Image.open(file) as img:
+            img = ImageTk.PhotoImage(img)
+            label = tk.Label(frame, image=img)
+            label.image = img
+            label.place(x=0, y=0, relwidth=1, relheight=1)
 
     def show_page(self, page):
         self.page3.pack_forget()
@@ -166,8 +191,6 @@ class GA(tk.Tk):
 
     def show_fuel_pump_page(self):
         self.show_page(self.fuel_pump_page)
-
-
 
     def show_alternator_page(self):
         self.show_page(self.alternator_page)
