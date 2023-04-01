@@ -2,44 +2,36 @@ import tkinter as tk
 from tkinter import *
 import tkinter.messagebox
 from PIL import Image, ImageTk
-from time import sleep
 from tkinter import messagebox as mb
 import time
-#from slideshow_video_player import VideoPlayer
-
-#from Alternator_LED_DCMotor import DC_LED_function
-#from Directional_antenna import antenna
 import threading
-#from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
-#from steering_code import motors, MAX_SPEED
-#from centering_steering import center
-#from admin_antenna import left_antenna, right_antenna, disable_antenna
-#from user_steering import user_steering_run
-
-#import RPi.GPIO as GPIO
-
-
 
 aileron_speed_value = 0
+
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
-        # Create instances of each page class with hidden attribute set to True
 
         self.Fuel_pump_en = False
         self.aileron_speed_value = 0
         self.current_value = 0
-        #self.init_Alternator()
         self.geometry("1920x1080")
         self.title('General Atomics')
         self.config(bg="white")
         self.attributes("-fullscreen",True)
-        ico = Image.open('images/GA.png')
-        photo = ImageTk.PhotoImage(ico)
+
+        # Load images
+        self.images = {}
         self.preload_images()
 
-        # page 3
+        # Create instances of each page class with hidden attribute set to True
         self.page3 = tk.Frame(self)
+        self.fuel_pump_page = tk.Frame(self)
+        self.alternator_page = tk.Frame(self)
+        self.landing_gear_page = tk.Frame(self)
+        self.antenna_page = tk.Frame(self)
+
+
         self.page3.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.page3, "images/admin_page.png")
 
@@ -50,7 +42,6 @@ class GA(tk.Tk):
         self.next_button.place(x=1700, y=50)
 
         # page for fuel pump
-        self.fuel_pump_page = tk.Frame(self)
         self.fuel_pump_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.fuel_pump_page, "images/fuel_pump_page.png")
 
@@ -77,7 +68,6 @@ class GA(tk.Tk):
         self.next_button.place(x=230, y=884)
 
         # page for alternator
-        self.alternator_page = tk.Frame(self)
         self.alternator_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.alternator_page, "images/alternator_page.png")
 
@@ -107,7 +97,6 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=230, y=884)
         # page for landing gear
-        self.landing_gear_page = tk.Frame(self)
         self.landing_gear_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.landing_gear_page, "images/landing_gear_page.png")
 
@@ -161,11 +150,11 @@ class GA(tk.Tk):
         self.show_page(self.page3)
 
     def add_background_image(self, frame, file):
-        img = Image.open(file)
-        img = ImageTk.PhotoImage(img)
-        label = tk.Label(frame, image=img)
-        label.image = img
-        label.place(x=0, y=0, relwidth=1, relheight=1)
+        with Image.open(file) as img:
+            img = ImageTk.PhotoImage(img)
+            label = tk.Label(frame, image=img)
+            label.image = img
+            label.place(x=0, y=0, relwidth=1, relheight=1)
 
     def show_page(self, page):
         self.page3.pack_forget()
@@ -176,18 +165,15 @@ class GA(tk.Tk):
 
     def show_fuel_pump_page(self):
         self.show_page(self.fuel_pump_page)
-        self.reset_timer()
-        self.update_label()
+
+
 
     def show_alternator_page(self):
         self.show_page(self.alternator_page)
-        self.reset_timer()
-        self.update_label()
 
     def show_landing_gear_page(self):
         self.show_page(self.landing_gear_page)
-        self.reset_timer()
-        self.update_label()
+
 
 
     def show_page3(self):
