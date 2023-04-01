@@ -149,12 +149,13 @@ class GA(tk.Tk):
         self.next_button.place(x=800, y=275)
         self.show_page(self.page3)
 
-    def add_background_image(self, frame, file):
-        with Image.open(file) as img:
-            img = ImageTk.PhotoImage(img)
-            label = tk.Label(frame, image=img)
-            label.image = img
-            label.place(x=0, y=0, relwidth=1, relheight=1)
+    def add_background_image(self, parent, image_path):
+        canvas = tk.Canvas(parent, width=1920, height=1080)
+        canvas.pack(fill="both", expand=True)
+        img = Image.open(image_path)
+        img = ImageTk.PhotoImage(img)
+        canvas.create_image(0, 0, image=img, anchor="nw")
+        canvas.image = img
 
     def show_page(self, page):
         self.page3.pack_forget()
