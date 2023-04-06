@@ -1,14 +1,14 @@
 import RPi.GPIO as GPIO
 from time import sleep
 
-Enable = 15 #by default is high 
+Enable = 15 #by default is high
 Speed = 21 #PWM 0 pin
 F_R = 7 # 1 is forward and 0 is reverse(UP)
 Break = 3
 
 Aileron_max_speed = 50
 
-    
+
 def aileron_init(F_R_val):
 
     GPIO.setwarnings(False)
@@ -25,19 +25,20 @@ def aileron_init(F_R_val):
     GPIO.output(F_R, F_R_val)
 
 
-def aileron_control():   
+def aileron_control():
     while True:
         aileron_init(1)
         p = GPIO.PWM(Speed,2000)   # Initialize PWM on pin 12 with a frequency of 50Hz
         p.start(0)
         p.ChangeDutyCycle(10)
-        sleep(5)
+        sleep(1)
         aileron_init(0)
         p.ChangeDutyCycle(10)
-        sleep(5)
+        sleep(2)
+        aileron_init(1)
+        sleep(1)
         break
     GPIO.cleanup()
-    
 
-    
+
 

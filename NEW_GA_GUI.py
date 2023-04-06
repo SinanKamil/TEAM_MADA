@@ -7,7 +7,7 @@ from tkinter import messagebox as mb
 import time
 #from slideshow_video_player import VideoPlayer
 
-#from Alternator_LED_DCMotor import DC_LED_function
+from Alternator_LED_DCMotor import DC_LED_function
 #from Directional_antenna import antenna
 import threading
 #from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
@@ -551,7 +551,7 @@ class GA(tk.Tk):
         # Create a new thread to run the DC LED function
         led_thread = threading.Thread(target=self.DC_LED_function, args=(callback_alternator,))
         led_thread.start()        
-    """      
+         
     def init_Alternator(self):
 
         GPIO.setwarnings(False)
@@ -592,7 +592,7 @@ class GA(tk.Tk):
         self.p.stop()
         self.pwmDC.stop()
         GPIO.cleanup()
-    """
+    
     def aileron_show_values(self, event):
         new_value = self.aileron_speed.get()
         if new_value != self.aileron_speed_value:
