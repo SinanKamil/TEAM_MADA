@@ -122,8 +122,8 @@ class GA(tk.Tk):
 
 
         #create a text box
-        self.password_entry = tk.Entry(self.pages["page2"], font=('Rubik Medium', 38), background= "#092a81",fg="white", width=3,show='*', bd=0, borderwidth=0)
-        self.password_entry.place(x=1010, y=220)
+        self.password_entry = tk.Entry(self.pages["page2"], font=('Arial', 38), highlightbackground = "#092a81", background= "#092a81",fg="white", width=3,show='*', bd=0, borderwidth=0)
+        self.password_entry.place(x=1010, y=219)
 
         # create the number buttons
         # one
@@ -468,7 +468,7 @@ class GA(tk.Tk):
 
     def show_page1(self):
         self.numbers_clicked = []
-        self.show_page(self.page1)
+        self.show_page(self.pages["page1"])
         self.clear_text()
 
     def store(self, number):

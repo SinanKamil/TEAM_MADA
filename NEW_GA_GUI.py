@@ -123,8 +123,8 @@ class GA(tk.Tk):
 
 
         #create a text box
-        self.password_entry = tk.Entry(self.page2, font=('Rubik Medium', 38), background= "#092a81",fg="white", width=3,show='*', bd=0, borderwidth=0)
-        self.password_entry.place(x=1010, y=220)
+        self.password_entry = tk.Entry(self.page2, font=('Rubik Medium', 38),  highlightbackground = "#092a81", background= "#092a81",fg="white", width=3,show='*', bd=0, borderwidth=0)
+        self.password_entry.place(x=1010, y=217)
 
         # create the number buttons
         # one
