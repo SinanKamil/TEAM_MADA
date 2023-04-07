@@ -47,7 +47,9 @@ def aileron_disable():
     GPIO.output(Break, 0)
 
 
-
+def set_max_speed(new_speed):
+    global Aileron_max_speed
+    Aileron_max_speed = new_speed
 
 
 
