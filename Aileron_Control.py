@@ -42,6 +42,7 @@ def aileron_reverse(speed):
     p.ChangeDutyCycle(speed)
 
 def aileron_disable():
+    aileron_setup()
     GPIO.output(Enable, 0)
     GPIO.output(Break, 0)
 
