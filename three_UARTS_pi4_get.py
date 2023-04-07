@@ -2,10 +2,10 @@ import serial
 import RPi.GPIO as GPIO
 import smbus
 bus = smbus.SMBus(1)
-
+from time import sleep
 def retract_validate_data(serial_obj):
         try:
-            data = serial_obj.readline(9).decode('utf-8')
+            data = serial_obj.readline(14).decode('utf-8')
             data_str = str(data)
             split_float = data_str.split(" ")
             data_float_retract = float(split_float[1])
@@ -16,7 +16,7 @@ def retract_validate_data(serial_obj):
             pass
 def steering_validate_data(serial_obj):
         try:
-            data = serial_obj.readline(9).decode('utf-8')
+            data = serial_obj.readline(14).decode('utf-8')
             data_str = str(data)
             split_float = data_str.split(" ")
             data_float_steering = float(split_float[0])
@@ -25,25 +25,25 @@ def steering_validate_data(serial_obj):
             return float(data_float_steering)
         except ValueError:
             pass
-def i2c_validate_data():
+def aileron_validate_data(serial_obj):
     try:
-        aileron_num = bus.read_byte(0x41)
-        aileron_num_int = int(aileron_num)
-        if 0 <= aileron_num_int <= 200:
-            return aileron_num_int
+        data = serial_obj.readline(14).decode('utf-8')
+        data_str = str(data)
+        split_float = data_str.split(" ")
+        data_float_aileron = float(split_float[2])
+        if 0 <= data_float_aileron <= 2.00:
+            data_float_aileron = "{:.2f}".format(data_float_aileron)
+        return float(data_float_aileron)
     except ValueError:
         pass
-    except OSError:
-        pass
 
-ser = serial.Serial("/dev/ttyS0", 115200)
+#ser = serial.Serial("/dev/ttyS0", 115200)
 
 
-while True:
-    steering = steering_validate_data(ser)
-    retract = retract_validate_data(ser)
-    aileron = i2c_validate_data()
-    #if aileron is not None:
-    print("Steering: ", steering, "Retract: ", retract ,"Aileron: ", aileron)
-
-ser.close()
+#while True:
+    #steering = steering_validate_data(ser)
+    #retract = retract_validate_data(ser)
+    #aileron = aileron_validate_data(ser)
+    #print("Aileron: ", aileron, "Steering: ", steering, "Retract: ", retract ,)
+    #sleep(0.1)
+#ser.close()

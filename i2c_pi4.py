@@ -3,7 +3,7 @@ import struct
 
 bus = smbus.SMBus(1)
 
-pico_address = 0x60
+pico_address = 0x
 
 value = 2.122
 packed_value = struct.pack('f', value)
