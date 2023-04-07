@@ -7,7 +7,7 @@ from tkinter import messagebox as mb
 import time
 #from slideshow_video_player import VideoPlayer
 
-from Alternator_LED_DCMotor import DC_LED_function
+#from Alternator_LED_DCMotor import DC_LED_function
 #from Directional_antenna import antenna
 import threading
 #from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate

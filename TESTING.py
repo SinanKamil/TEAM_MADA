@@ -19,7 +19,6 @@ import threading
 #import RPi.GPIO as GPIO
 
 
-
 aileron_speed_value = 0
 class GA(tk.Tk):
     def __init__(self):
