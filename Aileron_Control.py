@@ -46,10 +46,6 @@ def aileron_disable():
     GPIO.output(Break, 0)
 
 
-aileron_forward(Aileron_max_speed)
-aileron_disable()
-aileron_reverse(Aileron_max_speed)
-
 
 
 
