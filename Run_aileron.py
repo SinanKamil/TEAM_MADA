@@ -1,6 +1,5 @@
 import RPi.GPIO as GPIO
 from time import sleep
-import RPi.GPIO as GPIO
 
 Enable = 26 #by default is high
 Speed = 21 #PWM 0 pin
@@ -25,7 +24,6 @@ def aileron_init(F_R_val, EN, Break_val):
     GPIO.output(Break, Break_val)
     GPIO.output(F_R, F_R_val)
 
-
 def aileron_control():
     while True:
         aileron_init(0,1,1)
@@ -39,5 +37,4 @@ def aileron_control():
         aileron_init(1,1,1)
         sleep(0.7)
 
-aileron_control()
-GPIO.cleanup
+
