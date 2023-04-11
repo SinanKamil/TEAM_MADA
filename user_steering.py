@@ -2,8 +2,8 @@
 import serial
 from time import sleep
 import RPi.GPIO as GPIO
-from steering_code import motors, MAX_SPEED, Motor
-from centering_steering import center
+from steering_retract_code import motors, MAX_SPEED, Motor
+from centering_steering import center_steering
 
 # Define a custom exception to raise if a fault is detected.
 class DriverFault(Exception):
@@ -21,7 +21,7 @@ def validate_data(serial_obj):
         except (UnicodeDecodeError, ValueError):
             pass
 def user_steering_run(callback):    
-    center()
+    center_steering()
 
     ser = serial.Serial("/dev/ttyS0", 115200)
     print(ser)
@@ -69,7 +69,7 @@ def user_steering_run(callback):
         #motors.motor1.setSpeed(int(-for_constant))
         print(data_float)
     
-    center()
+    center_steering()
     callback()
 def disable_steering():
     motors.forceStop()

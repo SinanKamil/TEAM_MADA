@@ -1,5 +1,5 @@
 import time
-from steering_code import motors, MAX_SPEED
+from steering_retract_code import motors, MAX_SPEED
 
 # Define a custom exception to raise if a fault is detected.
 class DriverFault(Exception):
@@ -27,17 +27,9 @@ try:
         time.sleep(0.002)
 
 
-
-    print("Motor 2 forward")
-    for s in test_forward_speeds:
-        motors.motor2.setSpeed(s)
-        raiseIfFault()
-        time.sleep(0.002)
-
-
-    print("Motor 2 reverse")
+    print("Motor 1 reverse")
     for s in test_reverse_speeds:
-        motors.motor2.setSpeed(s)
+        motors.motor1.setSpeed(s)
         raiseIfFault()
         time.sleep(0.002)
 

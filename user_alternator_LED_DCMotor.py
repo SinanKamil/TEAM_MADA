@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 def DC_LED_function():
-    times = 3
+    times = 5
     for i in range(times):
         for duty in range(0,100,1):
             p.ChangeDutyCycle(duty)

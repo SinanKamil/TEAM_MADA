@@ -36,7 +36,6 @@ def aileron_forward(p):
         GPIO.cleanup()
         exit()
 
-
 def aileron_reverse(p):
     try:
         aileron_init(1,1,1)
@@ -46,7 +45,6 @@ def aileron_reverse(p):
         print(f"Error moving aileron reverse: {e}")
         GPIO.cleanup()
         exit()
-
 
 def aileron_disable():
     try:
@@ -58,7 +56,6 @@ def aileron_disable():
         GPIO.cleanup()
         p.stop()
         exit()
-
 
 def cleanup():
     try:
