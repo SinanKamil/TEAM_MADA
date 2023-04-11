@@ -3,10 +3,9 @@ from time import sleep
 
 Enable = 26 #by default is high
 Speed = 21 #PWM 0 pin
-F_R = 7 # 1 is forward and 0 is reverse(UP)
+F_R = 7 # 1 is forward (down) and 0 is reverse(UP)
 Break = 3
 
-Aileron_max_speed = 5
 
 
 def aileron_setup():
