@@ -52,11 +52,29 @@ class GA(tk.Tk):
         self.page1 = tk.Frame(self)
         self.page1.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.page1, "images/home_page.png")
+        #meet the team bttn
+
+        self.meet_the_team = tk.Frame(self)
+        self.meet_the_team.pack(side="top", fill="both", expand=True)
+        self.add_background_image(self.meet_the_team, "images/Meet_the_Team_page.png")
+
+        self.next_button_img77 = self.images["images/homemenu_btn.png"]
+        self.next_button = tk.Button(self.meet_the_team, image=self.next_button_img77, highlightthickness=0,
+                                     activebackground='white', background='white', command=self.show_page1,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.next_button.place(x=222, y=882)
 
         # Create the button to go to slideshow
         self.next_button_img1 = self.images["images/slideshow_btn.png"]
         self.next_button = tk.Button(self.page1, image=self.next_button_img1, activebackground ='white', background ='white', command=self.slideshow, highlightthickness = 0, highlightbackground = '#ffffff', borderwidth=None, relief="flat", bd=0)
         self.next_button.place(x=222, y=882)
+
+        self.meet_team_img = self.images["btn_images/team_btn.png"]
+        self.meet_team_btn = tk.Button(self.page1, image=self.meet_team_img,
+                                     command=self.show_meet_the_team_page, highlightthickness=0,
+                                     activebackground ='#092a81', background ='#092a81', borderwidth=0,
+                                     relief="flat", bd=0)
+        self.meet_team_btn.place(x=275, y=125)
 
         # Create the switch button for fuel pump
         self.switch_button_img_on = self.images["btn_images/fuel_pump.png"]
@@ -441,6 +459,7 @@ class GA(tk.Tk):
         self.aileron_servo_page.pack_forget()
         self.landing_gear_page.pack_forget()
         self.alternator_page.pack_forget()
+        self.meet_the_team.pack_forget()
         page.pack(side="top", fill="both", expand=True)
 
     def show_fuel_pump_page(self):
@@ -469,6 +488,11 @@ class GA(tk.Tk):
         self.update_label()
     def show_page3(self):
         self.show_page(self.page3)
+        self.reset_timer()
+        self.update_label()
+
+    def show_meet_the_team_page(self):
+        self.show_page(self.meet_the_team)
         self.reset_timer()
         self.update_label()
 
@@ -721,7 +745,8 @@ class GA(tk.Tk):
                        "btn_images/directional_antenna.png",
                        "btn_images/antenna_left.png",
                        "btn_images/antenna_right.png",
-                       "images/adminmenu_btn.png"
+                       "images/adminmenu_btn.png",
+                       "btn_images/team_btn.png"
                        ]
 
         # Load each image and store it as an attribute of the class
