@@ -19,8 +19,7 @@ def aileron_center():
             aileron_disable()
         else:
             data_aileron = aileron_validate_data(ser)
-
-            while data_aileron < 1.71500:
+            while data_aileron < 1.7150:
                 data_aileron = aileron_validate_data(ser)
                 aileron_reverse(p)
             aileron_disable()
