@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 from time import sleep
 import serial
-from Aileron_Control import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed
+from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed
 from three_UARTS_pi4_get import aileron_validate_data
 ser = serial.Serial("/dev/ttyS0", 115200)
 

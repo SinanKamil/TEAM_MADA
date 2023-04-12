@@ -3,7 +3,7 @@ from tkinter import *
 import tkinter.messagebox
 from PIL import Image, ImageTk
 from time import sleep
-from admin_antenna import left_antenna, right_antenna, disable_antenna
+from control_antenna import left_antenna, right_antenna, disable_antenna
 
 
 class GA(tk.Tk):
