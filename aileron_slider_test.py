@@ -13,6 +13,7 @@ aileron_setup()
 p = GPIO.PWM(Speed, 2000)
 p.start(0)
 
+
 while True:
     aileron_forward(p)
     sleep(1)
@@ -20,7 +21,6 @@ while True:
     sleep(1)
 
 
-    
 
 
 
