@@ -2,14 +2,14 @@ import machine
 import os
 from machine import Pin, ADC
 import utime
-from machine import mem32,Pin
-from i2cSlave import i2c_slave
+
 
 
 led_pin = machine.Pin(25, machine.Pin.OUT)
 
 
-uart = machine.UART(1, 115200)#steering
+uart = machine.UART(0, baudrate=115200, bits=8, parity=None, stop=1, tx=machine.Pin(12), rx=machine.Pin(13))
+
 
 
 POT_Value_steer = ADC(26)
@@ -22,7 +22,7 @@ while True:
     led_pin.value(1)
     
     out_aileron = POT_Value_aileron.read_u16() * convert_factor
-    out_round_aileron = "{:,.2f}".format(out_aileron)  
+    out_round_aileron = "{:,.4f}".format(out_aileron)  
     
     out_steer = POT_Value_steer.read_u16() * convert_factor
     out_round_steer = "{:,.2f}".format(out_steer)

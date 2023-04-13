@@ -5,11 +5,12 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
-from centering_aileron import aileron_center
+import RPi.GPIO as GPIO
+#from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
+#from centering_aileron import aileron_center
 #from slideshow_video_player import VideoPlayer
 
-#from Alternator_LED_DCMotor import DC_LED_function
+from Alternator_LED_DCMotor import DC_LED_function
 #from Directional_antenna import antenna
 import threading
 #from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
@@ -21,13 +22,11 @@ import threading
 #import RPi.GPIO as GPIO
 
 
-
 aileron_speed_value = 0
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
         # Create instances of each page class with hidden attribute set to True
-
         self.Fuel_pump_en = False
         self.aileron_speed_value = 0
         self.current_value = 0
@@ -585,8 +584,8 @@ class GA(tk.Tk):
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(9, GPIO.OUT)  # for DC motor
-        GPIO.setup(10, GPIO.OUT)  # for LED
-        self.p = GPIO.PWM(10, 100)  # Initialize PWM on pin 12 with a frequency of 50Hz
+        GPIO.setup(21, GPIO.OUT)  # for LED
+        self.p = GPIO.PWM(21, 100)  # Initialize PWM on pin 12 with a frequency of 50Hz
         self.pwmDC = GPIO.PWM(9, 100)
         self.p.start(0)  # Start the PWM with a duty cycle of 0
         self.pwmDC.start(0)
