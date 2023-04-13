@@ -5,6 +5,8 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
+from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
+from centering_aileron import aileron_center
 #from slideshow_video_player import VideoPlayer
 
 #from Alternator_LED_DCMotor import DC_LED_function
@@ -385,23 +387,26 @@ class GA(tk.Tk):
 
         # center
         self.center_aileron_img = self.images["btn_images/center.png"]
-        self.next_button = tk.Button(self.aileron_servo_page, image=self.center_aileron_img, highlightthickness=0,
+        self.aileron_centering = tk.Button(self.aileron_servo_page, image=self.center_aileron_img, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.center_aileron,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=800, y=500)
+        self.aileron_centering.place(x=800, y=500)
 
         self.down_aileron_img = self.images["btn_images/aileron_down.png"]
-        self.next_button = tk.Button(self.aileron_servo_page, image=self.down_aileron_img, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.down_aileron,
+        self.down_aileron_btn = tk.Button(self.aileron_servo_page, image=self.down_aileron_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=800, y=725)
+        self.down_aileron_btn.bind("<ButtonPress>", lambda event: self.down_aileron())
+        self.down_aileron_btn.bind("<ButtonRelease>", lambda event: self.disable_aileron())
+        self.down_aileron_btn.place(x=800, y=725)
 
         self.up_aileron_img = self.images["btn_images/aileron_up.png"]
-        self.next_button = tk.Button(self.aileron_servo_page, image=self.up_aileron_img, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.up_aileron,
+        self.up_aileron_btn = tk.Button(self.aileron_servo_page, image=self.up_aileron_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=800, y=275)
-
+        self.up_aileron_btn.bind("<ButtonPress>", lambda event: self.up_aileron())
+        self.up_aileron_btn.bind("<ButtonRelease>", lambda event: self.disable_aileron())
+        self.up_aileron_btn.place(x=800, y=275)
 
         self.back2 = self.images["images/adminmenu_btn.png"]
         self.next_button = tk.Button(self.aileron_servo_page, image=self.back2, highlightthickness=0,
@@ -577,7 +582,6 @@ class GA(tk.Tk):
         led_thread.start()        
          
     def init_Alternator(self):
-
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(9, GPIO.OUT)  # for DC motor
@@ -656,11 +660,16 @@ class GA(tk.Tk):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
         if res == 'yes':
             self.destroy()
+            
     def up_aileron(self):
-        print("UP_Aileron")
+        aileron_reverse(pwm_aileron)
     def down_aileron(self):
-        print("DOWM_Aileron")
-
+        aileron_forward(pwm_aileron)
+    def disable_aileron(self):
+        aileron_disable()
+    def center_aileron(self):
+        aileron_center()
+        
     def left_antenna(self):
         left_antenna()
     def right_antenna(self):
@@ -668,7 +677,7 @@ class GA(tk.Tk):
     def disable_dir_antenna(self):
         disable_antenna()
     def center_aileron(self):
-        print("Center_Aileron")
+        aileron_center()
     def reset_timer(self, event=None):
         self.last_active_time = time.time() #time goes back to normal
 
