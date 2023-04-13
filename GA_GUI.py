@@ -5,12 +5,12 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 #from centering_aileron import aileron_center
 #from slideshow_video_player import VideoPlayer
 
-from Alternator_LED_DCMotor import DC_LED_function
+#from Alternator_LED_DCMotor import DC_LED_function
 #from Directional_antenna import antenna
 import threading
 #from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
