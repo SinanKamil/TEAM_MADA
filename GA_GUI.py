@@ -404,6 +404,7 @@ class GA(tk.Tk):
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
         self.up_aileron_btn.bind("<ButtonPress>", lambda event: self.up_aileron())
+        #
         self.up_aileron_btn.bind("<ButtonRelease>", lambda event: self.disable_aileron())
         self.up_aileron_btn.place(x=800, y=275)
 
