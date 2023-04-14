@@ -1,10 +1,11 @@
 import RPi.GPIO as GPIO
 from time import sleep
-
-Enable = 26 #by default is high
-Speed = 21 #PWM 0 pin
+Enable = 10 #by default is high
+Speed = 9 #PWM 0 pin
 F_R = 7 # 1 is forward (down) and 0 is reverse(UP)
-Break = 3
+Break = 11
+
+
 
 
 def aileron_setup():
@@ -25,20 +26,20 @@ def aileron_init(F_R_val, EN, Break_val):
     GPIO.output(F_R, F_R_val)
 
 
-def aileron_forward(pwm_aileron):
+def aileron_forward(pwm_aileron, speed_value):
     try:
         aileron_init(0, 1, 1)
-        pwm_aileron.ChangeDutyCycle(10)
+        pwm_aileron.ChangeDutyCycle(speed_value)
 
     except Exception as e:
         print(f"Error moving aileron forward: {e}")
         GPIO.cleanup()
         exit()
 
-def aileron_reverse(pwm_aileron):
+def aileron_reverse(pwm_aileron, speed_value):
     try:
         aileron_init(1,1,1)
-        pwm_aileron.ChangeDutyCycle(10)
+        pwm_aileron.ChangeDutyCycle(speed_value)
 
     except Exception as e:
         print(f"Error moving aileron reverse: {e}")

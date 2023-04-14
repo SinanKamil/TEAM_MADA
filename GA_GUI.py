@@ -5,8 +5,8 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-#import RPi.GPIO as GPIO
-#from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
+import RPi.GPIO as GPIO
+from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 #from centering_aileron import aileron_center
 #from slideshow_video_player import VideoPlayer
 
@@ -22,13 +22,13 @@ import threading
 #import RPi.GPIO as GPIO
 
 
-aileron_speed_value = 0
+aileron_speed_value = 1
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
         # Create instances of each page class with hidden attribute set to True
         self.Fuel_pump_en = False
-        self.aileron_speed_value = 0
+        self.aileron_speed_value = 1
         self.current_value = 0
         #self.init_Alternator()
         self.numbers_clicked = []
@@ -37,7 +37,7 @@ class GA(tk.Tk):
         self.geometry("1920x1080")
         self.title('General Atomics')
         self.config(bg="white")
-        self.attributes("-fullscreen",True)
+        #self.attributes("-fullscreen",True)
         ico = Image.open('images/GA.png')
         photo = ImageTk.PhotoImage(ico)
         self.wm_iconphoto(False, photo)
@@ -371,7 +371,7 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=1188, y=450)
 
-        self.aileron_speed = Scale(self.aileron_servo_page, from_=100, to=0, length=360, orient=VERTICAL,
+        self.aileron_speed = Scale(self.aileron_servo_page, from_=100, to=1, length=360, orient=VERTICAL,
                         troughcolor='#0e3999', width=76, sliderrelief='groove', highlightbackground='#0e3999',
                         sliderlength=40, font=("Tactic Sans Extra Extended", 15), showvalue=0)
         self.aileron_speed.set(aileron_speed_value)
@@ -625,8 +625,10 @@ class GA(tk.Tk):
         if new_value != self.aileron_speed_value:
             self.aileron_speed_value = new_value
             self.aileron_value_label.config(text=self.aileron_speed_value)
-            print(self.aileron_speed_value)
-
+            self.converted_value = (self.aileron_speed_value/100)*25
+            self.value = round(self.converted_value)
+            return self.value
+                    
 
     def center_landing_gear(self):
         center()
@@ -661,9 +663,17 @@ class GA(tk.Tk):
             self.destroy()
             
     def up_aileron(self):
-        aileron_reverse(pwm_aileron)
+        event = tk.Event()
+        event.widget = self.aileron_speed
+        self.new_speed = self.aileron_show_values(event)
+        print(self.aileron_show_values(event))
+        aileron_reverse(pwm_aileron, self.new_speed)
     def down_aileron(self):
-        aileron_forward(pwm_aileron)
+        event = tk.Event()
+        event.widget = self.aileron_speed
+        self.new_speed = self.aileron_show_values(event)
+        aileron_forward(pwm_aileron, self.new_speed)
+        print(self.aileron_show_values(event))
     def disable_aileron(self):
         aileron_disable()
     def center_aileron(self):
