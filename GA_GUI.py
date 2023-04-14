@@ -37,7 +37,7 @@ class GA(tk.Tk):
         self.geometry("1920x1080")
         self.title('General Atomics')
         self.config(bg="white")
-        #self.attributes("-fullscreen",True)
+        self.attributes("-fullscreen",True)
         ico = Image.open('images/GA.png')
         photo = ImageTk.PhotoImage(ico)
         self.wm_iconphoto(False, photo)
@@ -627,8 +627,7 @@ class GA(tk.Tk):
             self.aileron_value_label.config(text=self.aileron_speed_value)
             self.converted_value = (self.aileron_speed_value/100)*25
             self.value = round(self.converted_value)
-            return self.value
-                    
+            print(self.value)
 
     def center_landing_gear(self):
         center()
@@ -663,17 +662,9 @@ class GA(tk.Tk):
             self.destroy()
             
     def up_aileron(self):
-        event = tk.Event()
-        event.widget = self.aileron_speed
-        self.new_speed = self.aileron_show_values(event)
-        print(self.aileron_show_values(event))
-        aileron_reverse(pwm_aileron, self.new_speed)
+        aileron_reverse(pwm_aileron, self.value)
     def down_aileron(self):
-        event = tk.Event()
-        event.widget = self.aileron_speed
-        self.new_speed = self.aileron_show_values(event)
-        aileron_forward(pwm_aileron, self.new_speed)
-        print(self.aileron_show_values(event))
+        aileron_forward(pwm_aileron, self.value)
     def disable_aileron(self):
         aileron_disable()
     def center_aileron(self):

@@ -73,11 +73,11 @@ if __name__ == '__main__':
     
     while True:
         try:
-            aileron_reverse(pwm_aileron)
+            aileron_reverse(pwm_aileron,1)
             sleep(0.5)
             aileron_disable()
             sleep(0.5)
-            aileron_forward(pwm_aileron)
+            aileron_forward(pwm_aileron,1)
             sleep(0.5)
             aileron_disable()
             sleep(0.5)
