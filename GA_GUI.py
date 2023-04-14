@@ -5,8 +5,8 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-import RPi.GPIO as GPIO
-from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
+#import RPi.GPIO as GPIO
+#from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 #from centering_aileron import aileron_center
 #from slideshow_video_player import VideoPlayer
 
@@ -548,11 +548,12 @@ class GA(tk.Tk):
         # Disable the button
         print("Directional Antenna ON")
         self.switch_button1.config(state=tk.DISABLED)
+        self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
 
         def callback_directional():  # this to enable button
             self.switch_button1.config(state=tk.NORMAL)
-
+            self.adminlogin_btn.config(state=tk.NORMAL)
         antenna_thread = threading.Thread(target=antenna, args=(callback_directional,))
         antenna_thread.start()
 
@@ -561,20 +562,24 @@ class GA(tk.Tk):
     def landing_gear_toggle_switch(self):
         print("Landing Gear ON") 
         self.switch_button4.config(state=tk.DISABLED)
+        self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
 
         def callback_landing_gear():  # this to enable button
             self.switch_button4.config(state=tk.NORMAL)
+            self.adminlogin_btn.config(state=tk.NORMAL)
 
         steering_thread = threading.Thread(target=user_steering_run, args=(callback_landing_gear,))
         steering_thread.start()
     def Alternator_toggle_switch(self):
         print("Alternator ON")
         self.switch_button5.config(state=tk.DISABLED)
+        self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
 
         def callback_alternator():  # this to enable button
             self.switch_button5.config(state=tk.NORMAL)
+            self.adminlogin_btn.config(state=tk.NORMAL)
 
         # Create a new thread to run the DC LED function
         led_thread = threading.Thread(target=self.DC_LED_function, args=(callback_alternator,))
