@@ -624,16 +624,18 @@ class GA(tk.Tk):
         self.p.stop()
         self.pwmDC.stop()
         GPIO.cleanup()
-    
+
     def aileron_show_values(self, event):
         new_value = self.aileron_speed.get()
         if new_value != self.aileron_speed_value:
             self.aileron_speed_value = new_value
             self.aileron_value_label.config(text=self.aileron_speed_value)
-            self.converted_value = (self.aileron_speed_value/100)*25
-            self.value = round(self.converted_value)
+            self.converted_value = (self.aileron_speed_value / 100) * 25
+            if self.converted_value <= 1:
+                self.value = 1
+            else:
+                self.value = round(self.converted_value)
             print(self.value)
-
     def center_landing_gear(self):
         center()
         print("Center")
