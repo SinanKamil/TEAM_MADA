@@ -17,11 +17,17 @@ POT_Value_retract = ADC(27)
 POT_Value_aileron = ADC(28)
 convert_factor = 2/(65536)#for voltage convertion
 
+def average_ADC(adc, num_values):
+    total = 0
+    for i in range(num_values):
+        total += adc.read_u16()
+        utime.sleep(0.001)
+    return total / num_values
 
 while True:
     led_pin.value(1)
     
-    out_aileron = POT_Value_aileron.read_u16() * convert_factor
+    out_aileron = average_ADC(POT_Value_aileron, 10) * convert_factor
     out_round_aileron = "{:,.4f}".format(out_aileron)  
     
     out_steer = POT_Value_steer.read_u16() * convert_factor
