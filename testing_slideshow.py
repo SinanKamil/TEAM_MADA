@@ -22,3 +22,7 @@ if __name__ == "__main__":
     app = GUI()
     app.pack()
     root.mainloop()
+
+# sudo apt-get update
+# sudo apt-get install libatlas-base-dev libjasper-dev libqtgui4 python3-pyqt5 libqt4-test
+# pip3 install opencv-python

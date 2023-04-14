@@ -6,7 +6,7 @@ class VideoPlayer(tk.Frame):
 
     def __init__(self):
         super().__init__()
-        self.video_file = "/media/pi/SINAN'S USB/slideshow_video.mp4"
+        self.video_file = "D:\slideshow_video.mp4"
         self.playing = False
         self.create_widgets()
         self.bind_events()
