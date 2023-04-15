@@ -5,12 +5,11 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-<<<<<<< HEAD
+
 # from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
-=======
+
 #import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
->>>>>>> c9392ba3965f6dfbefbee0f210f4ba5f68f244dc
 #from centering_aileron import aileron_center
 #from slideshow_video_player import VideoPlayer
 
@@ -624,16 +623,15 @@ class GA(tk.Tk):
                 sleep(.02)
             sleep(.01)
         callback()
-<<<<<<< HEAD
-    
-=======
 
+    
+
+    '''
     def __del__(self):
         self.p.stop()
         self.pwmDC.stop()
         GPIO.cleanup()
-
->>>>>>> c9392ba3965f6dfbefbee0f210f4ba5f68f244dc
+    '''
     def aileron_show_values(self, event):
         new_value = self.aileron_speed.get()
         if new_value != self.aileron_speed_value:
