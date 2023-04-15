@@ -1,9 +1,8 @@
 import RPi.GPIO as GPIO
-from time import sleep
-
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(4, GPIO.OUT)
+<<<<<<< HEAD
 
 GPIO.output(4, 1)
 
@@ -17,3 +16,10 @@ Traceback (most recent call last):
     self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
 _tkinter.TclError: no display name and no $DISPLAY environment variable
 '''
+=======
+
+
+def relay(signal):
+    GPIO.output(4, signal)
+relay(1)
+>>>>>>> c9392ba3965f6dfbefbee0f210f4ba5f68f244dc

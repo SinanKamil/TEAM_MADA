@@ -38,7 +38,7 @@ def aileron_validate_data(serial_obj):
         pass
 ser = serial.Serial("/dev/ttyS0", 115200)
 
-''''
+
 
 
 while True:
@@ -49,4 +49,3 @@ while True:
     sleep(0.1)
 ser.close()
 
-'''

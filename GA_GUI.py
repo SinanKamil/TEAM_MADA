@@ -5,7 +5,12 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
+<<<<<<< HEAD
 # from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
+=======
+#import RPi.GPIO as GPIO
+#from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
+>>>>>>> c9392ba3965f6dfbefbee0f210f4ba5f68f244dc
 #from centering_aileron import aileron_center
 #from slideshow_video_player import VideoPlayer
 
@@ -21,15 +26,13 @@ import threading
 #import RPi.GPIO as GPIO
 
 
-
-aileron_speed_value = 0
+aileron_speed_value = 1
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
         # Create instances of each page class with hidden attribute set to True
-
         self.Fuel_pump_en = False
-        self.aileron_speed_value = 0
+        self.aileron_speed_value = 1
         self.current_value = 0
         #self.init_Alternator()
         self.numbers_clicked = []
@@ -372,7 +375,7 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=1188, y=450)
 
-        self.aileron_speed = Scale(self.aileron_servo_page, from_=100, to=0, length=360, orient=VERTICAL,
+        self.aileron_speed = Scale(self.aileron_servo_page, from_=100, to=1, length=360, orient=VERTICAL,
                         troughcolor='#0e3999', width=76, sliderrelief='groove', highlightbackground='#0e3999',
                         sliderlength=40, font=("Tactic Sans Extra Extended", 15), showvalue=0)
         self.aileron_speed.set(aileron_speed_value)
@@ -405,6 +408,7 @@ class GA(tk.Tk):
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
         self.up_aileron_btn.bind("<ButtonPress>", lambda event: self.up_aileron())
+        #
         self.up_aileron_btn.bind("<ButtonRelease>", lambda event: self.disable_aileron())
         self.up_aileron_btn.place(x=800, y=275)
 
@@ -549,11 +553,12 @@ class GA(tk.Tk):
         # Disable the button
         print("Directional Antenna ON")
         self.switch_button1.config(state=tk.DISABLED)
+        self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
 
         def callback_directional():  # this to enable button
             self.switch_button1.config(state=tk.NORMAL)
-
+            self.adminlogin_btn.config(state=tk.NORMAL)
         antenna_thread = threading.Thread(target=antenna, args=(callback_directional,))
         antenna_thread.start()
 
@@ -562,20 +567,24 @@ class GA(tk.Tk):
     def landing_gear_toggle_switch(self):
         print("Landing Gear ON") 
         self.switch_button4.config(state=tk.DISABLED)
+        self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
 
         def callback_landing_gear():  # this to enable button
             self.switch_button4.config(state=tk.NORMAL)
+            self.adminlogin_btn.config(state=tk.NORMAL)
 
         steering_thread = threading.Thread(target=user_steering_run, args=(callback_landing_gear,))
         steering_thread.start()
     def Alternator_toggle_switch(self):
         print("Alternator ON")
         self.switch_button5.config(state=tk.DISABLED)
+        self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
 
         def callback_alternator():  # this to enable button
             self.switch_button5.config(state=tk.NORMAL)
+            self.adminlogin_btn.config(state=tk.NORMAL)
 
         # Create a new thread to run the DC LED function
         led_thread = threading.Thread(target=self.DC_LED_function, args=(callback_alternator,))
@@ -585,8 +594,8 @@ class GA(tk.Tk):
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(9, GPIO.OUT)  # for DC motor
-        GPIO.setup(10, GPIO.OUT)  # for LED
-        self.p = GPIO.PWM(10, 100)  # Initialize PWM on pin 12 with a frequency of 50Hz
+        GPIO.setup(21, GPIO.OUT)  # for LED
+        self.p = GPIO.PWM(21, 100)  # Initialize PWM on pin 12 with a frequency of 50Hz
         self.pwmDC = GPIO.PWM(9, 100)
         self.p.start(0)  # Start the PWM with a duty cycle of 0
         self.pwmDC.start(0)
@@ -615,15 +624,27 @@ class GA(tk.Tk):
                 sleep(.02)
             sleep(.01)
         callback()
+<<<<<<< HEAD
     
+=======
+
+    def __del__(self):
+        self.p.stop()
+        self.pwmDC.stop()
+        GPIO.cleanup()
+
+>>>>>>> c9392ba3965f6dfbefbee0f210f4ba5f68f244dc
     def aileron_show_values(self, event):
         new_value = self.aileron_speed.get()
         if new_value != self.aileron_speed_value:
             self.aileron_speed_value = new_value
             self.aileron_value_label.config(text=self.aileron_speed_value)
-            print(self.aileron_speed_value)
-
-
+            self.converted_value = (self.aileron_speed_value / 100) * 25
+            if self.converted_value <= 1:
+                self.value = 1
+            else:
+                self.value = round(self.converted_value)
+            print(self.value)
     def center_landing_gear(self):
         center()
         print("Center")
@@ -657,9 +678,9 @@ class GA(tk.Tk):
             self.destroy()
             
     def up_aileron(self):
-        aileron_reverse(pwm_aileron)
+        aileron_reverse(pwm_aileron, self.value)
     def down_aileron(self):
-        aileron_forward(pwm_aileron)
+        aileron_forward(pwm_aileron, self.value)
     def disable_aileron(self):
         aileron_disable()
     def center_aileron(self):
