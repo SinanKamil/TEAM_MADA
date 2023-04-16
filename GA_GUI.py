@@ -10,10 +10,7 @@ import time
 
 #import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
-<<<<<<< HEAD
-=======
 
->>>>>>> 6a651647a173cd9f936515dc0b2ee826d2b82048
 #from centering_aileron import aileron_center
 #from slideshow_video_player import VideoPlayer
 
@@ -627,17 +624,16 @@ class GA(tk.Tk):
                 sleep(.02)
             sleep(.01)
         callback()
-<<<<<<< HEAD
 
     
 
-    '''
+
     def __del__(self):
         self.p.stop()
         self.pwmDC.stop()
         GPIO.cleanup()
-    '''
-=======
+
+
 
     #def __del__(self):
     #    self.p.stop()
@@ -645,7 +641,6 @@ class GA(tk.Tk):
     #    GPIO.cleanup()
 
 
->>>>>>> 6a651647a173cd9f936515dc0b2ee826d2b82048
     def aileron_show_values(self, event):
         new_value = self.aileron_speed.get()
         if new_value != self.aileron_speed_value:

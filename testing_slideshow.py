@@ -1,7 +1,7 @@
 import cv2
 
 # Open the video file
-cap = cv2.VideoCapture('C:/Users/kamil/OneDrive/Main Files/GUI Update.mp4')
+cap = cv2.VideoCapture("/media/pi/SINAN'S USB/slideshow_video.mp4")
 
 # Check if the video file was opened successfully
 if not cap.isOpened():
