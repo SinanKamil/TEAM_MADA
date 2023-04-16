@@ -1,28 +1,28 @@
-import tkinter as tk
-from slideshow_video_player import VideoPlayer
+import cv2
 
+# Open the video file
+cap = cv2.VideoCapture('C:/Users/kamil/OneDrive/Main Files/GUI Update.mp4')
 
-class GUI(tk.Frame):
-    def __init__(self):
-        super().__init__()
-        self.create_widgets()
+# Check if the video file was opened successfully
+if not cap.isOpened():
+    print("Error opening video file")
 
-    def create_widgets(self):
-        # Create button to start video player
-        self.button = tk.Button(self.master, text="Start Video Player", command=self.start_video_player)
-        self.button.pack()
+# Loop through the frames of the video
+while cap.isOpened():
+    # Read the next frame of the video
+    ret, frame = cap.read()
 
-    def start_video_player(self):
-        self.player = VideoPlayer()
-        self.player.play_video()
+    # Check if the frame was successfully read
+    if not ret:
+        break
 
+    # Display the frame
+    cv2.imshow('Frame', frame)
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = GUI()
-    app.pack()
-    root.mainloop()
+    # Wait for a key press to exit
+    if cv2.waitKey(25) & 0xFF == ord('q'):
+        break
 
-# sudo apt-get update
-# sudo apt-get install libatlas-base-dev libjasper-dev libqtgui4 python3-pyqt5 libqt4-test
-# pip3 install opencv-python
+# Release the video file and close all windows
+cap.release()
+cv2.destroyAllWindows()
