@@ -6,7 +6,8 @@ class VideoPlayer(tk.Frame):
 
     def __init__(self):
         super().__init__()
-        self.video_file = "D:\slideshow_video.mp4"
+        self.master.attributes("-fullscreen", True)
+        self.video_file = "C:/Users/kamil/OneDrive/Main Files/GUI Update.mp4"
         self.playing = False
         self.create_widgets()
         self.bind_events()
@@ -19,8 +20,6 @@ class VideoPlayer(tk.Frame):
         # Create a canvas to hold the video frame
         self.canvas = tk.Canvas(self.master, width=screen_width, height=screen_height)
         self.canvas.pack()
-
-        # Make the window full screen
 
     def bind_events(self):
         self.canvas.bind("<Button-1>", self.mouse_callback)
@@ -57,6 +56,5 @@ class VideoPlayer(tk.Frame):
 if __name__ == "__main__":
     root = tk.Tk()
     app = VideoPlayer()
-    app.pack()
     app.play_video()
     root.mainloop()
