@@ -35,9 +35,9 @@ def play_video():
             if key & 0xFF == ord('q') or key == 27 or key == ord('x'):
                 break
 
-        # Break the loop
+        # If the video is finished, set the position to the beginning
         else:
-            break
+            cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
     # When everything done, release
     # the video capture object
@@ -45,4 +45,3 @@ def play_video():
 
     # Closes all the frames
     cv2.destroyAllWindows()
-    
