@@ -1,60 +1,47 @@
-import tkinter as tk
 import cv2
-from PIL import Image, ImageTk
 
-class VideoPlayer(tk.Frame):
+def play_video():
+    # Create a VideoCapture object and read from input file
+    cap = cv2.VideoCapture("/media/pi/SINAN'S USB/GUI Update.mp4")
 
-    def __init__(self):
-        super().__init__()
-        self.master.attributes("-fullscreen", True)
-        self.video_file = "C:/Users/kamil/OneDrive/Main Files/GUI Update.mp4"
-        self.playing = False
-        self.create_widgets()
-        self.bind_events()
+    # Check if camera opened successfully
+    if not cap.isOpened():
+        print("Error opening video file")
 
-    def create_widgets(self):
-        # Get screen width and height
-        screen_width = self.master.winfo_screenwidth()
-        screen_height = self.master.winfo_screenheight()
+    # Create a window with full screen size
+    cv2.namedWindow('Frame', cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty('Frame', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
-        # Create a canvas to hold the video frame
-        self.canvas = tk.Canvas(self.master, width=screen_width, height=screen_height)
-        self.canvas.pack()
+    # Function to handle mouse click events
+    def mouse_callback(event, x, y, flags, param):
+        # Exit video playback if right mouse button is pressed on video window
+        if event == cv2.EVENT_RBUTTONDOWN:
+            cap.release()
 
-    def bind_events(self):
-        self.canvas.bind("<Button-1>", self.mouse_callback)
-        self.canvas.bind("<Button>", self.mouse_callback)  # Stop video when any mouse button is clicked
-        self.canvas.bind("<Motion>", self.mouse_callback)  # Stop video when mouse is moved
+    # Register mouse click event callback
+    cv2.setMouseCallback('Frame', mouse_callback)
 
-    def play_video(self):
-        self.playing = True
-        cap = cv2.VideoCapture(self.video_file)
-        while self.playing:
-            ret, frame = cap.read()
-            if not ret:
+    # Read until video is completed
+    while cap.isOpened():
+
+        # Capture frame-by-frame
+        ret, frame = cap.read()
+        if ret:
+            # Display the resulting frame
+            cv2.imshow('Frame', frame)
+
+            # Press Q or X on keyboard to exit
+            key = cv2.waitKey(25)
+            if key & 0xFF == ord('q') or key == 27 or key == ord('x'):
                 break
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            # Resize the frame to 1920x1080
-            frame = cv2.resize(frame, (1920, 1080))
-            image = Image.fromarray(frame)
-            photo = ImageTk.PhotoImage(image)
-            self.canvas.create_image(0, 0, anchor=tk.NW, image=photo)
-            self.canvas.image = photo
-            self.master.update()
-        cap.release()
-        # Destroy the VideoPlayer instance and its associated widgets
-        self.destroy_video_page()
 
-    def mouse_callback(self, event):
-        self.playing = False
+        # Break the loop
+        else:
+            break
 
-    def destroy_video_page(self):
-        self.canvas.destroy()
-        self.destroy()
+    # When everything done, release
+    # the video capture object
+    cap.release()
 
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = VideoPlayer()
-    app.play_video()
-    root.mainloop()
+    # Closes all the frames
+    cv2.destroyAllWindows()

@@ -7,12 +7,11 @@ from tkinter import messagebox as mb
 import time
 
 # from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
-
+from slideshow_video_player import play_video
 #import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 
 #from centering_aileron import aileron_center
-#from slideshow_video_player import VideoPlayer
 
 #from Alternator_LED_DCMotor import DC_LED_function
 #from Directional_antenna import antenna
@@ -542,8 +541,7 @@ class GA(tk.Tk):
             self.clear_text()
 
     def slideshow(self):
-        self.player = VideoPlayer()
-        self.player.play_video()
+        play_video()
 
 # Define the toggle switch function
     def fuel_toggle_switch(self):
