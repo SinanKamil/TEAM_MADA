@@ -7,7 +7,7 @@ from tkinter import messagebox as mb
 import time
 
 # from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
-#from slideshow_video_player import play_video
+from slideshow_video_player import play_video
 #import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control

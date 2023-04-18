@@ -2,7 +2,7 @@ import cv2
 
 def play_video():
     # Create a VideoCapture object and read from input file
-    cap = cv2.VideoCapture("/media/pi/SINAN'S USB1/GUI Update.mp4")
+    cap = cv2.VideoCapture("/media/pi/SINAN'S USB/GA_SLIDESHOW/1906_SkyGuardian_UK_Beauty_Reel_060719.mp4")
     #cap = cv2.VideoCapture("C:/Users/16193/Downloads/slideshow_video.mp4")
     # Check if camera opened successfully
     if not cap.isOpened():
