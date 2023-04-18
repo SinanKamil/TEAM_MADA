@@ -3,7 +3,7 @@ import cv2
 
 def play_video():
     # Create a VideoCapture object and read from input file
-    cap = cv2.VideoCapture("/media/pi/SINAN'S USB/GA_SLIDESHOW/1906_SkyGuardian_UK_Beauty_Reel_060719.mp4")
+    cap = cv2.VideoCapture("/media/pi/SINAN'S USB/GA_Video.mp4")
 
     # Reduce the resolution to 720p
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
