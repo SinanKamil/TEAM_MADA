@@ -10,7 +10,7 @@ import time
 from slideshow_video_player import play_video
 #import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
-
+from fuel_pump import pump_enable, pump_disble, user_fuel_pump_control
 #from centering_aileron import aileron_center
 
 #from Alternator_LED_DCMotor import DC_LED_function
@@ -545,7 +545,18 @@ class GA(tk.Tk):
 
 # Define the toggle switch function
     def fuel_toggle_switch(self):
-        print("Fuel Pump ON")
+        print("fuel pump ON")
+        self.switch_button_img_on.config(state=tk.DISABLED)
+        self.adminlogin_btn.config(state=tk.DISABLED)
+        self.update()
+
+        def callback_fuelpump():  # this to enable button
+            self.switch_button_img_on.config(state=tk.NORMAL)
+            self.adminlogin_btn.config(state=tk.NORMAL)
+
+        # Create a new thread to run the DC LED function
+        led_thread = threading.Thread(target=self.user_fuel_pump_control, args=(callback_fuelpump,))
+        led_thread.start()
 
     def dir_toggle_switch(self):
         # Disable the button
