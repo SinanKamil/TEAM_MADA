@@ -54,5 +54,3 @@ def play_video():
     # Closes all the frames
     cv2.destroyAllWindows()
 
-
-play_video()
