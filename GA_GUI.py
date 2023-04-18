@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-from video import play_video_vlc
+#from video import play_video_vlc
 # from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 #from slideshow_video_player import play_video
 #import RPi.GPIO as GPIO
