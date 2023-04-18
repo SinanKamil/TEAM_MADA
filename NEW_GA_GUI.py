@@ -685,6 +685,7 @@ class GA(tk.Tk):
 
     def forward_retract(self):
         self.retract_data_float -= 0.05
+        #self.retract_data_float = retract_validate_data()
         print(self.retract_data_float)
         if 0.75 <= self.retract_data_float <= 0.8:
             self.retract_up_btn.config(state=tk.DISABLED)
@@ -693,6 +694,7 @@ class GA(tk.Tk):
 
     def reverse_retract(self):
         self.retract_data_float += 0.05
+        #self.retract_data_float = retract_validate_data()
         print(self.retract_data_float)
         if 1.65 <= self.retract_data_float <= 1.7:
             self.retract_down_btn.config(state=tk.DISABLED)
