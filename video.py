@@ -1,6 +1,7 @@
 import subprocess
 
-def play_video_vlc(video_file_path):
+def play_video_vlc():
+    video_file_path = "/media/pi/SINAN'S USB/GA_SLIDESHOW/1906_SkyGuardian_UK_Beauty_Reel_060719.mp4"
     # Define the command to launch VLC with the video file
     vlc_cmd = ["vlc", "-f", video_file_path]
 
@@ -11,5 +12,4 @@ def play_video_vlc(video_file_path):
     vlc_process.wait()
 
 # Call the function with the path to the video file as an argument
-video_file_path = "/path/to/video/file.mp4"
-play_video_vlc(video_file_path)
+#play_video_vlc()

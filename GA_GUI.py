@@ -5,9 +5,9 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-
+from video import play_video_vlc
 # from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
-from slideshow_video_player import play_video
+#from slideshow_video_player import play_video
 #import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
@@ -541,8 +541,8 @@ class GA(tk.Tk):
             self.clear_text()
 
     def slideshow(self):
-        play_video()
-
+        #play_video()
+        play_video_vlc()
 # Define the toggle switch function
     def fuel_toggle_switch(self):
         print("fuel pump ON")
