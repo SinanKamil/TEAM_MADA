@@ -10,13 +10,16 @@ def pump_setup():
 
 
 def pump_enable():
-	GPIO.output(Enable, 1)
+    pump_setup()
+    GPIO.output(Enable, 1)
 
 
 def pump_disble():
-	GPIO.output(Enable, 0)
+    pump_setup()
+    GPIO.output(Enable, 0)
 
 #LotannaS
 
 pump_enable()
-sleep(15)
+sleep(5)
+pump_disble()
