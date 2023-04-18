@@ -16,13 +16,10 @@ from slideshow_video_player import play_video
 #from Alternator_LED_DCMotor import DC_LED_function
 #from Directional_antenna import antenna
 import threading
-#from Button_control_steering import forward_accelerate, disable_steering, reverse_accelerate
-#from steering_code import motors, MAX_SPEED
-#from centering_steering import center
+from control_steering import forward_accelerate, reverse_accelerate, disable_steering
+from centering_steering import center_steering
 #from admin_antenna import left_antenna, right_antenna, disable_antenna
-#from user_steering import user_steering_run
-
-#import RPi.GPIO as GPIO
+from user_steering import user_steering_run
 
 
 aileron_speed_value = 1
@@ -300,11 +297,11 @@ class GA(tk.Tk):
         self.w1.set(self.current_value)
         self.w1.pack()
         self.w1.place(x=450, y=503)
-        
+
         self.value_label = Label(self.alternator_page, text=self.current_value, font=("Tactic Sans Extra Extended", 25), fg='white', bg="#092a81")
         self.value_label.pack()
         self.value_label.place(x=935, y=450)
-    
+
 
         self.back = self.images["/home/pi/TEAM_MADA/images/adminmenu_btn.png"]
         self.next_button = tk.Button(self.alternator_page, image=self.back, highlightthickness=0,
@@ -563,7 +560,7 @@ class GA(tk.Tk):
     def aileron_toggle_switch(self):
         print("Aileron ON")
     def landing_gear_toggle_switch(self):
-        print("Landing Gear ON") 
+        print("Landing Gear ON")
         self.switch_button4.config(state=tk.DISABLED)
         self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
@@ -586,8 +583,8 @@ class GA(tk.Tk):
 
         # Create a new thread to run the DC LED function
         led_thread = threading.Thread(target=self.DC_LED_function, args=(callback_alternator,))
-        led_thread.start()        
-         
+        led_thread.start()
+
     def init_Alternator(self):
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
@@ -614,7 +611,7 @@ class GA(tk.Tk):
 
                 sleep(.02)
             sleep(.01)
-        
+
             for duty in range(100,-1,-1):
                 self.p.ChangeDutyCycle(duty)
                 self.pwmDC.ChangeDutyCycle(duty)
@@ -623,7 +620,7 @@ class GA(tk.Tk):
             sleep(.01)
         callback()
 
-    
+
 
 
     def __del__(self):
@@ -651,12 +648,8 @@ class GA(tk.Tk):
                 self.value = round(self.converted_value)
             print(self.value)
     def center_landing_gear(self):
-        center()
+        center_steering()
         print("Center")
-        
-    def forward_steering(self):
-        print("forward_steering")
-
 
     def reverse_steering(self):
         print("reverse_steering")
@@ -668,20 +661,20 @@ class GA(tk.Tk):
 
     def disable_steering(self):
         disable_steering()
-        
-        
+
+
     def forward_retract(self):
         print("forward_retract")
-    
+
     def reverse_retract(self):
         print("forward_retract")
-        
-        
+
+
     def exit(self):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
         if res == 'yes':
             self.destroy()
-            
+
     def up_aileron(self):
         aileron_reverse(pwm_aileron, self.value)
     def down_aileron(self):
@@ -690,7 +683,7 @@ class GA(tk.Tk):
         aileron_disable()
     def center_aileron(self):
         aileron_center()
-        
+
     def left_antenna(self):
         left_antenna()
     def right_antenna(self):

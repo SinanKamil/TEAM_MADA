@@ -26,40 +26,36 @@ def center_steering():
 
     rev_constant = -MAX_SPEED
     rev_daccelerate = list(range(-int(MAX_SPEED), 0, 40))#not being used
-    if data_float < 1.15 or data_float > 1.23:
-        if data_float > 1.19:
-            for s in for_accelerate:
-                motors.motor1.setSpeed(s)
-                raiseIfFault()
-                data_float = steering_validate_data(ser)
-                print(data_float)
-
-            while data_float > 1.19:
-                motors.motor1.setSpeed(int(for_constant))
-                raiseIfFault()
-                data_float = steering_validate_data(ser)
-                print(data_float)
-
-        else:
+    if data_float < 1.68 or data_float > 1.76:
+        if data_float > 0.7 and data_float < 1.72:
             for s in rev_accelerate:
                 motors.motor1.setSpeed(s)
                 raiseIfFault()
                 data_float = steering_validate_data(ser)
                 print(data_float)
 
-            while data_float < 1.19:
+            while data_float < 1.72:
                 motors.motor1.setSpeed(int(rev_constant))
+                raiseIfFault()
+                data_float = steering_validate_data(ser)
+                print(data_float)
+
+        else:
+            for s in for_accelerate:
+                motors.motor1.setSpeed(s)
+                raiseIfFault()
+                data_float = steering_validate_data(ser)
+                print(data_float)
+
+            while data_float > 1.72 or data_float < 0.7:
+                motors.motor1.setSpeed(int(for_constant))
                 raiseIfFault()
                 data_float = steering_validate_data(ser)
                 print(data_float)
         motors.forceStop()
 
 
-center_steering()
-
-
 motors.forceStop()
-
 
 
 

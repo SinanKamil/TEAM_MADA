@@ -1,5 +1,6 @@
 import time
 from steering_retract_code import motors, MAX_SPEED
+#from three_UARTS_pi4_get import steering_validate_data
 
 # Define a custom exception to raise if a fault is detected.
 class DriverFault(Exception):
@@ -27,11 +28,6 @@ try:
         time.sleep(0.002)
 
 
-    print("Motor 1 reverse")
-    for s in test_reverse_speeds:
-        motors.motor1.setSpeed(s)
-        raiseIfFault()
-        time.sleep(0.002)
 
 except DriverFault as e:
     print("Driver %s fault!" % e.driver_num)
