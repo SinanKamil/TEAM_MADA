@@ -16,5 +16,7 @@ def pump_enable():
 def pump_disble():
 	GPIO.output(Enable, 0)
 
+#LotannaS
+
 pump_enable()
 sleep(15)
