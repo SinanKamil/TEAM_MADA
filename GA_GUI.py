@@ -7,7 +7,7 @@ from tkinter import messagebox as mb
 import time
 
 # from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
-from slideshow_video_player import play_video
+#from slideshow_video_player import play_video
 #import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
@@ -80,10 +80,10 @@ class GA(tk.Tk):
 
         # Create the switch button for fuel pump
         self.switch_button_img_on = self.images["/home/pi/TEAM_MADA/btn_images/fuel_pump.png"]
-        self.switch_button = tk.Button(self.page1, image=self.switch_button_img_on, command=self.fuel_toggle_switch, highlightthickness=0,
+        self.fuel_pump_btn = tk.Button(self.page1, image=self.switch_button_img_on, command=self.fuel_toggle_switch, highlightthickness=0,
                                      activebackground ='#092a81', background ='#092a81', borderwidth=0,
                                      relief="flat", bd=0)
-        self.switch_button.place(x=342, y=450)
+        self.fuel_pump_btn.place(x=342, y=450)
         #This is for the directional antenna
         self.switch_button_img_on1 = self.images["/home/pi/TEAM_MADA/btn_images/directional_antenna.png"]
         self.switch_button1 = tk.Button(self.page1, image=self.switch_button_img_on1, command=self.dir_toggle_switch, highlightthickness=0,
@@ -274,10 +274,10 @@ class GA(tk.Tk):
         self.switch_button_fuel.place(x=800, y=500)
 
         self.next_button_img19 = self.images["/home/pi/TEAM_MADA/images/adminmenu_btn.png"]
-        self.next_button = tk.Button(self.fuel_pump_page, image=self.next_button_img19, highlightthickness=0,
+        self.fuel_home = tk.Button(self.fuel_pump_page, image=self.next_button_img19, highlightthickness=0,
                                        activebackground='white', background='white', command=self.show_page3,
                                        borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=230, y=884)
+        self.fuel_home.place(x=230, y=884)
 
 #page for alternator
         self.alternator_page = tk.Frame(self)
@@ -546,16 +546,16 @@ class GA(tk.Tk):
 # Define the toggle switch function
     def fuel_toggle_switch(self):
         print("fuel pump ON")
-        self.switch_button_img_on.config(state=tk.DISABLED)
+        self.fuel_pump_btn.config(state=tk.DISABLED)
         self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
 
         def callback_fuelpump():  # this to enable button
-            self.switch_button_img_on.config(state=tk.NORMAL)
+            self.fuel_pump_btn.config(state=tk.NORMAL)
             self.adminlogin_btn.config(state=tk.NORMAL)
-
+        
         # Create a new thread to run the DC LED function
-        led_thread = threading.Thread(target=self.user_fuel_pump_control, args=(callback_fuelpump,))
+        led_thread = threading.Thread(target=user_fuel_pump_control, args=(callback_fuelpump,))
         led_thread.start()
 
     def dir_toggle_switch(self):
@@ -743,10 +743,13 @@ class GA(tk.Tk):
         if not self.Fuel_pump_en:
             self.Fuel_pump_en = True
             self.switch_button_fuel.config(image=self.switch_button_fuel_on)
+            self.fuel_home.config(state=tk.DISABLED)
+            pump_enable()
         else:
             self.Fuel_pump_en = False
             self.switch_button_fuel.config(image=self.switch_button_fuel_off)
-
+            self.fuel_home.config(state=tk.NORMAL)
+            pump_disable()
     def preload_images(self):
         # Create a dictionary of all image file paths
         self.images = {}
