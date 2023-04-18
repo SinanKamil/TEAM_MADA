@@ -46,6 +46,7 @@ class GA(tk.Tk):
         self.inactive_time = 10
         self.total_seconds = self.minutes * 60
         self.last_active_time = time.time()
+        self.retract_data_float = 0.8
 
 
 #page 1 here:
@@ -483,6 +484,8 @@ class GA(tk.Tk):
          self.show_page(self.landing_gear_page)
          self.reset_timer()
          self.update_label()
+         if 0.75 <= self.retract_data_float >= 0.8:
+            self.retract_up_btn.config(state=tk.DISABLED)
     def show_directional_antenna_page(self):
         self.show_page(self.directional_antenna_page)
         self.reset_timer()
@@ -564,6 +567,7 @@ class GA(tk.Tk):
         self.switch_button4.config(state=tk.DISABLED)
         self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
+
 
         def callback_landing_gear():  # this to enable button
             self.switch_button4.config(state=tk.NORMAL)
@@ -664,10 +668,20 @@ class GA(tk.Tk):
 
 
     def forward_retract(self):
-        print("forward_retract")
+        self.retract_data_float -= 0.05
+        print(self.retract_data_float)
+        if 0.75 <= self.retract_data_float <= 0.8:
+            self.retract_up_btn.config(state=tk.DISABLED)
+        else:
+            self.retract_down_btn.config(state=tk.NORMAL)
 
     def reverse_retract(self):
-        print("forward_retract")
+        self.retract_data_float += 0.05
+        print(self.retract_data_float)
+        if 1.65 <= self.retract_data_float <= 1.7:
+            self.retract_down_btn.config(state=tk.DISABLED)
+        else:
+            self.retract_up_btn.config(state=tk.NORMAL)
 
 
     def exit(self):
