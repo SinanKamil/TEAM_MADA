@@ -349,16 +349,16 @@ class GA(tk.Tk):
         self.center_landing.place(x=800, y=500)
 
         self.retract_down = self.images["/home/pi/TEAM_MADA/btn_images/retract_down.png"]
-        self.next_button = tk.Button(self.landing_gear_page, image=self.retract_down, highlightthickness=0,
+        self.retract_down_btn = tk.Button(self.landing_gear_page, image=self.retract_down, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.reverse_retract,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=800, y=725)
+        self.retract_down_btn.place(x=800, y=725)
 
         self.retract_up = self.images["/home/pi/TEAM_MADA/btn_images/retract_up.png"]
-        self.next_button = tk.Button(self.landing_gear_page, image=self.retract_up, highlightthickness=0,
+        self.retract_up_btn = tk.Button(self.landing_gear_page, image=self.retract_up, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.forward_retract,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=800, y=275)
+        self.retract_up_btn.place(x=800, y=275)
 #page for Aileron Smart Servo
         # 10 slide show and five for inactive
         self.aileron_servo_page = tk.Frame(self)
