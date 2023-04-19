@@ -483,15 +483,11 @@ class GA(tk.Tk):
          self.show_page(self.landing_gear_page)
          self.reset_timer()
          self.update_label()
-         if self.retract_data_float < 0.8:
-             self.retract_up_btn.config(state=tk.DISABLED)
-         else:
-             self.retract_down_btn.config(state=tk.NORMAL)
 
-         if self.retract_data_float > 1.65:
+         if 0.9 >= self.retract_data_float:
+             self.retract_up_btn.config(state=tk.DISABLED)
+         if 1.65 <= self.retract_data_float:
              self.retract_down_btn.config(state=tk.DISABLED)
-         else:
-             self.retract_up_btn.config(state=tk.NORMAL)
     def show_directional_antenna_page(self):
         self.show_page(self.directional_antenna_page)
         self.reset_timer()
@@ -683,26 +679,31 @@ class GA(tk.Tk):
     def disable_steering(self):
         disable_steering()
 
-
     def forward_retract(self):
         self.retract_data_float -= 0.05
-        #self.retract_data_float = retract_validate_data()
+        # self.retract_data_float = retract_validate_data()
         print(self.retract_data_float)
-        if self.retract_data_float < 0.8:
-            self.retract_up_btn.config(state=tk.DISABLED)
-        else:
+        if 0.9 <= self.retract_data_float <= 1.65:
+            self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
-
+        else:
+            if self.retract_data_float < 0.9:
+                self.retract_up_btn.config(state=tk.DISABLED)
+            else:
+                self.retract_up_btn.config(state=tk.NORMAL)
 
     def reverse_retract(self):
         self.retract_data_float += 0.05
-        #self.retract_data_float = retract_validate_data()
+        # self.retract_data_float = retract_validate_data()
         print(self.retract_data_float)
-        if self.retract_data_float > 1.65:
-            self.retract_down_btn.config(state=tk.DISABLED)
-        else:
+        if 0.9 <= self.retract_data_float <= 1.65:
             self.retract_up_btn.config(state=tk.NORMAL)
-
+            self.retract_down_btn.config(state=tk.NORMAL)
+        else:
+            if self.retract_data_float > 1.65:
+                self.retract_down_btn.config(state=tk.DISABLED)
+            else:
+                self.retract_down_btn.config(state=tk.NORMAL)
 
     def exit(self):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
