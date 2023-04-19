@@ -483,8 +483,15 @@ class GA(tk.Tk):
          self.show_page(self.landing_gear_page)
          self.reset_timer()
          self.update_label()
-         if 0.75 <= self.retract_data_float >= 0.8:
-            self.retract_up_btn.config(state=tk.DISABLED)
+         if self.retract_data_float < 0.8:
+             self.retract_up_btn.config(state=tk.DISABLED)
+         else:
+             self.retract_down_btn.config(state=tk.NORMAL)
+
+         if self.retract_data_float > 1.65:
+             self.retract_down_btn.config(state=tk.DISABLED)
+         else:
+             self.retract_up_btn.config(state=tk.NORMAL)
     def show_directional_antenna_page(self):
         self.show_page(self.directional_antenna_page)
         self.reset_timer()
@@ -681,16 +688,17 @@ class GA(tk.Tk):
         self.retract_data_float -= 0.05
         #self.retract_data_float = retract_validate_data()
         print(self.retract_data_float)
-        if 0.75 <= self.retract_data_float <= 0.8:
+        if self.retract_data_float < 0.8:
             self.retract_up_btn.config(state=tk.DISABLED)
         else:
             self.retract_down_btn.config(state=tk.NORMAL)
+
 
     def reverse_retract(self):
         self.retract_data_float += 0.05
         #self.retract_data_float = retract_validate_data()
         print(self.retract_data_float)
-        if 1.65 <= self.retract_data_float <= 1.7:
+        if self.retract_data_float > 1.65:
             self.retract_down_btn.config(state=tk.DISABLED)
         else:
             self.retract_up_btn.config(state=tk.NORMAL)
