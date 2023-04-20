@@ -56,7 +56,16 @@ def aileron_disable():
         GPIO.cleanup()
         pwm_aileron.stop()
         exit()
+def aileron_enable():
+    try:
+        GPIO.output(Enable, 1)
+        GPIO.output(Break, 1)
 
+    except Exception as e:
+        print(f"Error enabling aileron: {e}")
+        GPIO.cleanup()
+        pwm_aileron.stop()
+        exit()
 def cleanup():
     try:
         GPIO.cleanup()
@@ -70,7 +79,7 @@ def cleanup():
 pwm_aileron = aileron_setup()
 
 if __name__ == '__main__':
-    
+
     while True:
         try:
             aileron_reverse(pwm_aileron,1)

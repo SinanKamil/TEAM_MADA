@@ -8,9 +8,9 @@ import time
 # from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 from slideshow_video_player import play_video
 #import RPi.GPIO as GPIO
-#from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
+from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
-#from centering_aileron import aileron_center
+from centering_aileron import aileron_center
 
 #from Alternator_LED_DCMotor import DC_LED_function
 #from Directional_antenna import antenna
@@ -20,15 +20,14 @@ from centering_steering import center_steering
 #from admin_antenna import left_antenna, right_antenna, disable_antenna
 from user_steering import user_steering_run
 
-
 aileron_speed_value = 1
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
         # Create instances of each page class with hidden attribute set to True
         self.Fuel_pump_en = False
-        self.aileron_speed_value = 1
         self.current_value = 0
+        self.aileron_speed_value = 1
         #self.init_Alternator()
         self.numbers_clicked = []
         self.current_value = 0
@@ -555,7 +554,7 @@ class GA(tk.Tk):
         def callback_fuelpump():  # this to enable button
             self.fuel_pump_btn.config(state=tk.NORMAL)
             self.adminlogin_btn.config(state=tk.NORMAL)
-        
+
         # Create a new thread to run the DC LED function
         led_thread = threading.Thread(target=user_fuel_pump_control, args=(callback_fuelpump,))
         led_thread.start()
@@ -654,6 +653,7 @@ class GA(tk.Tk):
 
 
     def aileron_show_values(self, event):
+
         new_value = self.aileron_speed.get()
         if new_value != self.aileron_speed_value:
             self.aileron_speed_value = new_value
@@ -718,6 +718,7 @@ class GA(tk.Tk):
         aileron_disable()
     def center_aileron(self):
         aileron_center()
+        print("CENTEEER")
 
     def left_antenna(self):
         left_antenna()
@@ -725,8 +726,7 @@ class GA(tk.Tk):
         right_antenna()
     def disable_dir_antenna(self):
         disable_antenna()
-    def center_aileron(self):
-        aileron_center()
+
     def reset_timer(self, event=None):
         self.last_active_time = time.time() #time goes back to normal
 
