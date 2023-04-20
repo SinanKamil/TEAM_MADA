@@ -1,9 +1,17 @@
 import cv2
 
+
 def play_video():
     # Create a VideoCapture object and read from input file
-    cap = cv2.VideoCapture("/media/pi/SINAN'S USB1/GUI Update.mp4")
-    #cap = cv2.VideoCapture("C:/Users/16193/Downloads/slideshow_video.mp4")
+    cap = cv2.VideoCapture("/media/pi/SINAN'S USB/GA_Video.mp4")
+
+    # Reduce the resolution to 720p
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+
+    # Reduce the frame rate to 30 fps
+    cap.set(cv2.CAP_PROP_FPS, 60)
+
     # Check if camera opened successfully
     if not cap.isOpened():
         print("Error opening video file")
@@ -45,4 +53,6 @@ def play_video():
 
     # Closes all the frames
     cv2.destroyAllWindows()
-#play_video()
+
+
+

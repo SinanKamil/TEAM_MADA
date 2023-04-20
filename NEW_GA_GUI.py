@@ -48,6 +48,7 @@ class GA(tk.Tk):
         self.inactive_time = 10
         self.total_seconds = self.minutes * 60
         self.last_active_time = time.time()
+        self.retract_data_float = 1.9
 
         # page 1 here:
         # Create the first page
@@ -359,16 +360,16 @@ class GA(tk.Tk):
         self.center_landing.place(x=800, y=500)
 
         self.retract_down = self.images["btn_images/retract_down.png"]
-        self.next_button = tk.Button(self.landing_gear_page, image=self.retract_down, highlightthickness=0,
+        self.retract_down_btn = tk.Button(self.landing_gear_page, image=self.retract_down, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.reverse_retract,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=800, y=725)
+        self.retract_down_btn.place(x=800, y=725)
 
         self.retract_up = self.images["btn_images/retract_up.png"]
-        self.next_button = tk.Button(self.landing_gear_page, image=self.retract_up, highlightthickness=0,
+        self.retract_up_btn = tk.Button(self.landing_gear_page, image=self.retract_up, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.forward_retract,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=800, y=275)
+        self.retract_up_btn.place(x=800, y=275)
         # page for Aileron Smart Servo
         # 10 slide show and five for inactive
         self.aileron_servo_page = tk.Frame(self)
@@ -500,6 +501,14 @@ class GA(tk.Tk):
         self.show_page(self.landing_gear_page)
         self.reset_timer()
         self.update_label()
+
+        if 0.9 >= self.retract_data_float:
+            self.retract_up_btn.config(state=tk.DISABLED)
+
+        if 1.65 <= self.retract_data_float:
+            self.retract_down_btn.config(state=tk.DISABLED)
+
+
 
     def show_directional_antenna_page(self):
         self.show_page(self.directional_antenna_page)
@@ -680,10 +689,31 @@ class GA(tk.Tk):
         disable_steering()
 
     def forward_retract(self):
-        print("forward_retract")
-
+        self.retract_data_float -= 0.05
+        # self.retract_data_float = retract_validate_data()
+        print(self.retract_data_float)
+        if 0.9 <= self.retract_data_float <= 1.65:
+            self.retract_up_btn.config(state=tk.NORMAL)
+            self.retract_down_btn.config(state=tk.NORMAL)
+        else:
+            if self.retract_data_float < 0.9:
+                self.retract_up_btn.config(state=tk.DISABLED)
+            else:
+                self.retract_up_btn.config(state=tk.NORMAL)
     def reverse_retract(self):
-        print("forward_retract")
+        self.retract_data_float += 0.05
+        # self.retract_data_float = retract_validate_data()
+        print(self.retract_data_float)
+        if 0.9 <= self.retract_data_float <= 1.65:
+            self.retract_up_btn.config(state=tk.NORMAL)
+            self.retract_down_btn.config(state=tk.NORMAL)
+        else:
+            if self.retract_data_float > 1.65:
+                self.retract_down_btn.config(state=tk.DISABLED)
+            else:
+                self.retract_down_btn.config(state=tk.NORMAL)
+
+
 
     def exit(self):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')

@@ -5,15 +5,23 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-
 # from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 from slideshow_video_player import play_video
+<<<<<<< HEAD
 import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 
 #from centering_aileron import aileron_center
 
 from Alternator_LED_DCMotor import DC_LED_function
+=======
+#import RPi.GPIO as GPIO
+from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
+from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
+from centering_aileron import aileron_center
+from user_aileron import aileron_user
+#from Alternator_LED_DCMotor import DC_LED_function
+>>>>>>> e05a14839841ea32d0059e91f989309c82d093f4
 #from Directional_antenna import antenna
 import threading
 from control_steering import forward_accelerate, reverse_accelerate, disable_steering
@@ -21,15 +29,14 @@ from centering_steering import center_steering
 #from admin_antenna import left_antenna, right_antenna, disable_antenna
 from user_steering import user_steering_run
 
-
 aileron_speed_value = 1
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
         # Create instances of each page class with hidden attribute set to True
         self.Fuel_pump_en = False
-        self.aileron_speed_value = 1
         self.current_value = 0
+        self.aileron_speed_value = 1
         #self.init_Alternator()
         self.numbers_clicked = []
         self.current_value = 0
@@ -46,6 +53,7 @@ class GA(tk.Tk):
         self.inactive_time = 10
         self.total_seconds = self.minutes * 60
         self.last_active_time = time.time()
+        self.retract_data_float = 0.8
 
 
 #page 1 here:
@@ -79,10 +87,10 @@ class GA(tk.Tk):
 
         # Create the switch button for fuel pump
         self.switch_button_img_on = self.images["/home/pi/TEAM_MADA/btn_images/fuel_pump.png"]
-        self.switch_button = tk.Button(self.page1, image=self.switch_button_img_on, command=self.fuel_toggle_switch, highlightthickness=0,
+        self.fuel_pump_btn = tk.Button(self.page1, image=self.switch_button_img_on, command=self.fuel_toggle_switch, highlightthickness=0,
                                      activebackground ='#092a81', background ='#092a81', borderwidth=0,
                                      relief="flat", bd=0)
-        self.switch_button.place(x=342, y=450)
+        self.fuel_pump_btn.place(x=342, y=450)
         #This is for the directional antenna
         self.switch_button_img_on1 = self.images["/home/pi/TEAM_MADA/btn_images/directional_antenna.png"]
         self.switch_button1 = tk.Button(self.page1, image=self.switch_button_img_on1, command=self.dir_toggle_switch, highlightthickness=0,
@@ -273,10 +281,10 @@ class GA(tk.Tk):
         self.switch_button_fuel.place(x=800, y=500)
 
         self.next_button_img19 = self.images["/home/pi/TEAM_MADA/images/adminmenu_btn.png"]
-        self.next_button = tk.Button(self.fuel_pump_page, image=self.next_button_img19, highlightthickness=0,
+        self.fuel_home = tk.Button(self.fuel_pump_page, image=self.next_button_img19, highlightthickness=0,
                                        activebackground='white', background='white', command=self.show_page3,
                                        borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=230, y=884)
+        self.fuel_home.place(x=230, y=884)
 
 #page for alternator
         self.alternator_page = tk.Frame(self)
@@ -349,16 +357,16 @@ class GA(tk.Tk):
         self.center_landing.place(x=800, y=500)
 
         self.retract_down = self.images["/home/pi/TEAM_MADA/btn_images/retract_down.png"]
-        self.next_button = tk.Button(self.landing_gear_page, image=self.retract_down, highlightthickness=0,
+        self.retract_down_btn = tk.Button(self.landing_gear_page, image=self.retract_down, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.reverse_retract,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=800, y=725)
+        self.retract_down_btn.place(x=800, y=725)
 
         self.retract_up = self.images["/home/pi/TEAM_MADA/btn_images/retract_up.png"]
-        self.next_button = tk.Button(self.landing_gear_page, image=self.retract_up, highlightthickness=0,
+        self.retract_up_btn = tk.Button(self.landing_gear_page, image=self.retract_up, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.forward_retract,
                                      borderwidth=0, relief="flat", bd=0)
-        self.next_button.place(x=800, y=275)
+        self.retract_up_btn.place(x=800, y=275)
 #page for Aileron Smart Servo
         # 10 slide show and five for inactive
         self.aileron_servo_page = tk.Frame(self)
@@ -404,7 +412,6 @@ class GA(tk.Tk):
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
         self.up_aileron_btn.bind("<ButtonPress>", lambda event: self.up_aileron())
-        #
         self.up_aileron_btn.bind("<ButtonRelease>", lambda event: self.disable_aileron())
         self.up_aileron_btn.place(x=800, y=275)
 
@@ -483,6 +490,11 @@ class GA(tk.Tk):
          self.show_page(self.landing_gear_page)
          self.reset_timer()
          self.update_label()
+
+         if 0.9 >= self.retract_data_float:
+             self.retract_up_btn.config(state=tk.DISABLED)
+         if 1.65 <= self.retract_data_float:
+             self.retract_down_btn.config(state=tk.DISABLED)
     def show_directional_antenna_page(self):
         self.show_page(self.directional_antenna_page)
         self.reset_timer()
@@ -538,11 +550,22 @@ class GA(tk.Tk):
             self.clear_text()
 
     def slideshow(self):
+        #play_video()
         play_video()
-
 # Define the toggle switch function
     def fuel_toggle_switch(self):
-        print("Fuel Pump ON")
+        print("fuel pump ON")
+        self.fuel_pump_btn.config(state=tk.DISABLED)
+        self.adminlogin_btn.config(state=tk.DISABLED)
+        self.update()
+
+        def callback_fuelpump():  # this to enable button
+            self.fuel_pump_btn.config(state=tk.NORMAL)
+            self.adminlogin_btn.config(state=tk.NORMAL)
+
+        # Create a new thread to run the DC LED function
+        led_thread = threading.Thread(target=user_fuel_pump_control, args=(callback_fuelpump,))
+        led_thread.start()
 
     def dir_toggle_switch(self):
         # Disable the button
@@ -559,11 +582,24 @@ class GA(tk.Tk):
 
     def aileron_toggle_switch(self):
         print("Aileron ON")
+        self.switch_button2.config(state=tk.DISABLED)
+        self.adminlogin_btn.config(state=tk.DISABLED)
+        self.update()
+
+
+        def callback_aileron():  # this to enable button
+            self.switch_button2.config(state=tk.NORMAL)
+            self.adminlogin_btn.config(state=tk.NORMAL)
+
+        aileron_thread = threading.Thread(target=aileron_user, args=(callback_aileron,))
+        aileron_thread.start()
+
     def landing_gear_toggle_switch(self):
         print("Landing Gear ON")
         self.switch_button4.config(state=tk.DISABLED)
         self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
+
 
         def callback_landing_gear():  # this to enable button
             self.switch_button4.config(state=tk.NORMAL)
@@ -647,6 +683,7 @@ class GA(tk.Tk):
             else:
                 self.value = round(self.converted_value)
             print(self.value)
+
     def center_landing_gear(self):
         center_steering()
         print("Center")
@@ -662,13 +699,31 @@ class GA(tk.Tk):
     def disable_steering(self):
         disable_steering()
 
-
     def forward_retract(self):
-        print("forward_retract")
+        self.retract_data_float -= 0.05
+        # self.retract_data_float = retract_validate_data()
+        print(self.retract_data_float)
+        if 0.9 <= self.retract_data_float <= 1.65:
+            self.retract_up_btn.config(state=tk.NORMAL)
+            self.retract_down_btn.config(state=tk.NORMAL)
+        else:
+            if self.retract_data_float < 0.9:
+                self.retract_up_btn.config(state=tk.DISABLED)
+            else:
+                self.retract_up_btn.config(state=tk.NORMAL)
 
     def reverse_retract(self):
-        print("forward_retract")
-
+        self.retract_data_float += 0.05
+        # self.retract_data_float = retract_validate_data()
+        print(self.retract_data_float)
+        if 0.9 <= self.retract_data_float <= 1.65:
+            self.retract_up_btn.config(state=tk.NORMAL)
+            self.retract_down_btn.config(state=tk.NORMAL)
+        else:
+            if self.retract_data_float > 1.65:
+                self.retract_down_btn.config(state=tk.DISABLED)
+            else:
+                self.retract_down_btn.config(state=tk.NORMAL)
 
     def exit(self):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
@@ -679,10 +734,13 @@ class GA(tk.Tk):
         aileron_reverse(pwm_aileron, self.value)
     def down_aileron(self):
         aileron_forward(pwm_aileron, self.value)
+
+
     def disable_aileron(self):
         aileron_disable()
     def center_aileron(self):
         aileron_center()
+        print("CENTEEER")
 
     def left_antenna(self):
         left_antenna()
@@ -690,8 +748,7 @@ class GA(tk.Tk):
         right_antenna()
     def disable_dir_antenna(self):
         disable_antenna()
-    def center_aileron(self):
-        aileron_center()
+
     def reset_timer(self, event=None):
         self.last_active_time = time.time() #time goes back to normal
 
@@ -716,10 +773,13 @@ class GA(tk.Tk):
         if not self.Fuel_pump_en:
             self.Fuel_pump_en = True
             self.switch_button_fuel.config(image=self.switch_button_fuel_on)
+            self.fuel_home.config(state=tk.DISABLED)
+            pump_enable()
         else:
             self.Fuel_pump_en = False
             self.switch_button_fuel.config(image=self.switch_button_fuel_off)
-
+            self.fuel_home.config(state=tk.NORMAL)
+            pump_disable()
     def preload_images(self):
         # Create a dictionary of all image file paths
         self.images = {}
