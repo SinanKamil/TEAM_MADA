@@ -11,7 +11,7 @@ from slideshow_video_player import play_video
 from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
 from centering_aileron import aileron_center
-
+from user_aileron import aileron_user
 #from Alternator_LED_DCMotor import DC_LED_function
 #from Directional_antenna import antenna
 import threading
@@ -403,7 +403,6 @@ class GA(tk.Tk):
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
         self.up_aileron_btn.bind("<ButtonPress>", lambda event: self.up_aileron())
-        #
         self.up_aileron_btn.bind("<ButtonRelease>", lambda event: self.disable_aileron())
         self.up_aileron_btn.place(x=800, y=275)
 
@@ -574,6 +573,18 @@ class GA(tk.Tk):
 
     def aileron_toggle_switch(self):
         print("Aileron ON")
+        self.switch_button2.config(state=tk.DISABLED)
+        self.adminlogin_btn.config(state=tk.DISABLED)
+        self.update()
+
+
+        def callback_aileron():  # this to enable button
+            self.switch_button2.config(state=tk.NORMAL)
+            self.adminlogin_btn.config(state=tk.NORMAL)
+
+        aileron_thread = threading.Thread(target=aileron_user, args=(callback_aileron,))
+        aileron_thread.start()
+
     def landing_gear_toggle_switch(self):
         print("Landing Gear ON")
         self.switch_button4.config(state=tk.DISABLED)
@@ -653,7 +664,6 @@ class GA(tk.Tk):
 
 
     def aileron_show_values(self, event):
-
         new_value = self.aileron_speed.get()
         if new_value != self.aileron_speed_value:
             self.aileron_speed_value = new_value
@@ -664,6 +674,7 @@ class GA(tk.Tk):
             else:
                 self.value = round(self.converted_value)
             print(self.value)
+
     def center_landing_gear(self):
         center_steering()
         print("Center")
@@ -714,6 +725,8 @@ class GA(tk.Tk):
         aileron_reverse(pwm_aileron, self.value)
     def down_aileron(self):
         aileron_forward(pwm_aileron, self.value)
+
+
     def disable_aileron(self):
         aileron_disable()
     def center_aileron(self):
