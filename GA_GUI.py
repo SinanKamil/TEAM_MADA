@@ -7,28 +7,28 @@ from tkinter import messagebox as mb
 import time
 # from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 from slideshow_video_player import play_video
-<<<<<<< HEAD
+
 import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 
 #from centering_aileron import aileron_center
 
-from Alternator_LED_DCMotor import DC_LED_function
-=======
-#import RPi.GPIO as GPIO
-from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
-from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
-from centering_aileron import aileron_center
-from user_aileron import aileron_user
 #from Alternator_LED_DCMotor import DC_LED_function
->>>>>>> e05a14839841ea32d0059e91f989309c82d093f4
+
+#import RPi.GPIO as GPIO
+#from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
+from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
+#from centering_aileron import aileron_center
+#from user_aileron import aileron_user
+#from Alternator_LED_DCMotor import DC_LED_function
 #from Directional_antenna import antenna
 import threading
-from control_steering import forward_accelerate, reverse_accelerate, disable_steering
-from centering_steering import center_steering
+#from three_UARTS_pi4_get import retract_validate_data
+#from control_steering import forward_accelerate, reverse_accelerate, disable_steering
+#from centering_steering import center_steering
 #from admin_antenna import left_antenna, right_antenna, disable_antenna
-from user_steering import user_steering_run
-
+#from user_steering import user_steering_run
+#from centering_retract import retract_center
 aileron_speed_value = 1
 class GA(tk.Tk):
     def __init__(self):
@@ -53,7 +53,7 @@ class GA(tk.Tk):
         self.inactive_time = 10
         self.total_seconds = self.minutes * 60
         self.last_active_time = time.time()
-        self.retract_data_float = 0.8
+        self.retract_data_float = 0.9
 
 
 #page 1 here:
@@ -491,9 +491,9 @@ class GA(tk.Tk):
          self.reset_timer()
          self.update_label()
 
-         if 0.9 >= self.retract_data_float:
+         if 0.9 > self.retract_data_float:
              self.retract_up_btn.config(state=tk.DISABLED)
-         if 1.65 <= self.retract_data_float:
+         if 1.75 < self.retract_data_float:
              self.retract_down_btn.config(state=tk.DISABLED)
     def show_directional_antenna_page(self):
         self.show_page(self.directional_antenna_page)

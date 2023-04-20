@@ -21,14 +21,14 @@ try:
     motors.setSpeeds(0, 0)
 
     print("Motor 2 forward")
-    for s in test_forward_speeds:
+    for s in test_forward_speeds: #left goes 0.84
         motors.motor2.setSpeed(s)
         raiseIfFault()
         time.sleep(0.002)
 
 
     print("Motor 2 reverse")
-    for s in test_reverse_speeds:
+    for s in test_reverse_speeds:#goes right goes toward 1.8
         motors.motor2.setSpeed(s)
         raiseIfFault()
         time.sleep(0.002)

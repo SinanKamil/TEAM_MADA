@@ -27,15 +27,15 @@ def retract_center():
 
     rev_constant = -MAX_SPEED
     rev_daccelerate = list(range(-int(MAX_SPEED), 0, 40))#not being used
-    if data_float < 1.15 or data_float > 1.23:
-        if data_float > 1.19:
+    if data_float > 0.9 or data_float < 1.8:
+        if data_float > 1.75:
             for s in for_accelerate:
                 motors.motor2.setSpeed(s)
                 raiseIfFault()
                 data_float = retract_validate_data(ser)
                 print(data_float)
 
-            while data_float > 1.19:
+            while data_float > 1.75:
                 motors.motor2.setSpeed(int(for_constant))
                 raiseIfFault()
                 data_float = retract_validate_data(ser)
@@ -48,7 +48,7 @@ def retract_center():
                 data_float = retract_validate_data(ser)
                 print(data_float)
 
-            while data_float < 1.19:
+            while data_float < 1.75:
                 motors.motor2.setSpeed(int(rev_constant))
                 raiseIfFault()
                 data_float = retract_validate_data(ser)
