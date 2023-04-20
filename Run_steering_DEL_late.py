@@ -1,6 +1,6 @@
 import time
 from steering_retract_code import motors, MAX_SPEED
-#from three_UARTS_pi4_get import steering_validate_data
+from three_UARTS_pi4_get import steering_validate_data
 
 # Define a custom exception to raise if a fault is detected.
 class DriverFault(Exception):

@@ -8,12 +8,12 @@ import time
 
 # from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 from slideshow_video_player import play_video
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 
 #from centering_aileron import aileron_center
 
-#from Alternator_LED_DCMotor import DC_LED_function
+from Alternator_LED_DCMotor import DC_LED_function
 #from Directional_antenna import antenna
 import threading
 from control_steering import forward_accelerate, reverse_accelerate, disable_steering
@@ -588,10 +588,10 @@ class GA(tk.Tk):
     def init_Alternator(self):
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(9, GPIO.OUT)  # for DC motor
+        GPIO.setup(20, GPIO.OUT)  # for DC motor
         GPIO.setup(21, GPIO.OUT)  # for LED
         self.p = GPIO.PWM(21, 100)  # Initialize PWM on pin 12 with a frequency of 50Hz
-        self.pwmDC = GPIO.PWM(9, 100)
+        self.pwmDC = GPIO.PWM(20, 100)
         self.p.start(0)  # Start the PWM with a duty cycle of 0
         self.pwmDC.start(0)
 
