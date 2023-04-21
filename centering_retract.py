@@ -5,7 +5,6 @@ import RPi.GPIO as GPIO
 import time
 from steering_retract_code import motors, MAX_SPEED
 from three_UARTS_pi4_get import retract_validate_data
-# Define a custom exception to raise if a fault is detected.
 class DriverFault(Exception):
     def __init__(self, driver_num):
         self.driver_num = driver_num
@@ -15,7 +14,6 @@ def raiseIfFault():
         raise DriverFault(1)
 
 def retract_center():
-    for_daccelerate = list(range(int(MAX_SPEED), 0, -40))#not being used
     rev_accelerate = list(range(0, -int(MAX_SPEED), -40))
 
     motors.setSpeeds(0, 0)
@@ -26,7 +24,6 @@ def retract_center():
     for_constant = MAX_SPEED
 
     rev_constant = -MAX_SPEED
-    rev_daccelerate = list(range(-int(MAX_SPEED), 0, 40))#not being used
     if data_float > 0.9 or data_float < 1.8:
         if data_float > 1.75:
             for s in for_accelerate:
@@ -54,14 +51,6 @@ def retract_center():
                 data_float = retract_validate_data(ser)
                 print(data_float)
         motors.forceStop()
-
-# Set up sequences of motor speeds.
-
-
-
-retract_center()
-
-
 motors.forceStop()
 
 
