@@ -564,7 +564,6 @@ class GA(tk.Tk):
             self.clear_text()
 
     def slideshow(self):
-        #play_video()
         play_video()
 # Define the toggle switch function
     def fuel_toggle_switch(self):
