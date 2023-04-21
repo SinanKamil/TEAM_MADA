@@ -1,4 +1,12 @@
-def user_steering_run(callback):
+import serial
+from time import sleep
+import RPi.GPIO as GPIO
+
+import time
+from steering_retract_code import motors, MAX_SPEED
+from three_UARTS_pi4_get import steering_validate_data
+from centering_steering import center_steering
+def user_steering_run(feedback):
     try:
         center_steering()
 
@@ -57,8 +65,11 @@ def user_steering_run(callback):
             print(data_float)
 
         center_steering()
-        callback()
-
+        feedback()
     except Exception as e:
         print("Error: {}".format(e))
         disable_steering()
+
+def disable_steering():
+    motors.forceStop()
+    

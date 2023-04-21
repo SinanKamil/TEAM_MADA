@@ -26,17 +26,17 @@ import threading
 
 
 #UART
-#from three_UARTS_pi4_get import retract_validate_data
+from three_UARTS_pi4_get import retract_validate_data, ser
 
 #STEERING Lib
-#from control_steering import forward_accelerate, reverse_accelerate, disable_steering
-#from centering_steering import center_steering
-#from user_steering import user_steering_run
+from control_steering import forward_accelerate, reverse_accelerate, disable_steering
+from centering_steering import center_steering
+from user_steering import user_steering_run
 
 #RETRACT Lib
-#from control_retract import forward_accelerate_retract, reverse_accelerate_retract, disable_retract
-#from centering_retract import retract_center
-#from user_retract import user_retract_run, disable_retract
+from control_retract import forward_accelerate_retract, reverse_accelerate_retract, disable_retract
+from centering_retract import retract_center
+from user_retract import user_retract_run, disable_retract
 
 aileron_speed_value = 1
 class GA(tk.Tk):
@@ -370,8 +370,8 @@ class GA(tk.Tk):
         self.retract_down_btn = tk.Button(self.landing_gear_page, image=self.retract_down, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.retract_up_btn.bind("<ButtonPress>", lambda event: self.reverse_retract())
-        self.retract_up_btn.bind("<ButtonRelease>", lambda event: self.disabling_retract())
+        self.retract_down_btn.bind("<ButtonPress>", lambda event: self.reverse_retract())
+        self.retract_down_btn.bind("<ButtonRelease>", lambda event: self.disabling_retract())
         self.retract_down_btn.place(x=800, y=725)
 
         self.retract_up = self.images["/home/pi/TEAM_MADA/btn_images/retract_up.png"]
@@ -504,10 +504,10 @@ class GA(tk.Tk):
          self.show_page(self.landing_gear_page)
          self.reset_timer()
          self.update_label()
-         #self.retract_data_float = retract_validate_data()
-         if 0.9 > self.retract_data_float:
+         self.retract_data_float = retract_validate_data(ser)
+         if 1.2 > self.retract_data_float:
              self.retract_up_btn.config(state=tk.DISABLED)
-         if 1.75 < self.retract_data_float:
+         if 1.60 < self.retract_data_float:
              self.retract_down_btn.config(state=tk.DISABLED)
     def show_directional_antenna_page(self):
         self.show_page(self.directional_antenna_page)
@@ -620,9 +620,6 @@ class GA(tk.Tk):
             self.adminlogin_btn.config(state=tk.NORMAL)
 
 
-        steering_thread = threading.Thread(target=user_steering_run, args=(callback_landing_gear,))
-        steering_thread.start()
-
         retract_thread = threading.Thread(target=user_retract_run, args=(callback_landing_gear,))
         retract_thread.start()
 
@@ -712,31 +709,33 @@ class GA(tk.Tk):
     def disable_steering(self):
         disable_steering()
 
+    def disabling_retract(self):
+        disable_retract()
     def forward_retract(self):
-        self.retract_data_float = retract_validate_data()
+        self.retract_data_float = retract_validate_data(ser)
         print(self.retract_data_float)
         if 0.9 <= self.retract_data_float <= 1.75:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
         else:
-            if self.retract_data_float < 0.9:
+            if self.retract_data_float < 1.2:#0.9
                 self.retract_up_btn.config(state=tk.DISABLED)
             else:
                 self.retract_up_btn.config(state=tk.NORMAL)
-                reverse_accelerate_retract()
+                forward_accelerate_retract(20)
 
     def reverse_retract(self):
-        self.retract_data_float = retract_validate_data()
+        self.retract_data_float = retract_validate_data(ser)
         print(self.retract_data_float)
         if 0.9 <= self.retract_data_float <= 1.75:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
         else:
-            if self.retract_data_float > 1.75:
+            if self.retract_data_float > 1.6:#1.70
                 self.retract_down_btn.config(state=tk.DISABLED)
             else:
                 self.retract_down_btn.config(state=tk.NORMAL)
-                forward_accelerate_retract()
+                reverse_accelerate_retract(-20)
 
     def exit(self):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')

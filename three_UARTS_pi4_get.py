@@ -2,6 +2,7 @@ import serial
 import RPi.GPIO as GPIO
 import smbus
 from time import sleep
+ser = serial.Serial("/dev/ttyS0", 115200)
 def retract_validate_data(serial_obj):
         try:
             data = serial_obj.readline(16).decode('utf-8')

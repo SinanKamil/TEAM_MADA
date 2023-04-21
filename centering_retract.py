@@ -14,42 +14,51 @@ def raiseIfFault():
         raise DriverFault(1)
 
 def retract_center():
-    rev_accelerate = list(range(0, -int(MAX_SPEED), -40))
+    rev_accelerate = list(range(0, -int(MAX_SPEED), -80))
 
     motors.setSpeeds(0, 0)
     ser = serial.Serial("/dev/ttyS0", 115200)
     print(ser)
     data_float = retract_validate_data(ser)
-    for_accelerate = list(range(0, int(MAX_SPEED), 40))
+    for_accelerate = list(range(0, int(MAX_SPEED), 80))
     for_constant = MAX_SPEED
+    
+    rev_daccelerate = list(range(-int(MAX_SPEED), 0, 80))
 
     rev_constant = -MAX_SPEED
     if data_float > 0.9 or data_float < 1.8:
-        if data_float > 1.75:
-            for s in for_accelerate:
-                motors.motor2.setSpeed(s)
-                raiseIfFault()
-                data_float = retract_validate_data(ser)
-                print(data_float)
+        if 1.65 > data_float or data_float > 1.75:
+            if data_float > 1.75:
+                for s in for_accelerate:
+                    motors.motor2.setSpeed(s)
+                    raiseIfFault()
+                    data_float = retract_validate_data(ser)
+                    print(data_float)
 
-            while data_float > 1.75:
-                motors.motor2.setSpeed(int(for_constant))
-                raiseIfFault()
-                data_float = retract_validate_data(ser)
-                print(data_float)
+                while data_float > 1.75:
+                    motors.motor2.setSpeed(int(for_constant))
+                    raiseIfFault()
+                    data_float = retract_validate_data(ser)
+                    print(data_float)
 
-        else:
-            for s in rev_accelerate:
-                motors.motor2.setSpeed(s)
-                raiseIfFault()
-                data_float = retract_validate_data(ser)
-                print(data_float)
+            else:
+                for s in rev_accelerate:
+                    motors.motor2.setSpeed(s)
+                    raiseIfFault()
+                    data_float = retract_validate_data(ser)
+                    print(data_float)
 
-            while data_float < 1.75:
-                motors.motor2.setSpeed(int(rev_constant))
-                raiseIfFault()
-                data_float = retract_validate_data(ser)
-                print(data_float)
+                while data_float < 1.70:
+                    motors.motor2.setSpeed(int(rev_constant))
+                    raiseIfFault()
+                    data_float = retract_validate_data(ser)
+                    print(data_float)
+                    
+                for s in rev_daccelerate:
+                    motors.motor2.setSpeed(s)
+                    raiseIfFault()
+                    data_float = retract_validate_data(ser)
+                    print(data_float)
         motors.forceStop()
 motors.forceStop()
 

@@ -26,7 +26,7 @@ def center_steering():
 
     rev_constant = -MAX_SPEED
     rev_daccelerate = list(range(-int(MAX_SPEED), 0, 40))#not being used
-    if data_float < 1.68 or data_float > 1.76:
+    if data_float < 1.68 or data_float > 1.73:
         if data_float > 0.7 and data_float < 1.72:
             for s in rev_accelerate:
                 motors.motor1.setSpeed(s)
@@ -53,8 +53,6 @@ def center_steering():
                 data_float = steering_validate_data(ser)
                 print(data_float)
         motors.forceStop()
-
-
 motors.forceStop()
 
 
