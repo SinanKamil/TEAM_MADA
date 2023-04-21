@@ -620,8 +620,15 @@ class GA(tk.Tk):
             self.switch_button4.config(state=tk.NORMAL)
             self.adminlogin_btn.config(state=tk.NORMAL)
 
+
         steering_thread = threading.Thread(target=user_steering_run, args=(callback_landing_gear,))
         steering_thread.start()
+
+        retract_thread = threading.Thread(target=user_retract_run, args=(callback_landing_gear,))
+        retract_thread.start()
+
+
+
     def Alternator_toggle_switch(self):
         print("Alternator ON")
         self.switch_button5.config(state=tk.DISABLED)
@@ -692,6 +699,7 @@ class GA(tk.Tk):
 
     def center_landing_gear(self):
         center_steering()
+        retract_center()
         print("Center")
 
     def reverse_steering(self):
