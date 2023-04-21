@@ -50,6 +50,8 @@ def aileron_disable():
     try:
         GPIO.output(Enable, 0)
         GPIO.output(Break, 0)
+        pwm_aileron.ChangeDutyCycle(0)
+
 
     except Exception as e:
         print(f"Error disabling aileron: {e}")

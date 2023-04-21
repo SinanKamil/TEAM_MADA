@@ -5,11 +5,10 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-# from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
+from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 from slideshow_video_player import play_video
 
 import RPi.GPIO as GPIO
-#from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 
 #from centering_aileron import aileron_center
 
@@ -18,8 +17,8 @@ import RPi.GPIO as GPIO
 #import RPi.GPIO as GPIO
 #from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
 from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
-#from centering_aileron import aileron_center
-#from user_aileron import aileron_user
+from centering_aileron import aileron_center
+from user_aileron import aileron_user
 #from Alternator_LED_DCMotor import DC_LED_function
 #from Directional_antenna import antenna
 import threading
@@ -40,6 +39,7 @@ class GA(tk.Tk):
         #self.init_Alternator()
         self.numbers_clicked = []
         self.current_value = 0
+        self.value = 1
         self.w1 = 0
         self.geometry("1920x1080")
         self.title('General Atomics')
@@ -591,9 +591,12 @@ class GA(tk.Tk):
             self.switch_button2.config(state=tk.NORMAL)
             self.adminlogin_btn.config(state=tk.NORMAL)
 
-        aileron_thread = threading.Thread(target=aileron_user, args=(callback_aileron,))
+        aileron_thread = threading.Thread(target=aileron_user, args=(self.value,callback_aileron,))
         aileron_thread.start()
 
+    #def user_running_aileron(self):
+        
+        
     def landing_gear_toggle_switch(self):
         print("Landing Gear ON")
         self.switch_button4.config(state=tk.DISABLED)
@@ -682,7 +685,8 @@ class GA(tk.Tk):
                 self.value = 1
             else:
                 self.value = round(self.converted_value)
-            print(self.value)
+                print(self.value)
+        
 
     def center_landing_gear(self):
         center_steering()
@@ -735,12 +739,11 @@ class GA(tk.Tk):
     def down_aileron(self):
         aileron_forward(pwm_aileron, self.value)
 
-
     def disable_aileron(self):
         aileron_disable()
     def center_aileron(self):
-        aileron_center()
-        print("CENTEEER")
+        aileron_center(self.value)
+
 
     def left_antenna(self):
         left_antenna()
