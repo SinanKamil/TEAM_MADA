@@ -717,6 +717,7 @@ class GA(tk.Tk):
         if 0.9 <= self.retract_data_float <= 1.75:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
+            #run function here #forward_accelerate_retract(20)
         else:
             if self.retract_data_float < 1.2:#0.9
                 self.retract_up_btn.config(state=tk.DISABLED)
@@ -730,6 +731,7 @@ class GA(tk.Tk):
         if 0.9 <= self.retract_data_float <= 1.75:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
+            #run_function here #reverse_accelerate_retract(-20)
         else:
             if self.retract_data_float > 1.6:#1.70
                 self.retract_down_btn.config(state=tk.DISABLED)
