@@ -505,9 +505,9 @@ class GA(tk.Tk):
          self.reset_timer()
          self.update_label()
          self.retract_data_float = retract_validate_data(ser)
-         if 1.2 > self.retract_data_float:
+         if 0.9 > self.retract_data_float:
              self.retract_up_btn.config(state=tk.DISABLED)
-         if 1.60 < self.retract_data_float:
+         if 1.65 < self.retract_data_float:
              self.retract_down_btn.config(state=tk.DISABLED)
     def show_directional_antenna_page(self):
         self.show_page(self.directional_antenna_page)
@@ -714,13 +714,13 @@ class GA(tk.Tk):
     def forward_retract(self):
         self.retract_data_float = retract_validate_data(ser)
         print(self.retract_data_float)
-        if 0.9 <= self.retract_data_float <= 1.75:
+        if 0.9 < self.retract_data_float < 1.65:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
-            #run function here #forward_accelerate_retract(20)
-        else:
-            if self.retract_data_float < 1.2:#0.9
+            forward_accelerate_retract(20)
+            if self.retract_data_float < 0.9:#0.9
                 self.retract_up_btn.config(state=tk.DISABLED)
+                disable_retract()
             else:
                 self.retract_up_btn.config(state=tk.NORMAL)
                 forward_accelerate_retract(20)
@@ -728,13 +728,13 @@ class GA(tk.Tk):
     def reverse_retract(self):
         self.retract_data_float = retract_validate_data(ser)
         print(self.retract_data_float)
-        if 0.9 <= self.retract_data_float <= 1.75:
+        if 0.9 < self.retract_data_float < 1.65:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
-            #run_function here #reverse_accelerate_retract(-20)
-        else:
-            if self.retract_data_float > 1.6:#1.70
+            reverse_accelerate_retract(-20)
+            if self.retract_data_float > 1.65:#1.70
                 self.retract_down_btn.config(state=tk.DISABLED)
+                disable_retract()
             else:
                 self.retract_down_btn.config(state=tk.NORMAL)
                 reverse_accelerate_retract(-20)
