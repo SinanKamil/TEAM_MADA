@@ -24,4 +24,3 @@ def aileron_center(in_speed):
             print(data_aileron)
             aileron_reverse(pwm_aileron,in_speed)
         aileron_disable()
-aileron_center(2)
