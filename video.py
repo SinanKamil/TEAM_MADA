@@ -3,7 +3,7 @@ import cv2
 
 def play_video():
     # Create a VideoCapture object and read from input file
-    cap = cv2.VideoCapture("/media/pi/SINAN'S USB/GA_SLIDESHOW/1906_SkyGuardian_UK_Beauty_Reel_060719.mp4")
+    cap = cv2.VideoCapture("C:/Users/kamil/OneDrive/Main Files/GA_SLIDESHOW/GA_Video.mp4")
 
     # Reduce the resolution to 720p
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
@@ -23,7 +23,7 @@ def play_video():
     # Function to handle mouse click events
     def mouse_callback(event, x, y, flags, param):
         # Exit video playback if right mouse button is pressed on video window
-        if event == cv2.EVENT_RBUTTONDOWN:
+        if event == cv2.EVENT_LBUTTONDOWN: #just change the R with L
             cap.release()
 
     # Register mouse click event callback
@@ -54,3 +54,4 @@ def play_video():
     # Closes all the frames
     cv2.destroyAllWindows()
 
+play_video()
