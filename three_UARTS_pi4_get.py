@@ -39,7 +39,7 @@ def aileron_validate_data(serial_obj):
 ser = serial.Serial("/dev/ttyS0", 115200)
 
 
-'''
+
 while True:
     steering = steering_validate_data(ser)
     retract = retract_validate_data(ser)
@@ -47,4 +47,3 @@ while True:
     print("Aileron: ", aileron, "Steering: ", steering, "Retract: ", retract)
     sleep(0.1)
 ser.close()
-'''

@@ -23,7 +23,7 @@ def aileron_init(F_R_val, EN, Break_val):
     GPIO.output(Speed, 1)
     GPIO.output(Break, Break_val)
     GPIO.output(F_R, F_R_val)
-times = 1
+times = 3
 def aileron_control():
     for f in range(times):
         aileron_init(0,1,1)
