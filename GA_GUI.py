@@ -10,9 +10,9 @@ import threading
 #import RPi.GPIO as GPIO
 
 #Aileron
-from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
-from centering_aileron import aileron_center
-from user_aileron import aileron_user
+#from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron
+#from centering_aileron import aileron_center
+#from user_aileron import aileron_user
 
 #ALTERNATOR
 #from Alternator_LED_DCMotor import DC_LED_function
@@ -26,7 +26,7 @@ from user_aileron import aileron_user
 
 
 #UART
-from three_UARTS_pi4_get import retract_validate_data, aileron_validate_data, ser
+from three_UARTS_pi4_get import retract_validate_data, ser
 
 #STEERING Lib
 from control_steering import forward_accelerate, reverse_accelerate, disable_steering
@@ -717,6 +717,7 @@ class GA(tk.Tk):
         if 0.9 <= self.retract_data_float <= 1.75:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
+            #run function here #forward_accelerate_retract(20)
         else:
             if self.retract_data_float < 1.2:#0.9
                 self.retract_up_btn.config(state=tk.DISABLED)
@@ -730,6 +731,7 @@ class GA(tk.Tk):
         if 0.9 <= self.retract_data_float <= 1.75:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
+            #run_function here #reverse_accelerate_retract(-20)
         else:
             if self.retract_data_float > 1.6:#1.70
                 self.retract_down_btn.config(state=tk.DISABLED)
@@ -743,27 +745,10 @@ class GA(tk.Tk):
             self.destroy()
 
     def up_aileron(self):
-        self.aileron_data_float = aileron_validate_data(ser)
-        while 1.55 <= self.aileron_data_float <= 1.75:
-            self.up_aileron_btn.config(state=tk.NORMAL)
-            self.down_aileron_btn.config(state=tk.NORMAL)
-            if aileron_validate_data(ser) > 1.75:
-                self.up_aileron_btn.config(state=tk.DISABLED)
-            else:
-                self.up_aileron_btn.config(state=tk.NORMAL)
-                aileron_reverse(pwm_aileron, self.value)
-        
+        aileron_reverse(pwm_aileron, self.value)
     def down_aileron(self):
-        self.aileron_data_float = aileron_validate_data(ser)
-        while 1.55 <= self.aileron_data_float <= 1.75:
-            self.up_aileron_btn.config(state=tk.NORMAL)
-            self.down_aileron_btn.config(state=tk.NORMAL)
-            if aileron_validate_data(ser) < 1.55:
-                self.down_aileron_btn.config(state=tk.DISABLED)
-            else:
-                self.down_aileron_btn.config(state=tk.NORMAL)
-                aileron_forward(pwm_aileron, self.value)
-    
+        aileron_forward(pwm_aileron, self.value)
+
     def disable_aileron(self):
         aileron_disable()
     def center_aileron(self):
