@@ -7,36 +7,33 @@ from tkinter import messagebox as mb
 import time
 from slideshow_video_player import play_video
 import threading
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 #Aileron
 from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron, aileron_enable
 from centering_aileron import aileron_center
 from user_aileron import aileron_user
 
-#ALTERNATOR
-#from Alternator_LED_DCMotor import DC_LED_function
-
 #FUEL PUMP
-#from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
+from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
 
 #ANTENNA
-#from admin_antenna import left_antenna, right_antenna, disable_antenna
-#from Directional_antenna import antenna
+from control_antenna import left_antenna, right_antenna, disable_antenna
+from user_directional_antenna import antenna
 
 
 #UART
 from three_UARTS_pi4_get import retract_validate_data, ser, aileron_validate_data
 
 #STEERING Lib
-#from control_steering import forward_accelerate, reverse_accelerate, disable_steering
-#from centering_steering import center_steering
-#from user_steering import user_steering_run
+from control_steering import forward_accelerate, reverse_accelerate, disable_steering
+from centering_steering import center_steering
+from user_steering import user_steering_run
 
 #RETRACT Lib
-#from control_retract import forward_accelerate_retract, reverse_accelerate_retract, disable_retract
-#from centering_retract import retract_center
-#from user_retract import user_retract_run, disable_retract
+from control_retract import forward_accelerate_retract, reverse_accelerate_retract, disable_retract
+from centering_retract import retract_center
+from user_retract import user_retract_run, disable_retract
 
 aileron_speed_value = 1
 class GA(tk.Tk):
@@ -47,7 +44,7 @@ class GA(tk.Tk):
         self.Fuel_pump_en = False
         self.current_value = 0
         self.aileron_speed_value = 1
-        #self.init_Alternator()
+        self.init_Alternator()
         self.numbers_clicked = []
         self.current_value = 0
         self.value = 1
@@ -310,7 +307,7 @@ class GA(tk.Tk):
 
 
         self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL,
-                        troughcolor='#0e3999', width=67, sliderrelief='groove', highlightbackground='#0e3999',
+                        troughcolor='#0e3999', width=67, sliderrelief='groove', highlightbackground='#0e3999', command=self.slider_function,
                         sliderlength=40, font= ("Tactic Sans Extra Extended", 15), showvalue=0)
         self.w1.set(self.current_value)
         self.w1.pack()
@@ -507,7 +504,7 @@ class GA(tk.Tk):
          self.retract_data_float = retract_validate_data(ser)
          if 0.9 > self.retract_data_float:
              self.retract_up_btn.config(state=tk.DISABLED)
-         if 1.65 < self.retract_data_float:
+         if 1.70 < self.retract_data_float:
              self.retract_down_btn.config(state=tk.DISABLED)
     def show_directional_antenna_page(self):
         self.show_page(self.directional_antenna_page)
@@ -714,30 +711,34 @@ class GA(tk.Tk):
     def forward_retract(self):
         self.retract_data_float = retract_validate_data(ser)
         print(self.retract_data_float)
-        if 0.9 < self.retract_data_float < 1.65:
+        if 0.9 < self.retract_data_float < 1.75:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
             forward_accelerate_retract(20)
-            if self.retract_data_float < 0.9:#0.9
+            self.retract_data_float = retract_validate_data(ser)
+        elif self.retract_data_float < 0.9:#0.9
                 self.retract_up_btn.config(state=tk.DISABLED)
-                disable_retract()
-            else:
-                self.retract_up_btn.config(state=tk.NORMAL)
-                forward_accelerate_retract(20)
+                self.retract_data_float = retract_validate_data(ser)
+        else:
+            self.retract_up_btn.config(state=tk.NORMAL)
+            self.retract_data_float = retract_validate_data(ser)
+
 
     def reverse_retract(self):
         self.retract_data_float = retract_validate_data(ser)
         print(self.retract_data_float)
-        if 0.9 < self.retract_data_float < 1.65:
+        if 0.9 < self.retract_data_float < 1.70:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
+            self.retract_data_float = retract_validate_data(ser)
             reverse_accelerate_retract(-20)
-            if self.retract_data_float > 1.65:#1.70
-                self.retract_down_btn.config(state=tk.DISABLED)
-                disable_retract()
-            else:
-                self.retract_down_btn.config(state=tk.NORMAL)
-                reverse_accelerate_retract(-20)
+        elif self.retract_data_float > 1.70:#1.70
+            self.retract_down_btn.config(state=tk.DISABLED)
+            self.retract_data_float = retract_validate_data(ser)
+        else:
+            self.retract_down_btn.config(state=tk.NORMAL)
+            self.retract_data_float = retract_validate_data(ser)
+
 
     def exit(self):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
