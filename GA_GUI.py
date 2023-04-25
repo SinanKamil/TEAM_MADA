@@ -708,36 +708,42 @@ class GA(tk.Tk):
 
     def disabling_retract(self):
         disable_retract()
+
     def forward_retract(self):
         self.retract_data_float = retract_validate_data(ser)
-        print(self.retract_data_float)
         if 0.9 < self.retract_data_float < 1.75:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
             forward_accelerate_retract(20)
             self.retract_data_float = retract_validate_data(ser)
-        elif self.retract_data_float < 0.9:#0.9
-                self.retract_up_btn.config(state=tk.DISABLED)
-                self.retract_data_float = retract_validate_data(ser)
+        elif self.retract_data_float < 0.9:
+            self.retract_up_btn.config(state=tk.DISABLED)
+            self.retract_down_btn.config(state=tk.NORMAL)
         else:
             self.retract_up_btn.config(state=tk.NORMAL)
-            self.retract_data_float = retract_validate_data(ser)
+            self.retract_down_btn.config(state=tk.NORMAL)
 
+        # Disable the down button if the landing gear is fully retracted
+        if self.retract_data_float <= 0.9:
+            self.retract_down_btn.config(state=tk.DISABLED)
 
     def reverse_retract(self):
         self.retract_data_float = retract_validate_data(ser)
-        print(self.retract_data_float)
         if 0.9 < self.retract_data_float < 1.70:
             self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
             self.retract_data_float = retract_validate_data(ser)
             reverse_accelerate_retract(-20)
-        elif self.retract_data_float > 1.70:#1.70
+        elif self.retract_data_float > 1.70:
             self.retract_down_btn.config(state=tk.DISABLED)
-            self.retract_data_float = retract_validate_data(ser)
+            self.retract_up_btn.config(state=tk.NORMAL)
         else:
             self.retract_down_btn.config(state=tk.NORMAL)
-            self.retract_data_float = retract_validate_data(ser)
+            self.retract_up_btn.config(state=tk.NORMAL)
+
+        # Disable the up button if the landing gear is fully extended
+        if self.retract_data_float >= 1.70:
+            self.retract_up_btn.config(state=tk.DISABLED)
 
 
     def exit(self):
