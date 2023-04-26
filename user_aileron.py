@@ -16,10 +16,10 @@ from three_UARTS_pi4_get import aileron_validate_data
 from centering_aileron import aileron_center
 
 ser = serial.Serial("/dev/ttyS0", 115200)
-up_limit = 1.743
-down_limit = 1.6
+up_limit = 1.728
+down_limit = 1.57
 
-def aileron_user(in_speed, callback):
+def aileron_user(in_speed,callback):
     aileron_center(in_speed)
     times = 3
     for i in range(times):
@@ -45,4 +45,3 @@ def aileron_user(in_speed, callback):
             print(f"Error occurred: {e}")
             aileron_disable()
     callback()
-

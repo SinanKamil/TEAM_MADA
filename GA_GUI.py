@@ -461,7 +461,7 @@ class GA(tk.Tk):
         self.right_antenna_btn = tk.Button(self.directional_antenna_page, image=self.right_antenna_img, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.right_antenna_btn.bind("<ButtonPress>", lambda event: self.right_antenna())
+        self.right_antenna_btn.bind("<ButtonPress>", lambda event: self.right_antennaa())
         self.right_antenna_btn.bind("<ButtonRelease>", lambda event: self.disable_dir_antenna())
         self.right_antenna_btn.place(x=1250, y=480)
 
@@ -600,12 +600,15 @@ class GA(tk.Tk):
         print("Aileron ON")
         self.switch_button2.config(state=tk.DISABLED)
         self.adminlogin_btn.config(state=tk.DISABLED)
+        self.switch_button4.config(state=tk.DISABLED)
+
         self.update()
 
 
         def callback_aileron():  # this to enable button
             self.switch_button2.config(state=tk.NORMAL)
             self.adminlogin_btn.config(state=tk.NORMAL)
+            self.switch_button4.config(state=tk.NORMAL)
 
         aileron_thread = threading.Thread(target=aileron_user, args=(self.value,callback_aileron,))
         aileron_thread.start()
@@ -613,6 +616,7 @@ class GA(tk.Tk):
         
     def landing_gear_toggle_switch(self):
         print("Landing Gear ON")
+        self.switch_button2.config(state=tk.DISABLED)
         self.switch_button4.config(state=tk.DISABLED)
         self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
@@ -620,7 +624,9 @@ class GA(tk.Tk):
 
         def callback_landing_gear():  # this to enable button
             self.switch_button4.config(state=tk.NORMAL)
+            self.switch_button2.config(state=tk.NORMAL)
             self.adminlogin_btn.config(state=tk.NORMAL)
+            
 
 
         retract_thread = threading.Thread(target=user_retract_run, args=(callback_landing_gear,))
@@ -716,67 +722,30 @@ class GA(tk.Tk):
         disable_retract()
 
     def forward_retract(self):
-        self.retract_data_float = retract_validate_data(ser)
-        if 0.9 < self.retract_data_float < 1.75:
-            self.retract_down_btn.config(state=tk.NORMAL)
-            self.retract_up_btn.config(state=tk.NORMAL)
-            forward_accelerate_retract(20)
-            self.retract_data_float = retract_validate_data(ser)
-        elif self.retract_data_float < 0.9:
-            self.retract_up_btn.config(state=tk.DISABLED)
-            self.retract_down_btn.config(state=tk.NORMAL)
-        else:
-            self.retract_up_btn.config(state=tk.NORMAL)
-            self.retract_down_btn.config(state=tk.NORMAL)
+        self.retract_down_btn.config(state=tk.NORMAL)
+        self.retract_up_btn.config(state=tk.NORMAL)
+        forward_accelerate_retract(20)
 
-        # Disable the down button if the landing gear is fully retracted
-        if self.retract_data_float <= 0.9:
-            self.retract_down_btn.config(state=tk.DISABLED)
 
     def reverse_retract(self):
-        self.retract_data_float = retract_validate_data(ser)
-        if 0.9 < self.retract_data_float < 1.70:
-            self.retract_up_btn.config(state=tk.NORMAL)
-            self.retract_down_btn.config(state=tk.NORMAL)
-            self.retract_data_float = retract_validate_data(ser)
-            reverse_accelerate_retract(-20)
-        elif self.retract_data_float > 1.70:
-            self.retract_down_btn.config(state=tk.DISABLED)
-            self.retract_up_btn.config(state=tk.NORMAL)
-        else:
-            self.retract_down_btn.config(state=tk.NORMAL)
-            self.retract_up_btn.config(state=tk.NORMAL)
-
-        # Disable the up button if the landing gear is fully extended
-        if self.retract_data_float >= 1.70:
-            self.retract_up_btn.config(state=tk.DISABLED)
+        self.retract_up_btn.config(state=tk.NORMAL)
+        self.retract_down_btn.config(state=tk.NORMAL)
+        reverse_accelerate_retract(-20)
+    
 
 
     def exit(self):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
         if res == 'yes':
+            GPIO.cleanup()
             self.destroy()
 
     def up_aileron(self):
-        self.aileron_data_float = aileron_validate_data(ser)
-        print(self.aileron_data_float)
-        if self.aileron_data_float > 1.75:
-            disable_aileron()#1.70
-            self.up_aileron_btn.config(state=tk.DISABLED)
-        else:
-            self.up_aileron_btn.config(state=tk.NORMAL)
-            aileron_reverse(pwm_aileron, self.value)   
+        aileron_reverse(pwm_aileron, self.value)   
 
                 
     def down_aileron(self):
-        self.aileron_data_float = aileron_validate_data(ser)
-        print(self.aileron_data_float)
-        if self.aileron_data_float < 1.55:#1.70
-            disable_aileron()
-            self.down_aileron_btn.config(state=tk.DISABLED)
-        else:
-            self.down_aileron_btn.config(state=tk.NORMAL)
-            aileron_forward(pwm_aileron, self.value)
+        aileron_forward(pwm_aileron, self.value)
 
 
     def enable_aileron(self):
@@ -789,7 +758,7 @@ class GA(tk.Tk):
 
     def left_antenna(self):
         left_antenna()
-    def right_antenna(self):
+    def right_antennaa(self):
         right_antenna()
     def disable_dir_antenna(self):
         disable_antenna()
