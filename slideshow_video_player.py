@@ -23,7 +23,7 @@ def play_video():
     # Function to handle mouse click events
     def mouse_callback(event, x, y, flags, param):
         # Exit video playback if right mouse button is pressed on video window
-        if event == cv2.EVENT_RBUTTONDOWN:
+        if event == cv2.EVENT_LBUTTONDOWN:
             cap.release()
 
     # Register mouse click event callback

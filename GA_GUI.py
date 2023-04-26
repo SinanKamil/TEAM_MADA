@@ -334,6 +334,12 @@ class GA(tk.Tk):
                                      activebackground='#092a81', background='#092a81', command=self.show_landing_gear_page,
                                      borderwidth=0, relief="flat", bd=0)
         self.landing_gear_btn_fun.place(x=550, y=650)
+        
+        #self.landing_geat_rev_btn = self.images["/home/pi/TEAM_MADA/btn_images/center.png"]
+        #self.landing_gear_rev_function = tk.Button(self.landing_gear_page, image=self.landing_geat_rev_btn, highlightthickness=0,
+        #                             activebackground='#092a81', background='#092a81', command=self.landing_geat_rev_function,
+        #                             borderwidth=0, relief="flat", bd=0)
+        #self.landing_gear_rev_function.place(x=550, y=100)
 
         self.back1 = self.images["/home/pi/TEAM_MADA/images/adminmenu_btn.png"]
         self.next_button = tk.Button(self.landing_gear_page, image=self.back1, highlightthickness=0,
@@ -648,7 +654,7 @@ class GA(tk.Tk):
 
     def slider_function(self, slider_value):
         slider_value = int(slider_value)
-        if slider_value != self.current_value:
+        if slider_value != self.current_value:          
             self.current_value = slider_value
             self.p.ChangeDutyCycle(slider_value)
             self.pwmDC.ChangeDutyCycle(slider_value)
@@ -712,8 +718,8 @@ class GA(tk.Tk):
     def forward_retract(self):
         self.retract_data_float = retract_validate_data(ser)
         if 0.9 < self.retract_data_float < 1.75:
-            self.retract_up_btn.config(state=tk.NORMAL)
             self.retract_down_btn.config(state=tk.NORMAL)
+            self.retract_up_btn.config(state=tk.NORMAL)
             forward_accelerate_retract(20)
             self.retract_data_float = retract_validate_data(ser)
         elif self.retract_data_float < 0.9:
@@ -819,6 +825,11 @@ class GA(tk.Tk):
             self.switch_button_fuel.config(image=self.switch_button_fuel_off)
             self.fuel_home.config(state=tk.NORMAL)
             pump_disable()
+    def landing_geat_rev_function(self):
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        GPIO.setup(16, GPIO.OUT)
+        GPIO.output(16, GPIO.HIGH)
     def preload_images(self):
         # Create a dictionary of all image file paths
         self.images = {}

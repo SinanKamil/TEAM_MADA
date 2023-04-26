@@ -5,6 +5,7 @@ from steering_retract_code import motors, MAX_SPEED, Motor
 from centering_retract import retract_center
 from three_UARTS_pi4_get import retract_validate_data
 from user_steering import user_steering_run
+from centering_steering import center_steering
 # Define a custom exception to raise if a fault is detected.
 class DriverFault(Exception):
     def __init__(self, driver_num):
@@ -12,8 +13,10 @@ class DriverFault(Exception):
 
 def user_retract_run(feedback):
     try:
+        center_steering()
+        center_steering()
         retract_center()
-
+        
         ser = serial.Serial("/dev/ttyS0", 115200)
         print(ser)
         data_float = retract_validate_data(ser)

@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 from time import sleep
 Enable = 10 #by default is high
-Speed = 9 #PWM 0 pin
+Speed = 2 #PWM 0 pin
 F_R = 7 # 1 is forward (down) and 0 is reverse(UP)
 Break = 11
 

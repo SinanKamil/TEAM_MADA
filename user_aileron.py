@@ -16,8 +16,8 @@ from three_UARTS_pi4_get import aileron_validate_data
 from centering_aileron import aileron_center
 
 ser = serial.Serial("/dev/ttyS0", 115200)
-up_limit = 1.75
-down_limit = 1.55
+up_limit = 1.743
+down_limit = 1.6
 
 def aileron_user(in_speed, callback):
     aileron_center(in_speed)
