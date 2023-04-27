@@ -495,6 +495,11 @@ class GA(tk.Tk):
         self.show_page(self.fuel_pump_page)
         self.reset_timer()
         self.update_label()
+        self.Fuel_pump_en = False
+        self.switch_button_fuel.config(image=self.switch_button_fuel_off)
+        self.fuel_home.config(state=tk.NORMAL)
+        pump_disable()
+        GPIO.cleanup()
     def show_aileron_servo_page(self):
         self.show_page(self.aileron_servo_page)
         self.reset_timer()
@@ -682,7 +687,9 @@ class GA(tk.Tk):
                 sleep(.02)
             sleep(.01)
         callback()
-
+        self.p.stop()
+        self.pwmDC.stop()
+        GPIO.cleanup()
 
     def __del__(self):
         self.p.stop()
@@ -752,6 +759,7 @@ class GA(tk.Tk):
         aileron_enable()
     def disable_aileron(self):
         aileron_disable()
+        GPIO.cleanup()
     def center_aileron(self):
         aileron_center(self.value)
 
@@ -762,6 +770,7 @@ class GA(tk.Tk):
         right_antenna()
     def disable_dir_antenna(self):
         disable_antenna()
+        GPIO.cleanup()
 
     def reset_timer(self, event=None):
         self.last_active_time = time.time() #time goes back to normal
@@ -794,6 +803,7 @@ class GA(tk.Tk):
             self.switch_button_fuel.config(image=self.switch_button_fuel_off)
             self.fuel_home.config(state=tk.NORMAL)
             pump_disable()
+            GPIO.cleanup()
     def landing_geat_rev_function(self):
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)

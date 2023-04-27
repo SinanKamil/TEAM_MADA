@@ -18,6 +18,7 @@ def pump_enable():
 def pump_disable():
     pump_setup()
     GPIO.output(Enable, 0)
+    GPIO.cleanup()
 
 
 def user_fuel_pump_control(callback):
@@ -25,6 +26,7 @@ def user_fuel_pump_control(callback):
     sleep(20)
     pump_disable()
     callback()
+    GPIO.cleanup()
 
 # pump_enable()
 # sleep(5)
