@@ -327,7 +327,8 @@ class GA(tk.Tk):
         self.landing_gear_page = tk.Frame(self)
         self.landing_gear_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.landing_gear_page, "/home/pi/TEAM_MADA/images/landing_gear_page.png")
-
+        
+        self.recover_retract_img = self.images["/home/pi/TEAM_MADA/btn_images/recover_btn.png"]
         self.recover_retract_btn = tk.Button(self.landing_gear_page, image=self.recover_retract_img,
                                              highlightthickness=0,
                                              activebackground='#092a81', background='#092a81',
@@ -340,12 +341,6 @@ class GA(tk.Tk):
                                      activebackground='#092a81', background='#092a81', command=self.show_landing_gear_page,
                                      borderwidth=0, relief="flat", bd=0)
         self.landing_gear_btn_fun.place(x=550, y=650)
-        
-        #self.landing_geat_rev_btn = self.images["/home/pi/TEAM_MADA/btn_images/center.png"]
-        #self.landing_gear_rev_function = tk.Button(self.landing_gear_page, image=self.landing_geat_rev_btn, highlightthickness=0,
-        #                             activebackground='#092a81', background='#092a81', command=self.landing_geat_rev_function,
-        #                             borderwidth=0, relief="flat", bd=0)
-        #self.landing_gear_rev_function.place(x=550, y=100)
 
         self.back1 = self.images["/home/pi/TEAM_MADA/images/adminmenu_btn.png"]
         self.next_button = tk.Button(self.landing_gear_page, image=self.back1, highlightthickness=0,
@@ -396,7 +391,7 @@ class GA(tk.Tk):
         self.aileron_servo_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.aileron_servo_page, "/home/pi/TEAM_MADA/images/aileron_page.png")
 
-        self.recover_aileron_img = self.images["btn_images/recover_btn.png"]
+        self.recover_aileron_img = self.images["/home/pi/TEAM_MADA/btn_images/recover_btn.png"]
         self.recover_aileron_btn = tk.Button(self.aileron_servo_page, image=self.recover_aileron_img,
                                              highlightthickness=0,
                                              activebackground='#092a81', background='#092a81',
@@ -599,8 +594,8 @@ class GA(tk.Tk):
             self.adminlogin_btn.config(state=tk.NORMAL)
 
         # Create a new thread to run the DC LED function
-        led_thread = threading.Thread(target=user_fuel_pump_control, args=(callback_fuelpump,))
-        led_thread.start()
+        pump_thread = threading.Thread(target=user_fuel_pump_control, args=(callback_fuelpump,))
+        pump_thread.start()
 
     def dir_toggle_switch(self):
         # Disable the button
@@ -743,21 +738,37 @@ class GA(tk.Tk):
         disable_retract()
 
     def forward_retract(self):
-        self.retract_down_btn.config(state=tk.NORMAL)
-        self.retract_up_btn.config(state=tk.NORMAL)
-        forward_accelerate_retract(20)
+        self.retract_data_float = retract_validate_data(ser)
+        if 0.9 > self.retract_data_float:
+            self.retract_data_float = retract_validate_data(ser)
+            self.retract_down_btn.config(state=tk.NORMAL)
+        else:
+            self.retract_data_float = retract_validate_data(ser)
+            self.retract_up_btn.config(state=tk.NORMAL)
+            self.retract_down_btn.config(state=tk.DISABLED)
+            forward_accelerate_retract(20)
+
 
 
     def reverse_retract(self):
-        self.retract_up_btn.config(state=tk.NORMAL)
-        self.retract_down_btn.config(state=tk.NORMAL)
-        reverse_accelerate_retract(-20)
-    
+        self.retract_data_float = retract_validate_data(ser)
+        if 1.70 < self.retract_data_float:
+            self.retract_data_float = retract_validate_data(ser)
+            self.retract_up_btn.config(state=tk.NORMAL)
+
+        else:
+            self.retract_data_float = retract_validate_data(ser)
+            self.retract_down_btn.config(state=tk.NORMAL)
+            self.retract_up_btn.config(state=tk.DISABLED)
+            reverse_accelerate_retract(-20)
+
 
 
     def exit(self):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
         if res == 'yes':
+            self.p.stop()
+            self.pwmDC.stop()
             GPIO.cleanup()
             self.destroy()
 

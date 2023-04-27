@@ -6,7 +6,7 @@ import time
 from steering_retract_code import motors, MAX_SPEED
 from three_UARTS_pi4_get import steering_validate_data
 from centering_steering import center_steering
-def user_steering_run(feedback):
+def user_steering_run():#feedback):
     try:
         center_steering()
 
@@ -23,7 +23,7 @@ def user_steering_run(feedback):
             data_float = steering_validate_data(ser)
             #motors.motor1.setSpeed(int(for_constant))
             print(data_float)
-        while data_float > 1.5:
+        while data_float > 1.3:
             motors.motor1.setSpeed(int(for_constant))
             #raiseIfFault()
             data_float = steering_validate_data(ser)
@@ -42,7 +42,7 @@ def user_steering_run(feedback):
             motors.motor1.setSpeed(s)
             data_float = steering_validate_data(ser)
             print(data_float)
-        while data_float < 1.9:
+        while data_float < 1.5:
             motors.motor1.setSpeed(int(rev_constant))
             data_float = steering_validate_data(ser)
             print(data_float)
@@ -55,7 +55,7 @@ def user_steering_run(feedback):
             motors.motor1.setSpeed(s)
             data_float = steering_validate_data(ser)
             print(data_float)
-        while data_float > 1.5:
+        while data_float > 1.3:
             motors.motor1.setSpeed(int(for_constant))
             data_float = steering_validate_data(ser)
             print(data_float)
@@ -65,11 +65,10 @@ def user_steering_run(feedback):
             print(data_float)
 
         center_steering()
-        feedback()
+        #feedback()
     except Exception as e:
         print("Error: {}".format(e))
         disable_steering()
 
 def disable_steering():
     motors.forceStop()
-    
