@@ -330,6 +330,14 @@ class GA(tk.Tk):
                                               borderwidth=0, relief="flat", bd=0)
         self.landing_gear_btn_fun.place(x=550, y=650)
 
+        self.recover_retract_img = self.images["btn_images/recover_btn.png"]
+        self.recover_retract_btn = tk.Button(self.landing_gear_page, image=self.recover_retract_img,
+                                             highlightthickness=0,
+                                             activebackground='#092a81', background='#092a81',
+                                             command=self.recover_retract,
+                                             borderwidth=0, relief="flat", bd=0)
+        self.recover_retract_btn.place(x=275, y=125)
+
         self.back1 = self.images["images/adminmenu_btn.png"]
         self.next_button = tk.Button(self.landing_gear_page, image=self.back1, highlightthickness=0,
                                      activebackground='white', background='white', command=self.show_page3,
@@ -375,6 +383,12 @@ class GA(tk.Tk):
         self.aileron_servo_page = tk.Frame(self)
         self.aileron_servo_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.aileron_servo_page, "images/aileron_page.png")
+
+        self.recover_aileron_img = self.images["btn_images/recover_btn.png"]
+        self.recover_aileron_btn = tk.Button(self.aileron_servo_page, image=self.recover_aileron_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.recover_aileron,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.recover_aileron_btn.place(x=275, y=125)
 
         self.aileron_btn = self.images["btn_images/aileron.png"]
         self.next_button = tk.Button(self.page3, image=self.aileron_btn, highlightthickness=0,
@@ -772,6 +786,11 @@ class GA(tk.Tk):
             self.Fuel_pump_en = False
             self.switch_button_fuel.config(image=self.switch_button_fuel_off)
 
+    def recover_aileron(self):
+        print("recover_aileron")
+
+    def recover_retract(self):
+        print("recover_retract")
     def preload_images(self):
         # Create a dictionary of all image file paths
         self.images = {}
@@ -821,7 +840,8 @@ class GA(tk.Tk):
                        "btn_images/antenna_left.png",
                        "btn_images/antenna_right.png",
                        "images/adminmenu_btn.png",
-                       "btn_images/team_btn.png"
+                       "btn_images/team_btn.png",
+                       "btn_images/recover_btn.png"
                        ]
 
         # Load each image and store it as an attribute of the class
