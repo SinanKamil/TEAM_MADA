@@ -140,14 +140,6 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=222, y=882)
 
-        self.label = tk.Label(self.page2, font=("Arial", 20))
-        self.label.pack(expand=True)
-
-        self.label.place(x=222, y=200)
-        self.bind('<Any-KeyPress>', self.reset_timer)
-        self.bind('<Any-Button>', self.reset_timer)
-        self.bind('<Motion>', self.reset_timer)
-
         # create a text box
         self.password_entry = tk.Entry(self.page2, font=('Rubik Medium', 38), highlightbackground="#092a81",
                                        background="#092a81", fg="white", width=3, show='*', bd=0, borderwidth=0)
@@ -248,6 +240,35 @@ class GA(tk.Tk):
         self.page3 = tk.Frame(self)
         self.page3.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.page3, "images/admin_page.png")
+
+
+        self.label = tk.Label(self.page3, font=("Arial", 17),activebackground='#092a81', background='#092a81')
+        self.label.pack(expand=True)
+
+        self.label.place(x=280, y=130)
+        self.bind('<Any-KeyPress>', self.reset_timer)
+        self.bind('<Any-Button>', self.reset_timer)
+        self.bind('<Motion>', self.reset_timer)
+
+        self.two_min_img = self.images["btn_images/two_inactive.png"]
+        self.two_min_btn = tk.Button(self.page3, image=self.two_min_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.set_timer_2mins,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.two_min_btn.place(x=270, y=210)
+
+        self.five_min_img = self.images["btn_images/five_inactive.png"]
+        self.five_min_btn = tk.Button(self.page3, image=self.five_min_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.set_timer_5mins,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.five_min_btn.place(x=500, y=210)
+
+
+        self.ten_min_img = self.images["btn_images/ten_inactive.png"]
+        self.ten_min_btn = tk.Button(self.page3, image=self.ten_min_img, highlightthickness=0,
+                                     activebackground='#092a81', background='#092a81', command=self.set_timer_10mins,
+                                     borderwidth=0, relief="flat", bd=0)
+        self.ten_min_btn.place(x=730, y=210)
+
 
         self.next_button_img17 = self.images["images/homemenu_btn.png"]
         self.next_button = tk.Button(self.page3, image=self.next_button_img17, highlightthickness=0,
@@ -759,24 +780,35 @@ class GA(tk.Tk):
         aileron_center()
 
     def reset_timer(self, event=None):
-        self.last_active_time = time.time()  # time goes back to normal
+        self.last_active_time = time.time()
+        self.total_seconds = self.minutes * 60
+
+    def set_timer_2mins(self):
+        self.minutes = 2
+        self.total_seconds = self.minutes * 60
+
+    def set_timer_5mins(self):
+        self.minutes = 5
+        self.total_seconds = self.minutes * 60
+
+    def set_timer_10mins(self):
+        self.minutes = 10
+        self.total_seconds = self.minutes * 60
 
     def update_label(self):
-        current_time = time.time()  # most current time
-        elapsed_time = current_time - self.last_active_time  # start decrementating
-        remaining_time = self.total_seconds - elapsed_time  # how much time left
-        if remaining_time <= 0:  # if zero go to page 1
+        current_time = time.time()
+        elapsed_time = current_time - self.last_active_time
+        remaining_time = self.total_seconds - elapsed_time
+        if remaining_time <= 0:
             self.show_page1()
         else:
             minutes, seconds = divmod(int(remaining_time), 60)
-            # DELETE LATER
-            self.label.configure(text="Time remaining: {:02d}:{:02d}".format(minutes, seconds))
+            self.label.configure(text="  Inactive Timer: {:02d}:{:02d}".format(minutes, seconds))
             if elapsed_time > self.inactive_time:
                 self.label.configure(foreground='red')
             else:
-                self.label.configure(foreground='black')
+                self.label.configure(foreground='white')
             self.label.after(250, self.update_label)
-
     # Define the toggle switch function
     def fuelpump_on_off(self):
         if not self.Fuel_pump_en:
@@ -791,6 +823,9 @@ class GA(tk.Tk):
 
     def recover_retract(self):
         print("recover_retract")
+
+
+
     def preload_images(self):
         # Create a dictionary of all image file paths
         self.images = {}
@@ -841,7 +876,10 @@ class GA(tk.Tk):
                        "btn_images/antenna_right.png",
                        "images/adminmenu_btn.png",
                        "btn_images/team_btn.png",
-                       "btn_images/recover_btn.png"
+                       "btn_images/recover_btn.png",
+                       "btn_images/two_inactive.png",
+                       "btn_images/five_inactive.png",
+                       "btn_images/ten_inactive.png"
                        ]
 
         # Load each image and store it as an attribute of the class
