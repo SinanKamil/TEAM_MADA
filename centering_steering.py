@@ -14,27 +14,28 @@ def raiseIfFault():
     if motors.motor1.getFault():
         raise DriverFault(1)
 def center_steering():
-    for_daccelerate = list(range(int(MAX_SPEED), 0, -40))#not being used
+    for_daccelerate = list(range(int     (MAX_SPEED), 0, -40))#not being used
     rev_accelerate = list(range(0, -int(MAX_SPEED), -40))
 
     motors.setSpeeds(0, 0)
     ser = serial.Serial("/dev/ttyS0", 115200)
     print(ser)
     data_float = steering_validate_data(ser)
+    print(data_float)
     for_accelerate = list(range(0, int(MAX_SPEED), 40))
     for_constant = MAX_SPEED
 
     rev_constant = -MAX_SPEED
     rev_daccelerate = list(range(-int(MAX_SPEED), 0, 40))#not being used
     if data_float < 1.21 or data_float > 1.29:
-        if data_float < 1.25:
+        if data_float > 1.25:
             for s in for_accelerate:
                 motors.motor1.setSpeed(s)
                 raiseIfFault()
                 data_float = steering_validate_data(ser)
                 print(data_float)
 
-            while 1.23 < data_float > 1.25:
+            while data_float > 1.25:
                 motors.motor1.setSpeed(int(for_constant))
                 raiseIfFault()
                 data_float = steering_validate_data(ser)
@@ -47,9 +48,9 @@ def center_steering():
                 data_float = steering_validate_data(ser)
                 print(data_float)
 
-            while 1.23 < data_float > 1.25:
+            while data_float < 1.25:
                 motors.motor1.setSpeed(int(rev_constant))
                 raiseIfFault()
                 data_float = steering_validate_data(ser)
-                print(data_float)   
+                print(data_float)
         motors.forceStop()

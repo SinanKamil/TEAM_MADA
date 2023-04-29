@@ -245,7 +245,7 @@ class GA(tk.Tk):
         self.page3.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.page3, "/home/pi/TEAM_MADA/images/admin_page.png")
 
-        self.label = tk.Label(self.page3, font=("Arial", 17))
+        self.label = tk.Label(self.page3, font=("Arial", 17),activebackground='#092a81', background='#092a81')
         self.label.pack(expand=True)
 
         self.label.place(x=280, y=130)
@@ -253,19 +253,19 @@ class GA(tk.Tk):
         self.bind('<Any-Button>', self.reset_timer)
         self.bind('<Motion>', self.reset_timer)
 
-        self.two_min_img = self.images["btn_images/two_inactive.png"]
+        self.two_min_img = self.images["/home/pi/TEAM_MADA/btn_images/two_inactive.png"]
         self.two_min_btn = tk.Button(self.page3, image=self.two_min_img, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.set_timer_2mins,
                                      borderwidth=0, relief="flat", bd=0)
         self.two_min_btn.place(x=270, y=210)
 
-        self.five_min_img = self.images["btn_images/five_inactive.png"]
+        self.five_min_img = self.images["/home/pi/TEAM_MADA/btn_images/five_inactive.png"]
         self.five_min_btn = tk.Button(self.page3, image=self.five_min_img, highlightthickness=0,
                                       activebackground='#092a81', background='#092a81', command=self.set_timer_5mins,
                                       borderwidth=0, relief="flat", bd=0)
         self.five_min_btn.place(x=500, y=210)
 
-        self.ten_min_img = self.images["btn_images/ten_inactive.png"]
+        self.ten_min_img = self.images["/home/pi/TEAM_MADA/btn_images/ten_inactive.png"]
         self.ten_min_btn = tk.Button(self.page3, image=self.ten_min_img, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.set_timer_10mins,
                                      borderwidth=0, relief="flat", bd=0)
@@ -738,7 +738,7 @@ class GA(tk.Tk):
 
     def center_landing_gear(self):
         center_steering()
-        retract_center()
+        #retract_center()
         print("Center")
 
     def reverse_steering(self):
