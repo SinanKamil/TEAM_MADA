@@ -1,99 +1,99 @@
 import RPi.GPIO as GPIO
 import time
 
-def antenna(callback):
+left = 27
+right = 18
+    
+def antenna_init():
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
-    left = 27
-    right = 18
-    enable = 17
-
     GPIO.setup(left, GPIO.OUT) #left27
     GPIO.setup(right, GPIO.OUT) #right18
-    GPIO.setup(enable, GPIO.OUT) #enable pin
-
-    # Turn on the motor by setting the enable pin to high
-    GPIO.output(enable, GPIO.HIGH)
-
+    
+def Counter_clock():
+    antenna_init()
     # Rotate the motor clockwise
     GPIO.output(left, GPIO.HIGH)
     GPIO.output(right, GPIO.LOW)
 
-    # Wait for 1 seconds
-    time.sleep(1)
-
-    # Pause the motor for 0.5
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.HIGH)
-    time.sleep(0.5)
-
+def Clockwise():
+    antenna_init()
     # Rotate the motor counterclockwise
     GPIO.output(left, GPIO.LOW)
     GPIO.output(right, GPIO.HIGH)
-    time.sleep(3)
+    
+def pause():
+    antenna_init()
+    # Pause the motor
+    GPIO.output(left, GPIO.HIGH)
+    GPIO.output(right, GPIO.HIGH)
+
+def disable_ant():
+    antenna_init()
+    GPIO.output(left, GPIO.LOW)
+    GPIO.output(right, GPIO.LOW)
+
+def run_ant(): 
+    
+    Clockwise()
+    time.sleep(1)
 
     # Pause the motor for 0.5
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.HIGH)
+    pause()
     time.sleep(0.5)
 
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.LOW)
+    # Rotate the motor counterclockwise
+    Counter_clock()
+    time.sleep(2)
+
+    # Pause the motor for 0.5
+    pause()
+    time.sleep(0.5)
+
+    Counter_clock()
     time.sleep(5)
 
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.HIGH)
+    pause()
     time.sleep(0.5)
 
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.LOW)
+    Counter_clock()
     time.sleep(0.5)
 
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.HIGH)
+    pause()
     time.sleep(0.5)
 
-    GPIO.output(left, GPIO.LOW)
-    GPIO.output(right, GPIO.HIGH)
+    Clockwise()
     time.sleep(4)
 
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.HIGH)
+    pause()
     time.sleep(0.5)
 
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.LOW)
+    Counter_clock()
     time.sleep(0.5)
 
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.HIGH)
+    pause()
     time.sleep(0.5)
 
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.LOW)
+    Counter_clock()
     time.sleep(0.5)
 
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.HIGH)
+    pause()
     time.sleep(0.5)
 
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.LOW)
+    Counter_clock()
     time.sleep(0.5)
 
-    GPIO.output(left, GPIO.HIGH)
-    GPIO.output(right, GPIO.HIGH)
+    pause()
     time.sleep(0.2)
 
-    GPIO.output(left, GPIO.LOW)
-    GPIO.output(right, GPIO.HIGH)
+    Clockwise()
     time.sleep(1.5)
 
     # Turn off the motor by setting the enable pin to low
-    GPIO.output(enable, GPIO.LOW)
-    callback()
+    disable_ant()
 
+run_ant()
 # Clean up the GPIO pins
 
 

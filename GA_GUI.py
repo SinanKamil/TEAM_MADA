@@ -18,7 +18,7 @@ from user_aileron import aileron_user
 from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
 
 #ANTENNA
-from control_antenna import left_antenna, right_antenna, disable_antenna
+from control_antenna import clockwise_ant, counterclockwise_ant, disable_antenna
 from user_directional_antenna import antenna
 
 
@@ -476,21 +476,21 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=765, y=450)
 
-        self.left_antenna_img = self.images["/home/pi/TEAM_MADA/btn_images/antenna_left.png"]
-        self.left_antenna_btn = tk.Button(self.directional_antenna_page, image=self.left_antenna_img, highlightthickness=0,
+        self.clockwise_ant_img = self.images["/home/pi/TEAM_MADA/btn_images/antenna_left.png"]
+        self.clockwise_ant_btn = tk.Button(self.directional_antenna_page, image=self.clockwise_ant_img, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.left_antenna_btn.bind("<ButtonPress>", lambda event: self.left_antenna())
-        self.left_antenna_btn.bind("<ButtonRelease>", lambda event: self.disable_dir_antenna())
-        self.left_antenna_btn.place(x=350, y=480)
+        self.clockwise_ant_btn.bind("<ButtonPress>", lambda event: self.clockwise_ant())
+        self.clockwise_ant_btn.bind("<ButtonRelease>", lambda event: self.disable_dir_antenna())
+        self.clockwise_ant_btn.place(x=350, y=480)
 
-        self.right_antenna_img = self.images["/home/pi/TEAM_MADA/btn_images/antenna_right.png"]
-        self.right_antenna_btn = tk.Button(self.directional_antenna_page, image=self.right_antenna_img, highlightthickness=0,
+        self.counterclockwise_ant_img = self.images["/home/pi/TEAM_MADA/btn_images/antenna_right.png"]
+        self.counterclockwise_ant_btn = tk.Button(self.directional_antenna_page, image=self.counterclockwise_ant_img, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81',
                                      borderwidth=0, relief="flat", bd=0)
-        self.right_antenna_btn.bind("<ButtonPress>", lambda event: self.right_antennaa())
-        self.right_antenna_btn.bind("<ButtonRelease>", lambda event: self.disable_dir_antenna())
-        self.right_antenna_btn.place(x=1250, y=480)
+        self.counterclockwise_ant_btn.bind("<ButtonPress>", lambda event: self.counterclockwise_anta())
+        self.counterclockwise_ant_btn.bind("<ButtonRelease>", lambda event: self.disable_dir_antenna())
+        self.counterclockwise_ant_btn.place(x=1250, y=480)
 
         self.back3 = self.images["/home/pi/TEAM_MADA/images/adminmenu_btn.png"]
         self.next_button = tk.Button(self.directional_antenna_page, image=self.back3, highlightthickness=0,
@@ -738,7 +738,7 @@ class GA(tk.Tk):
 
     def center_landing_gear(self):
         center_steering()
-        #retract_center()
+        retract_center()
         print("Center")
 
     def reverse_steering(self):
@@ -756,29 +756,16 @@ class GA(tk.Tk):
         disable_retract()
 
     def forward_retract(self):
-        self.retract_data_float = retract_validate_data(ser)
-        if 0.9 > self.retract_data_float:
-            self.retract_data_float = retract_validate_data(ser)
-            self.retract_down_btn.config(state=tk.NORMAL)
-        else:
-            self.retract_data_float = retract_validate_data(ser)
-            self.retract_up_btn.config(state=tk.NORMAL)
-            self.retract_down_btn.config(state=tk.DISABLED)
-            forward_accelerate_retract(20)
+        self.retract_down_btn.config(state=tk.NORMAL)
+        self.retract_up_btn.config(state=tk.NORMAL)
+        forward_accelerate_retract(20)
 
 
 
     def reverse_retract(self):
-        self.retract_data_float = retract_validate_data(ser)
-        if 1.70 < self.retract_data_float:
-            self.retract_data_float = retract_validate_data(ser)
-            self.retract_up_btn.config(state=tk.NORMAL)
-
-        else:
-            self.retract_data_float = retract_validate_data(ser)
-            self.retract_down_btn.config(state=tk.NORMAL)
-            self.retract_up_btn.config(state=tk.DISABLED)
-            reverse_accelerate_retract(-20)
+        self.retract_down_btn.config(state=tk.NORMAL)
+        self.retract_up_btn.config(state=tk.NORMAL)
+        reverse_accelerate_retract(-20)
 
 
 
@@ -807,10 +794,10 @@ class GA(tk.Tk):
         aileron_center(self.value)
 
 
-    def left_antenna(self):
-        left_antenna()
-    def right_antennaa(self):
-        right_antenna()
+    def clockwise_ant(self):
+        clockwise_ant()
+    def counterclockwise_anta(self):
+        counterclockwise_ant()
     def disable_dir_antenna(self):
         disable_antenna()
         GPIO.cleanup()

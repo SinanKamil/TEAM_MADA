@@ -9,7 +9,7 @@ def init_ant():
     GPIO.setup(18, GPIO.OUT) #right18
     GPIO.setup(17, GPIO.OUT) #enable pin17
 
-def right_antenna():
+def counterclockwise_ant():
     init_ant()
     # Rotate the motor clockwise
     GPIO.output(27, GPIO.HIGH)
@@ -17,7 +17,7 @@ def right_antenna():
     # Turn on the motor by setting the enable pin to high
     GPIO.output(17, GPIO.HIGH)
 
-def left_antenna():
+def clockwise_ant():
     init_ant()
     
     # Rotate the motor counterclockwise
