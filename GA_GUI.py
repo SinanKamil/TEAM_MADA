@@ -5,7 +5,6 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
-from slideshow_video_player import play_video
 import threading
 import RPi.GPIO as GPIO
 
@@ -80,17 +79,13 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.next_button.place(x=222, y=882)
 
-        # Create the button to go to slideshow
-        self.next_button_img1 = self.images["/home/pi/TEAM_MADA/images/slideshow_btn.png"]
-        self.next_button = tk.Button(self.page1, image=self.next_button_img1, activebackground ='white', background ='white', command=self.slideshow, highlightthickness = 0, highlightbackground = '#ffffff', borderwidth=None, relief="flat", bd=0)
+        # Create the button to go to meet the team
+        self.next_button_img1 = self.images["btn_images/team_btn.png"]
+        self.next_button = tk.Button(self.page1, image=self.next_button_img1, activebackground='white',
+                                     background='white', command=self.show_meet_the_team_page, highlightthickness=0,
+                                     highlightbackground='#ffffff', borderwidth=None, relief="flat", bd=0)
         self.next_button.place(x=222, y=882)
 
-        self.meet_team_img = self.images["/home/pi/TEAM_MADA/btn_images/team_btn.png"]
-        self.meet_team_btn = tk.Button(self.page1, image=self.meet_team_img,
-                                     command=self.show_meet_the_team_page, highlightthickness=0,
-                                     activebackground ='#092a81', background ='#092a81', borderwidth=0,
-                                     relief="flat", bd=0)
-        self.meet_team_btn.place(x=275, y=125)
 
         # Create the switch button for fuel pump
         self.switch_button_img_on = self.images["/home/pi/TEAM_MADA/btn_images/fuel_pump.png"]
@@ -436,12 +431,6 @@ class GA(tk.Tk):
         self.aileron_value_label.pack()
         self.aileron_value_label.place(x=1280, y=840)
 
-        # center
-        self.center_aileron_img = self.images["/home/pi/TEAM_MADA/btn_images/center.png"]
-        self.aileron_centering = tk.Button(self.aileron_servo_page, image=self.center_aileron_img, highlightthickness=0,
-                                     activebackground='#092a81', background='#092a81', command=self.center_aileron,
-                                     borderwidth=0, relief="flat", bd=0)
-        self.aileron_centering.place(x=800, y=500)
 
         self.down_aileron_img = self.images["/home/pi/TEAM_MADA/btn_images/aileron_down.png"]
         self.down_aileron_btn = tk.Button(self.aileron_servo_page, image=self.down_aileron_img, highlightthickness=0,
@@ -449,7 +438,7 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.down_aileron_btn.bind("<ButtonPress>", lambda event: self.down_aileron())
         self.down_aileron_btn.bind("<ButtonRelease>", lambda event: self.disable_aileron())
-        self.down_aileron_btn.place(x=800, y=725)
+        self.down_aileron_btn.place(x=800, y=625)
 
         self.up_aileron_img = self.images["/home/pi/TEAM_MADA/btn_images/aileron_up.png"]
         self.up_aileron_btn = tk.Button(self.aileron_servo_page, image=self.up_aileron_img, highlightthickness=0,
@@ -457,7 +446,7 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.up_aileron_btn.bind("<ButtonPress>", lambda event: self.up_aileron())
         self.up_aileron_btn.bind("<ButtonRelease>", lambda event: self.disable_aileron())
-        self.up_aileron_btn.place(x=800, y=275)
+        self.up_aileron_btn.place(x=800, y=425)
 
         self.back2 = self.images["/home/pi/TEAM_MADA/images/adminmenu_btn.png"]
         self.next_button = tk.Button(self.aileron_servo_page, image=self.back2, highlightthickness=0,
@@ -790,9 +779,6 @@ class GA(tk.Tk):
     def disable_aileron(self):
         aileron_disable()
         GPIO.cleanup()
-    def center_aileron(self):
-        aileron_center(self.value)
-
 
     def clockwise_ant(self):
         clockwise_ant()
@@ -827,12 +813,8 @@ class GA(tk.Tk):
         else:
             minutes, seconds = divmod(int(remaining_time), 60)
             self.label.configure(text="  Inactive Timer: {:02d}:{:02d}".format(minutes, seconds))
-            if elapsed_time > self.inactive_time:
-                self.label.configure(foreground='red')
-            else:
-                self.label.configure(foreground='white')
+            self.label.configure(foreground='white')
             self.label.after(250, self.update_label)
-    # Define the toggle switch function
 
     # Define the toggle switch function
     def fuelpump_on_off(self):
