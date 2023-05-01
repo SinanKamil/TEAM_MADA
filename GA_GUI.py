@@ -19,7 +19,7 @@ from fuel_pump import pump_enable, pump_disable, user_fuel_pump_control
 
 #ANTENNA
 from control_antenna import clockwise_ant, counterclockwise_ant, disable_antenna
-from user_directional_antenna import antenna
+from user_directional_antenna import run_ant
 
 
 #UART
@@ -57,7 +57,7 @@ class GA(tk.Tk):
         photo = ImageTk.PhotoImage(ico)
         self.wm_iconphoto(False, photo)
         self.preload_images()
-        self.minutes = 0.20
+        self.minutes = 5
         self.inactive_time = 10
         self.total_seconds = self.minutes * 60
         self.last_active_time = time.time()
@@ -625,7 +625,7 @@ class GA(tk.Tk):
         def callback_directional():  # this to enable button
             self.switch_button1.config(state=tk.NORMAL)
             self.adminlogin_btn.config(state=tk.NORMAL)
-        antenna_thread = threading.Thread(target=antenna, args=(callback_directional,))
+        antenna_thread = threading.Thread(target=run_ant, args=(callback_directional,))
         antenna_thread.start()
 
     def aileron_toggle_switch(self):

@@ -28,6 +28,12 @@ def aileron_init(F_R_val, EN, Break_val):
 
 def aileron_forward(pwm_aileron, speed_value):
     try:
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)#look at GPIO
+        GPIO.setup(Enable, GPIO.OUT)
+        GPIO.setup(F_R, GPIO.OUT)
+        GPIO.setup(Speed, GPIO.OUT)
+        GPIO.setup(Break, GPIO.OUT)
         aileron_init(0, 1, 1)
         pwm_aileron.ChangeDutyCycle(speed_value)
 
@@ -38,6 +44,12 @@ def aileron_forward(pwm_aileron, speed_value):
 
 def aileron_reverse(pwm_aileron, speed_value):
     try:
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)#look at GPIO
+        GPIO.setup(Enable, GPIO.OUT)
+        GPIO.setup(F_R, GPIO.OUT)
+        GPIO.setup(Speed, GPIO.OUT)
+        GPIO.setup(Break, GPIO.OUT)
         aileron_init(1,1,1)
         pwm_aileron.ChangeDutyCycle(speed_value)
 
@@ -48,6 +60,12 @@ def aileron_reverse(pwm_aileron, speed_value):
 
 def aileron_disable():
     try:
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)#look at GPIO
+        GPIO.setup(Enable, GPIO.OUT)
+        GPIO.setup(F_R, GPIO.OUT)
+        GPIO.setup(Speed, GPIO.OUT)
+        GPIO.setup(Break, GPIO.OUT)
         GPIO.output(Enable, 0)
         GPIO.output(Break, 0)
         pwm_aileron.ChangeDutyCycle(0)
@@ -60,6 +78,12 @@ def aileron_disable():
         exit()
 def aileron_enable():
     try:
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)#look at GPIO
+        GPIO.setup(Enable, GPIO.OUT)
+        GPIO.setup(F_R, GPIO.OUT)
+        GPIO.setup(Speed, GPIO.OUT)
+        GPIO.setup(Break, GPIO.OUT)
         GPIO.output(Enable, 1)
         GPIO.output(Break, 1)
 

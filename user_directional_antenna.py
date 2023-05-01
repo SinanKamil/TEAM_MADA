@@ -34,7 +34,7 @@ def disable_ant():
     GPIO.output(left, GPIO.LOW)
     GPIO.output(right, GPIO.LOW)
 
-def run_ant(): 
+def run_ant(callback): 
     
     Clockwise()
     time.sleep(1)
@@ -92,8 +92,7 @@ def run_ant():
 
     # Turn off the motor by setting the enable pin to low
     disable_ant()
-
-run_ant()
+    callback()
 # Clean up the GPIO pins
 
 

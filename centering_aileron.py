@@ -9,9 +9,9 @@ def aileron_center(in_speed):
     data_aileron = aileron_validate_data(ser)
     print(data_aileron)
     aileron_enable()
-    if(data_aileron > 1.6550):
+    if(data_aileron > 1.6300):
         aileron_enable()
-        while data_aileron > 1.6450:
+        while data_aileron > 1.6290:
             data_aileron = aileron_validate_data(ser)
             print(data_aileron)
             aileron_forward(pwm_aileron,in_speed)
@@ -19,7 +19,7 @@ def aileron_center(in_speed):
     else:
         aileron_enable()
         data_aileron = aileron_validate_data(ser)
-        while data_aileron < 1.6240:
+        while data_aileron < 1.6200:
             data_aileron = aileron_validate_data(ser)
             print(data_aileron)
             aileron_reverse(pwm_aileron,in_speed)
