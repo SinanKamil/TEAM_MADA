@@ -59,7 +59,7 @@ class GA(tk.Tk):
         self.inactive_time = 10
         self.total_seconds = self.minutes * 60
         self.last_active_time = time.time()
-
+        #self.relay(1)
 
 #page 1 here:
         # Create the first page
@@ -831,6 +831,12 @@ class GA(tk.Tk):
 
     def recover_retract(self):
         print("recover_retract")
+    def relay(self, signal):
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(4, GPIO.OUT)
+        GPIO.output(4, signal)
+
     def preload_images(self):
         # Create a dictionary of all image file paths
         self.images = {}
