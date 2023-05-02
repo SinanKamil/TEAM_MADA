@@ -26,17 +26,17 @@ def user_retract_run(feedback):
         for_daccelerate = list(range(int(MAX_SPEED), 0, -80))
 
         for s in for_accelerate:
-            #checkforError(STOP_PIN)
+            checkforError(STOP_PIN)
             motors.motor2.setSpeed(s)
             data_float = retract_validate_data(ser)
             print(data_float)
         while data_float > 0.9:
-            #checkforError(STOP_PIN)
+            checkforError(STOP_PIN)
             motors.motor2.setSpeed(int(for_constant))
             data_float = retract_validate_data(ser)
             print(data_float)
         for s in for_daccelerate:
-            #checkforError(STOP_PIN)
+            checkforError(STOP_PIN)
             motors.motor2.setSpeed(s)
             data_float = retract_validate_data(ser)
             print(data_float)

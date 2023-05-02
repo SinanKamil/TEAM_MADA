@@ -12,7 +12,6 @@ def checkforError(STOP_PIN):
     if GPIO.input(STOP_PIN) == GPIO.HIGH:
         print("Terminating program...")
         motors.forceStop()
-        ser.close()
         GPIO.cleanup()
         exit()
 def raiseIfFault():
@@ -41,14 +40,14 @@ def retract_center():
         if 1.65 > data_float or data_float > 1.75:
             if data_float > 1.75:
                 for s in for_accelerate:
-                    #checkforError()
+                    checkforError(STOP_PIN)
                     motors.motor2.setSpeed(s)
                     raiseIfFault()
                     data_float = retract_validate_data(ser)
                     print(data_float)
 
                 while data_float > 1.75:
-                    #checkforError(STOP_PIN)
+                    checkforError(STOP_PIN)
                     motors.motor2.setSpeed(int(for_constant))
                     raiseIfFault()
                     data_float = retract_validate_data(ser)
@@ -56,21 +55,21 @@ def retract_center():
 
             else:
                 for s in rev_accelerate:
-                    #checkforError(STOP_PIN)
+                    checkforError(STOP_PIN)
                     motors.motor2.setSpeed(s)
                     raiseIfFault()
                     data_float = retract_validate_data(ser)
                     print(data_float)
 
                 while data_float < 1.70:
-                    #checkforError(STOP_PIN)
+                    checkforError(STOP_PIN)
                     motors.motor2.setSpeed(int(rev_constant))
                     raiseIfFault()
                     data_float = retract_validate_data(ser)
                     print(data_float)
                     
                 for s in rev_daccelerate:
-                    #checkforError(STOP_PIN)
+                    checkforError(STOP_PIN)
                     motors.motor2.setSpeed(s)
                     raiseIfFault()
                     data_float = retract_validate_data(ser)
