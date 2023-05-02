@@ -638,8 +638,6 @@ class GA(tk.Tk):
             self.switch_button4.config(state=tk.NORMAL)
             self.switch_button2.config(state=tk.NORMAL)
             self.adminlogin_btn.config(state=tk.NORMAL)
-            
-
 
         retract_thread = threading.Thread(target=user_retract_run, args=(callback_landing_gear,))
         retract_thread.start()
@@ -744,12 +742,10 @@ class GA(tk.Tk):
         forward_accelerate_retract(20)
 
 
-
     def reverse_retract(self):
         self.retract_down_btn.config(state=tk.NORMAL)
         self.retract_up_btn.config(state=tk.NORMAL)
         reverse_accelerate_retract(-20)
-
 
 
     def exit(self):
@@ -763,10 +759,8 @@ class GA(tk.Tk):
     def up_aileron(self):
         aileron_reverse(pwm_aileron, self.value)   
 
-                
     def down_aileron(self):
         aileron_forward(pwm_aileron, self.value)
-
 
     def enable_aileron(self):
         aileron_enable()
@@ -823,14 +817,12 @@ class GA(tk.Tk):
             self.fuel_home.config(state=tk.NORMAL)
             pump_disable()
             GPIO.cleanup()
-    def landing_geat_rev_function(self):
+    def recover_retract(self):
+        print("recover_retract")
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(16, GPIO.OUT)
         GPIO.output(16, GPIO.HIGH)
-
-    def recover_retract(self):
-        print("recover_retract")
     def relay(self, signal):
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
