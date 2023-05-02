@@ -43,7 +43,6 @@ class GA(tk.Tk):
         self.Fuel_pump_en = False
         self.current_value = 0
         self.aileron_speed_value = 1
-        self.init_Alternator()
         self.numbers_clicked = []
         self.current_value = 0
         self.value = 1
@@ -67,8 +66,8 @@ class GA(tk.Tk):
         self.page1 = tk.Frame(self)
         self.page1.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.page1, "/home/pi/TEAM_MADA/images/home_page.png")
+        
         #meet the team bttn
-
         self.meet_the_team = tk.Frame(self)
         self.meet_the_team.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.meet_the_team, "/home/pi/TEAM_MADA/images/Meet_the_Team_page.png")
@@ -80,11 +79,11 @@ class GA(tk.Tk):
         self.next_button.place(x=222, y=882)
 
         # Create the button to go to meet the team
-        self.next_button_img1 = self.images["btn_images/team_btn.png"]
+        self.next_button_img1 = self.images["/home/pi/TEAM_MADA/btn_images/team_btn.png"]
         self.next_button = tk.Button(self.page1, image=self.next_button_img1, activebackground='white',
                                      background='white', command=self.show_meet_the_team_page, highlightthickness=0,
                                      highlightbackground='#ffffff', borderwidth=None, relief="flat", bd=0)
-        self.next_button.place(x=222, y=882)
+        self.next_button.place(x=220, y=878)
 
 
         # Create the switch button for fuel pump
@@ -404,14 +403,6 @@ class GA(tk.Tk):
         self.aileron_servo_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.aileron_servo_page, "/home/pi/TEAM_MADA/images/aileron_page.png")
 
-        self.recover_aileron_img = self.images["/home/pi/TEAM_MADA/btn_images/recover_btn.png"]
-        self.recover_aileron_btn = tk.Button(self.aileron_servo_page, image=self.recover_aileron_img,
-                                             highlightthickness=0,
-                                             activebackground='#092a81', background='#092a81',
-                                             command=self.recover_aileron,
-                                             borderwidth=0, relief="flat", bd=0)
-        self.recover_aileron_btn.place(x=275, y=125)
-
         self.aileron_btn = self.images["/home/pi/TEAM_MADA/btn_images/aileron.png"]
         self.next_button = tk.Button(self.page3, image=self.aileron_btn, highlightthickness=0,
                                      activebackground='#092a81', background='#092a81', command=self.show_aileron_servo_page,
@@ -680,6 +671,7 @@ class GA(tk.Tk):
         self.pwmDC.start(0)
 
     def slider_function(self, slider_value):
+        self.init_Alternator()
         slider_value = int(slider_value)
         if slider_value != self.current_value:          
             self.current_value = slider_value
@@ -687,20 +679,22 @@ class GA(tk.Tk):
             self.pwmDC.ChangeDutyCycle(slider_value)
             self.value_label.config(text=self.current_value)
     def DC_LED_function(self, callback):
-        times = 3
+        self.init_Alternator()
+        times = 1
         for i in range(times):
             for duty in range(0,100,1):
+                self.pwmDC.ChangeDutyCycle(100)
+                sleep(0.35)
                 self.p.ChangeDutyCycle(duty)
-                self.pwmDC.ChangeDutyCycle(duty)
-
-                sleep(.02)
+                #sleep(.02)
             sleep(.01)
 
             for duty in range(100,-1,-1):
                 self.p.ChangeDutyCycle(duty)
+                sleep(0.01)
                 self.pwmDC.ChangeDutyCycle(duty)
 
-                sleep(.02)
+               # sleep(.02)
             sleep(.01)
         callback()
         self.p.stop()
@@ -834,10 +828,6 @@ class GA(tk.Tk):
         GPIO.setwarnings(False)
         GPIO.setup(16, GPIO.OUT)
         GPIO.output(16, GPIO.HIGH)
-
-
-    def recover_aileron(self):
-        print("recover_aileron")
 
     def recover_retract(self):
         print("recover_retract")
