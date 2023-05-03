@@ -59,7 +59,9 @@ class GA(tk.Tk):
         self.inactive_time = 10
         self.total_seconds = self.minutes * 60
         self.last_active_time = time.time()
-        #self.relay(1)
+        self.init_Alternator()
+        self.relay(1)
+        self.config(cursor="none")
 
 #page 1 here:
         # Create the first page
@@ -502,11 +504,6 @@ class GA(tk.Tk):
         self.show_page(self.fuel_pump_page)
         self.reset_timer()
         self.update_label()
-        self.Fuel_pump_en = False
-        self.switch_button_fuel.config(image=self.switch_button_fuel_off)
-        self.fuel_home.config(state=tk.NORMAL)
-        pump_disable()
-        GPIO.cleanup()
     def show_aileron_servo_page(self):
         self.show_page(self.aileron_servo_page)
         self.reset_timer()
@@ -550,6 +547,11 @@ class GA(tk.Tk):
         self.numbers_clicked = []
         self.show_page(self.page1)
         self.clear_text()
+        self.Fuel_pump_en = False
+        self.switch_button_fuel.config(image=self.switch_button_fuel_off)
+        self.fuel_home.config(state=tk.NORMAL)
+        pump_disable()
+
 
     def store(self, number):
         print("Number", number, "is Clicked")
@@ -630,7 +632,6 @@ class GA(tk.Tk):
         print("Landing Gear ON")
         self.switch_button2.config(state=tk.DISABLED)
         self.switch_button4.config(state=tk.DISABLED)
-        self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
 
 
@@ -669,7 +670,6 @@ class GA(tk.Tk):
         self.pwmDC.start(0)
 
     def slider_function(self, slider_value):
-        self.init_Alternator()
         slider_value = int(slider_value)
         if slider_value != self.current_value:          
             self.current_value = slider_value
@@ -677,7 +677,6 @@ class GA(tk.Tk):
             self.pwmDC.ChangeDutyCycle(slider_value)
             self.value_label.config(text=self.current_value)
     def DC_LED_function(self, callback):
-        self.init_Alternator()
         times = 1
         for i in range(times):
             for duty in range(0,100,1):
@@ -691,18 +690,9 @@ class GA(tk.Tk):
                 self.p.ChangeDutyCycle(duty)
                 sleep(0.01)
                 self.pwmDC.ChangeDutyCycle(duty)
-
                # sleep(.02)
             sleep(.01)
-        callback()
-        self.p.stop()
-        self.pwmDC.stop()
-        GPIO.cleanup()
-
-    def __del__(self):
-        self.p.stop()
-        self.pwmDC.stop()
-        GPIO.cleanup()
+            callback()
 
     def aileron_show_values(self, event):
         new_value = self.aileron_speed.get()
@@ -716,7 +706,6 @@ class GA(tk.Tk):
                 self.value = round(self.converted_value)
                 print(self.value)
         
-
     def center_landing_gear(self):
         center_steering()
         retract_center()
@@ -747,12 +736,9 @@ class GA(tk.Tk):
         self.retract_up_btn.config(state=tk.NORMAL)
         reverse_accelerate_retract(-20)
 
-
     def exit(self):
         res = mb.askquestion('EXIT APPLICATION', 'Would you like to terminate the program and exit the application?')
         if res == 'yes':
-            self.p.stop()
-            self.pwmDC.stop()
             GPIO.cleanup()
             self.destroy()
 
@@ -766,7 +752,6 @@ class GA(tk.Tk):
         aileron_enable()
     def disable_aileron(self):
         aileron_disable()
-        GPIO.cleanup()
 
     def clockwise_ant(self):
         clockwise_ant()
@@ -774,7 +759,6 @@ class GA(tk.Tk):
         counterclockwise_ant()
     def disable_dir_antenna(self):
         disable_antenna()
-        GPIO.cleanup()
 
     def reset_timer(self, event=None):
         self.last_active_time = time.time()
@@ -816,18 +800,18 @@ class GA(tk.Tk):
             self.switch_button_fuel.config(image=self.switch_button_fuel_off)
             self.fuel_home.config(state=tk.NORMAL)
             pump_disable()
-            GPIO.cleanup()
+
     def recover_retract(self):
-        print("recover_retract")
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
-        GPIO.setup(16, GPIO.OUT)
-        GPIO.output(16, GPIO.HIGH)
+        GPIO.output(19, 0)
+        
     def relay(self, signal):
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(4, GPIO.OUT)
+        GPIO.setup(19, GPIO.OUT)
+        GPIO.setup(19, GPIO.OUT)
         GPIO.output(4, signal)
+        GPIO.output(19, 1)
 
     def preload_images(self):
         # Create a dictionary of all image file paths

@@ -93,6 +93,5 @@ def run_ant(callback):
     # Turn off the motor by setting the enable pin to low
     disable_ant()
     callback()
-# Clean up the GPIO pins
 
 

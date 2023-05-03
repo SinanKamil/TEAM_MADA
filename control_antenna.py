@@ -31,6 +31,5 @@ def disable_antenna():
     # Turn off the motor by setting the enable pin to low
     GPIO.output(27, GPIO.LOW)
     GPIO.output(18, GPIO.LOW)
-    GPIO.cleanup()
 
 

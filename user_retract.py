@@ -2,7 +2,7 @@ import serial
 from time import sleep
 import RPi.GPIO as GPIO
 from steering_retract_code import motors, MAX_SPEED, Motor
-from centering_retract import retract_center, checkforError
+from centering_retract import retract_center
 from three_UARTS_pi4_get import retract_validate_data
 from user_steering import user_steering_run
 from centering_steering import center_steering
@@ -11,9 +11,20 @@ class DriverFault(Exception):
     def __init__(self, driver_num):
         self.driver_num = driver_num
 
+def checkforError():
+    STOP_PIN = 8
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(STOP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    if GPIO.input(STOP_PIN) == GPIO.HIGH:
+        print("Terminating program...")
+        motors.forceStop()
+        exit()
+        
 def user_retract_run(feedback):
     try:
-        STOP_PIN = 16
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(8, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
         center_steering()
         retract_center()
         
@@ -26,17 +37,17 @@ def user_retract_run(feedback):
         for_daccelerate = list(range(int(MAX_SPEED), 0, -80))
 
         for s in for_accelerate:
-            checkforError(STOP_PIN)
+            checkforError()
             motors.motor2.setSpeed(s)
             data_float = retract_validate_data(ser)
             print(data_float)
-        while data_float > 0.9:
-            checkforError(STOP_PIN)
+        while data_float > 0.93:
+            checkforError()
             motors.motor2.setSpeed(int(for_constant))
             data_float = retract_validate_data(ser)
             print(data_float)
         for s in for_daccelerate:
-            checkforError(STOP_PIN)
+            checkforError()
             motors.motor2.setSpeed(s)
             data_float = retract_validate_data(ser)
             print(data_float)
