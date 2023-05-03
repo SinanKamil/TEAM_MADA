@@ -7,6 +7,7 @@ from tkinter import messagebox as mb
 import time
 import threading
 import RPi.GPIO as GPIO
+from alternator_DC_LED import DC_LED_function
 
 #Aileron
 from control_aileron import aileron_forward, aileron_reverse, aileron_disable, aileron_setup, aileron_init, Speed, pwm_aileron, aileron_enable
@@ -59,9 +60,9 @@ class GA(tk.Tk):
         self.inactive_time = 10
         self.total_seconds = self.minutes * 60
         self.last_active_time = time.time()
-        self.init_Alternator()
         self.relay(1)
         self.config(cursor="none")
+        self.initialized = False
 
 #page 1 here:
         # Create the first page
@@ -656,44 +657,9 @@ class GA(tk.Tk):
             self.adminlogin_btn.config(state=tk.NORMAL)
 
         # Create a new thread to run the DC LED function
-        led_thread = threading.Thread(target=self.DC_LED_function, args=(callback_alternator,))
+        led_thread = threading.Thread(target=DC_LED_function, args=(callback_alternator,))
         led_thread.start()
-
-    def init_Alternator(self):
-        GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(20, GPIO.OUT)  # for DC motor
-        GPIO.setup(21, GPIO.OUT)  # for LED
-        self.p = GPIO.PWM(21, 100)  # Initialize PWM on pin 12 with a frequency of 50Hz
-        self.pwmDC = GPIO.PWM(20, 100)
-        self.p.start(0)  # Start the PWM with a duty cycle of 0
-        self.pwmDC.start(0)
-
-    def slider_function(self, slider_value):
-        slider_value = int(slider_value)
-        if slider_value != self.current_value:          
-            self.current_value = slider_value
-            self.p.ChangeDutyCycle(slider_value)
-            self.pwmDC.ChangeDutyCycle(slider_value)
-            self.value_label.config(text=self.current_value)
-    def DC_LED_function(self, callback):
-        times = 1
-        for i in range(times):
-            for duty in range(0,100,1):
-                self.pwmDC.ChangeDutyCycle(100)
-                sleep(0.35)
-                self.p.ChangeDutyCycle(duty)
-                #sleep(.02)
-            sleep(.01)
-
-            for duty in range(100,-1,-1):
-                self.p.ChangeDutyCycle(duty)
-                sleep(0.01)
-                self.pwmDC.ChangeDutyCycle(duty)
-               # sleep(.02)
-            sleep(.01)
-            callback()
-
+        
     def aileron_show_values(self, event):
         new_value = self.aileron_speed.get()
         if new_value != self.aileron_speed_value:
@@ -813,6 +779,14 @@ class GA(tk.Tk):
         GPIO.output(4, signal)
         GPIO.output(19, 1)
 
+    def slider_function(self, slider_value):
+        slider_value = int(slider_value)
+        if slider_value != self.current_value:          
+            self.current_value = slider_value
+            self.p.ChangeDutyCycle(slider_value)
+            self.pwmDC.ChangeDutyCycle(slider_value)
+            self.value_label.config(text=self.current_value)
+        
     def preload_images(self):
         # Create a dictionary of all image file paths
         self.images = {}
