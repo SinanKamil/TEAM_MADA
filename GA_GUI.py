@@ -63,8 +63,9 @@ class GA(tk.Tk):
         self.relay(1)
         self.config(cursor="none")
         self.initialized = False
+        self.run_screensaver()
 
-#page 1 here:
+        #page 1 here:
         # Create the first page
         self.page1 = tk.Frame(self)
         self.page1.pack(side="top", fill="both", expand=True)
@@ -786,7 +787,9 @@ class GA(tk.Tk):
             self.p.ChangeDutyCycle(slider_value)
             self.pwmDC.ChangeDutyCycle(slider_value)
             self.value_label.config(text=self.current_value)
-        
+
+    def run_screensaver(self):
+        subprocess.Popen(["xscreensaver", "-nosplash", "&"])
     def preload_images(self):
         # Create a dictionary of all image file paths
         self.images = {}
