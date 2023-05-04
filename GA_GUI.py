@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 from time import sleep
 from tkinter import messagebox as mb
 import time
+import subprocess
 import threading
 import RPi.GPIO as GPIO
 from alternator_DC_LED import DC_LED_function
@@ -36,7 +37,7 @@ from centering_retract import retract_center
 from user_retract import user_retract_run, disable_retract
 
 aileron_speed_value = 1
-alternator_timer_value = 25
+alternator_timer_value = 10
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -45,7 +46,7 @@ class GA(tk.Tk):
         self.Fuel_pump_en = False
         self.current_value = 0
         self.aileron_speed_value = 1
-        self.alternator_timer_value = 25
+        self.alternator_timer_value = 10
         self.numbers_clicked = []
         self.current_value = 0
         self.value = 1
@@ -322,7 +323,7 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.alternator_btn.place(x=973, y=650)
 
-        self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL,
+        self.w1 = Scale(self.alternator_page, from_=0, to=20, length=1000, orient=HORIZONTAL,
                         troughcolor='#0e3999', width=67, sliderrelief='groove', highlightbackground='#0e3999',
                         sliderlength=40, font=("Tactic Sans Extra Extended", 15), showvalue=0)
         self.w1.set(alternator_timer_value)
@@ -345,14 +346,6 @@ class GA(tk.Tk):
         self.landing_gear_page = tk.Frame(self)
         self.landing_gear_page.pack(side="top", fill="both", expand=True)
         self.add_background_image(self.landing_gear_page, "/home/pi/TEAM_MADA/images/landing_gear_page.png")
-        
-        self.recover_retract_img = self.images["/home/pi/TEAM_MADA/btn_images/recover_btn.png"]
-        self.recover_retract_btn = tk.Button(self.landing_gear_page, image=self.recover_retract_img,
-                                             highlightthickness=0,
-                                             activebackground='#092a81', background='#092a81',
-                                             command=self.recover_retract,
-                                             borderwidth=0, relief="flat", bd=0)
-        self.recover_retract_btn.place(x=275, y=125)
 
         self.landing_gear_btn = self.images["/home/pi/TEAM_MADA/btn_images/landing_gear.png"]
         self.landing_gear_btn_fun = tk.Button(self.page3, image=self.landing_gear_btn, highlightthickness=0,
@@ -583,9 +576,7 @@ class GA(tk.Tk):
             print("Access denied. Incorrect passcode.")
             self.numbers_clicked = []
             self.clear_text()
-
-    def slideshow(self):
-        play_video()
+            
 # Define the toggle switch function
     def fuel_toggle_switch(self):
         print("fuel pump ON")
@@ -614,7 +605,6 @@ class GA(tk.Tk):
         print("Aileron ON")
         self.switch_button2.config(state=tk.DISABLED)
         self.switch_button4.config(state=tk.DISABLED)
-
         self.update()
 
 
@@ -651,7 +641,7 @@ class GA(tk.Tk):
             self.switch_button5.config(state=tk.NORMAL)
 
         # Create a new thread to run the DC LED function
-        led_thread = threading.Thread(target=DC_LED_function, args=(callback_alternator,))
+        led_thread = threading.Thread(target=DC_LED_function, args=(self.alternator_timer_value, callback_alternator,))
         led_thread.start()
         
     def aileron_show_values(self, event):
@@ -766,9 +756,6 @@ class GA(tk.Tk):
             self.switch_button_fuel.config(image=self.switch_button_fuel_off)
             self.fuel_home.config(state=tk.NORMAL)
             pump_disable()
-
-    def recover_retract(self):
-        GPIO.output(19, 0)
         
     def relay(self, signal):
         GPIO.setwarnings(False)
@@ -788,7 +775,7 @@ class GA(tk.Tk):
             self.value_label.config(text=self.current_value)
 
     def run_screensaver(self):
-        subprocess.Popen(["xscreensaver", "-nosplash", "&"])
+        subprocess.Popen(["xscreensaver", "-nosplash"])
     def preload_images(self):
         # Create a dictionary of all image file paths
         self.images = {}
@@ -839,7 +826,6 @@ class GA(tk.Tk):
                        "/home/pi/TEAM_MADA/btn_images/antenna_right.png",
                        "/home/pi/TEAM_MADA/images/adminmenu_btn.png",
                        "/home/pi/TEAM_MADA/btn_images/team_btn.png",
-                       "/home/pi/TEAM_MADA/btn_images/recover_btn.png",
                        "/home/pi/TEAM_MADA/btn_images/two_inactive.png",
                        "/home/pi/TEAM_MADA/btn_images/five_inactive.png",
                        "/home/pi/TEAM_MADA/btn_images/ten_inactive.png"
