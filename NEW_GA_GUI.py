@@ -23,6 +23,7 @@ import threading
 
 
 aileron_speed_value = 1
+alternator_timer_value = 25
 
 
 class GA(tk.Tk):
@@ -31,10 +32,10 @@ class GA(tk.Tk):
         # Create instances of each page class with hidden attribute set to True
         self.Fuel_pump_en = False
         self.aileron_speed_value = 1
+        self.alternator_timer_value = 25
         self.current_value = 0
         # self.init_Alternator()
         self.numbers_clicked = []
-        self.current_value = 0
         self.w1 = 0
         self.geometry("1920x1080")
         self.title('General Atomics')
@@ -316,17 +317,19 @@ class GA(tk.Tk):
         self.alternator_btn.place(x=973, y=650)
 
         self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL,
-                        # command=self.slider_function,
                         troughcolor='#0e3999', width=67, sliderrelief='groove', highlightbackground='#0e3999',
                         sliderlength=40, font=("Tactic Sans Extra Extended", 15), showvalue=0)
-        self.w1.set(self.current_value)
+        self.w1.set(alternator_timer_value)
         self.w1.pack()
-        self.w1.place(x=450, y=503)
+        self.w1.bind("<B1-Motion>", self.alternator_slider)
+        self.w1.place(x=455, y=505)
 
         self.value_label = Label(self.alternator_page, text=self.current_value, font=("Tactic Sans Extra Extended", 25),
                                  fg='white', bg="#092a81")
         self.value_label.pack()
-        self.value_label.place(x=935, y=450)
+        self.value_label.config(text=f"{self.alternator_timer_value}", fg="red")
+        self.value_label.place(x=910, y=430)
+
 
         self.back = self.images["images/adminmenu_btn.png"]
         self.next_button = tk.Button(self.alternator_page, image=self.back, highlightthickness=0,
@@ -646,8 +649,6 @@ class GA(tk.Tk):
         slider_value = int(slider_value)
         if slider_value != self.current_value:
             self.current_value = slider_value
-            self.p.ChangeDutyCycle(slider_value)
-            self.pwmDC.ChangeDutyCycle(slider_value)
             self.value_label.config(text=self.current_value)
 
     def DC_LED_function(self, callback):
@@ -673,6 +674,13 @@ class GA(tk.Tk):
         self.pwmDC.stop()
         GPIO.cleanup()
 
+
+    def alternator_slider(self, event):
+        new_value = self.w1.get()
+        if new_value != self.alternator_timer_value:
+            self.alternator_timer_value = new_value
+            self.value_label.config(text=f"{self.alternator_timer_value}", fg="red")
+            print(self.alternator_timer_value)
     def aileron_show_values(self, event):
         new_value = self.aileron_speed.get()
         if new_value != self.aileron_speed_value:

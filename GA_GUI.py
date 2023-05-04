@@ -36,6 +36,7 @@ from centering_retract import retract_center
 from user_retract import user_retract_run, disable_retract
 
 aileron_speed_value = 1
+alternator_timer_value = 25
 class GA(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -44,6 +45,7 @@ class GA(tk.Tk):
         self.Fuel_pump_en = False
         self.current_value = 0
         self.aileron_speed_value = 1
+        self.alternator_timer_value = 25
         self.numbers_clicked = []
         self.current_value = 0
         self.value = 1
@@ -320,19 +322,19 @@ class GA(tk.Tk):
                                      borderwidth=0, relief="flat", bd=0)
         self.alternator_btn.place(x=973, y=650)
 
-
-
         self.w1 = Scale(self.alternator_page, from_=0, to=100, length=1000, orient=HORIZONTAL,
-                        troughcolor='#0e3999', width=67, sliderrelief='groove', highlightbackground='#0e3999', command=self.slider_function,
-                        sliderlength=40, font= ("Tactic Sans Extra Extended", 15), showvalue=0)
-        self.w1.set(self.current_value)
+                        troughcolor='#0e3999', width=67, sliderrelief='groove', highlightbackground='#0e3999',
+                        sliderlength=40, font=("Tactic Sans Extra Extended", 15), showvalue=0)
+        self.w1.set(alternator_timer_value)
         self.w1.pack()
-        self.w1.place(x=450, y=503)
+        self.w1.bind("<B1-Motion>", self.alternator_slider)
+        self.w1.place(x=455, y=505)
 
-        self.value_label = Label(self.alternator_page, text=self.current_value, font=("Tactic Sans Extra Extended", 25), fg='white', bg="#092a81")
+        self.value_label = Label(self.alternator_page, text=self.current_value, font=("Tactic Sans Extra Extended", 25),
+                                 fg='white', bg="#092a81")
         self.value_label.pack()
-        self.value_label.place(x=935, y=450)
-
+        self.value_label.config(text=f"{self.alternator_timer_value}", fg="red")
+        self.value_label.place(x=910, y=430)
 
         self.back = self.images["/home/pi/TEAM_MADA/images/adminmenu_btn.png"]
         self.next_button = tk.Button(self.alternator_page, image=self.back, highlightthickness=0,
@@ -588,12 +590,10 @@ class GA(tk.Tk):
     def fuel_toggle_switch(self):
         print("fuel pump ON")
         self.fuel_pump_btn.config(state=tk.DISABLED)
-        self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
 
         def callback_fuelpump():  # this to enable button
             self.fuel_pump_btn.config(state=tk.NORMAL)
-            self.adminlogin_btn.config(state=tk.NORMAL)
 
         # Create a new thread to run the DC LED function
         pump_thread = threading.Thread(target=user_fuel_pump_control, args=(callback_fuelpump,))
@@ -603,19 +603,16 @@ class GA(tk.Tk):
         # Disable the button
         print("Directional Antenna ON")
         self.switch_button1.config(state=tk.DISABLED)
-        self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
 
         def callback_directional():  # this to enable button
             self.switch_button1.config(state=tk.NORMAL)
-            self.adminlogin_btn.config(state=tk.NORMAL)
         antenna_thread = threading.Thread(target=run_ant, args=(callback_directional,))
         antenna_thread.start()
 
     def aileron_toggle_switch(self):
         print("Aileron ON")
         self.switch_button2.config(state=tk.DISABLED)
-        self.adminlogin_btn.config(state=tk.DISABLED)
         self.switch_button4.config(state=tk.DISABLED)
 
         self.update()
@@ -623,7 +620,6 @@ class GA(tk.Tk):
 
         def callback_aileron():  # this to enable button
             self.switch_button2.config(state=tk.NORMAL)
-            self.adminlogin_btn.config(state=tk.NORMAL)
             self.switch_button4.config(state=tk.NORMAL)
 
         aileron_thread = threading.Thread(target=aileron_user, args=(self.value,callback_aileron,))
@@ -640,7 +636,6 @@ class GA(tk.Tk):
         def callback_landing_gear():  # this to enable button
             self.switch_button4.config(state=tk.NORMAL)
             self.switch_button2.config(state=tk.NORMAL)
-            self.adminlogin_btn.config(state=tk.NORMAL)
 
         retract_thread = threading.Thread(target=user_retract_run, args=(callback_landing_gear,))
         retract_thread.start()
@@ -650,12 +645,10 @@ class GA(tk.Tk):
     def Alternator_toggle_switch(self):
         print("Alternator ON")
         self.switch_button5.config(state=tk.DISABLED)
-        self.adminlogin_btn.config(state=tk.DISABLED)
         self.update()
 
         def callback_alternator():  # this to enable button
             self.switch_button5.config(state=tk.NORMAL)
-            self.adminlogin_btn.config(state=tk.NORMAL)
 
         # Create a new thread to run the DC LED function
         led_thread = threading.Thread(target=DC_LED_function, args=(callback_alternator,))
@@ -672,7 +665,13 @@ class GA(tk.Tk):
             else:
                 self.value = round(self.converted_value)
                 print(self.value)
-        
+
+    def alternator_slider(self, event):
+        new_value = self.w1.get()
+        if new_value != self.alternator_timer_value:
+            self.alternator_timer_value = new_value
+            self.value_label.config(text=f"{self.alternator_timer_value}", fg="red")
+            print(self.alternator_timer_value)
     def center_landing_gear(self):
         center_steering()
         retract_center()
