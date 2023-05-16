@@ -66,7 +66,7 @@ class GA(tk.Tk):
         self.relay(1)
         self.config(cursor="none")
         self.initialized = False
-        self.run_screensaver()
+        #self.run_screensaver()
 
         #page 1 here:
         # Create the first page

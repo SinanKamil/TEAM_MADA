@@ -3,35 +3,8 @@ from time import sleep
 
 
 
-def init_Alternator():
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(20, GPIO.OUT)  # for DC motor
-    GPIO.setup(21, GPIO.OUT)  # for LED
-    p = GPIO.PWM(21, 100)  # Initialize PWM on pin 12 with a frequency of 50Hz
-    pwmDC = GPIO.PWM(20, 100)
-    p.start(0)  # Start the PWM with a duty cycle of 0
-    pwmDC.start(0)
-
-    
-
-
-def DC_LED_function():
-    init_Alternator()
-    times = 3
-    for i in range(times):
-        for duty in range(0,100,1):
-            p.ChangeDutyCycle(duty)
-            pwmDC.ChangeDutyCycle(duty)
-
-            sleep(.02)
-        sleep(.01)
-
-        for duty in range(100,-1,-1):
-            p.ChangeDutyCycle(duty)
-            pwmDC.ChangeDutyCycle(duty)
-
-            sleep(.02)
-        sleep(.01)
-
-DC_LED_function()
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(3, GPIO.OUT)  # for DC motor
+GPIO.setup(3, 0)  # for LED
+   
