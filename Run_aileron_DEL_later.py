@@ -23,16 +23,16 @@ def aileron_init(F_R_val, EN, Break_val):
     GPIO.output(Speed, 1)
     GPIO.output(Break, Break_val)
     GPIO.output(F_R, F_R_val)
-times = 3
+times = 2
 def aileron_control():
     for f in range(times):
         aileron_init(0,1,1)
         p = GPIO.PWM(Speed,2000)
         p.start(0)
         p.ChangeDutyCycle(5)
-        sleep(1)
+        sleep(0.5)
         aileron_init(1,1,1)
-        sleep(1)
+        sleep(0.5)
         p.stop()
     GPIO.cleanup()
 

@@ -1,8 +1,8 @@
 import RPi.GPIO as GPIO
 import time
 
-left = 27
-right = 18
+left = 18
+right = 17
     
 def antenna_init():
     GPIO.setmode(GPIO.BCM)
